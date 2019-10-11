@@ -3,7 +3,6 @@ ARG COMPOSER_VERSION
 ARG PHP_VERSION
 
 FROM composer:${COMPOSER_VERSION} AS composer
-#FROM php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION}
 FROM druidfi/base:alpine${ALPINE_VERSION}
 
 LABEL maintainer="druid.fi"
@@ -27,5 +26,3 @@ RUN composer global require hirak/prestissimo
 # Set directories and permissions
 RUN chown -R ${USER}:${USER} ${COMPOSER_HOME} && \
     chmod -R g+rwX ${COMPOSER_HOME}
-
-WORKDIR ${APP}
