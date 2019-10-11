@@ -11,6 +11,9 @@ ARG UID=1000
 # Set group & user
 RUN addgroup -S ${USER} -g ${UID} && adduser -S -G ${USER} -u ${UID} ${USER}
 
+# Upgrade existing packages
+RUN apk update && apk upgrade
+
 # Set directories and permissions
 RUN mkdir -p ${APP} && \
     chown -R ${USER}:${USER} ${APP} && \
