@@ -23,6 +23,9 @@ RUN apk --update --no-cache add \
 # Install hirak/prestissimo Composer plugin
 RUN composer global require hirak/prestissimo
 
+# Copy configuration files and scripts
+COPY files/ /
+
 # Set directories and permissions
 RUN chown -R ${USER}:${USER} ${COMPOSER_HOME} && \
     chmod -R g+rwX ${COMPOSER_HOME}
