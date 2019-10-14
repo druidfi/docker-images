@@ -21,6 +21,7 @@ Added features:
 
 - Minimal set of PHP extensions
 - Composer 1.9
+- hirak/prestissimo Composer plugin
 
 ## druidfi/drupal
 
