@@ -27,8 +27,18 @@ Added features:
 
 Tags:
 
-- `7.3-fpm-alpine3.10` based on `druidfi/php:7.3-fpm-alpine3.10`
+- `7.3` based on `druidfi/php:7.3-fpm-alpine3.10`
 
 Added features:
 
 - PHP extensions needed by Drupal
+
+## druidfi/drupal-web
+
+Tags:
+
+- `7.3` based on `druidfi/drupal:7.3`
+
+Added features:
+
+- Nginx with Drupal specific configuration
