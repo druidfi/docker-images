@@ -42,3 +42,13 @@ Tags:
 Added features:
 
 - Nginx with Drupal specific configuration
+
+## druidfi/drupal-all
+
+Tags:
+
+- `7.3` based on `druidfi/drupal-web:7.3`
+
+Added features:
+
+- MariaDB
