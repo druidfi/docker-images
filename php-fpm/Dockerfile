@@ -18,7 +18,11 @@ COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 
 # Install software
 RUN apk --update --no-cache add \
-    php7 php7-curl php7-fpm php7-json php7-mbstring php7-opcache php7-openssl php7-phar php7-session
+    php7 php7-curl php7-fpm php7-json php7-mbstring php7-opcache php7-openssl php7-phar php7-session \
+    # Patch for aplying patches in composer.json
+    patch \
+    # Unzip for unzipping possible zip packages in composer.json
+    unzip
 
 # Install hirak/prestissimo Composer plugin
 RUN composer global require hirak/prestissimo
