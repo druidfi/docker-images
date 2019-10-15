@@ -8,6 +8,9 @@ ARG USER=druid
 ARG APP=/app
 ARG UID=1000
 
+# All images based on this one will have this ENV var
+ENV KIND=druid-docker-image
+
 # Copy configuration files and scripts
 COPY files/ /
 
