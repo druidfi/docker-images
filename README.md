@@ -11,6 +11,10 @@ Features:
 - Workdir: `/app`
 - User: `druid (1000)`
 
+Env variables:
+
+- `KIND=druid-docker-image`
+
 ## druidfi/php
 
 Tags:
@@ -22,6 +26,7 @@ Added features:
 - Minimal set of PHP extensions
 - Composer 1.9
 - hirak/prestissimo Composer plugin
+- `/app/vendor/bin` added  to `$PATH`
 
 ## druidfi/drupal
 
@@ -42,13 +47,3 @@ Tags:
 Added features:
 
 - Nginx with Drupal specific configuration
-
-## druidfi/drupal-all
-
-Tags:
-
-- `7.3` based on `druidfi/drupal-web:7.3`
-
-Added features:
-
-- MariaDB
