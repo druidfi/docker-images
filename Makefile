@@ -8,15 +8,18 @@ build-all: build-base build-php-fpm build-drupal ## Build all PHP images
 #
 
 PHONY += build-base
-build-base: TAG := alpine-3.10
+build-base: ALPINE := 3.10
 build-base: ## Build base image
-	docker build --force-rm base -t druidfi/base:alpine3.10 \
-		--build-arg ALPINE_VERSION=3.10
+	$(call step,Build druidfi/base:alpine$(ALPINE))
+	docker build --force-rm base -t druidfi/base:alpine$(ALPINE) \
+		--build-arg ALPINE_VERSION=$(ALPINE)
 
 PHONY += build-php-fpm
+build-php-fpm: ALPINE := 3.10
 build-php-fpm: ## Build PHP-FPM images
-	docker build --force-rm php-fpm -t druidfi/php:7.3-fpm-alpine3.10 \
-		--build-arg ALPINE_VERSION=3.10 --build-arg PHP_VERSION=7.3 --build-arg COMPOSER_VERSION=1.9
+	$(call step,Build druidfi/php:7.3-fpm-alpine$(ALPINE))
+	docker build --force-rm php-fpm -t druidfi/php:7.3-fpm-alpine$(ALPINE) \
+		--build-arg ALPINE_VERSION=$(ALPINE) --build-arg PHP_VERSION=7.3 --build-arg COMPOSER_VERSION=1.9
 #	docker build --force-rm php-fpm -t druidfi/php:7.4.0RC3-fpm-alpine3.10 \
 #		--build-arg ALPINE_VERSION=3.10 --build-arg PHP_VERSION=7.4.0RC3 --build-arg COMPOSER_VERSION=1.9
 
@@ -29,9 +32,6 @@ build-drupal: ## Build Drupal images
     		--build-arg ALPINE_VERSION=$(ALPINE) --build-arg PHP_VERSION=$(PHP)
 	$(call step,Build druidfi/drupal-web:$(PHP))
 	docker build --force-rm drupal-web -t druidfi/drupal-web:$(PHP) \
-    		--build-arg PHP_VERSION=$(PHP)
-	$(call step,Build druidfi/drupal-all:$(PHP))
-	docker build --force-rm drupal-all -t druidfi/drupal-all:$(PHP) \
     		--build-arg PHP_VERSION=$(PHP)
 
 #
@@ -59,6 +59,10 @@ test-drupal: ## Test PHP-FPM images
 # SHELL TARGETS
 #
 
+PHONY += shell-base
+shell-base: ## Login to base container
+	docker run --rm -it --user=druid druidfi/base:alpine3.10 sh
+
 PHONY += shell-php-fpm
 shell-php-fpm: ## Login to PHP-FPM container
 	docker run --rm -it --user=druid druidfi/php:7.3-fpm-alpine3.10 sh
@@ -70,7 +74,7 @@ shell-drupal: ## Login to Drupal container
 	docker run --rm -it --user=druid druidfi/$(IMG):$(TAG) sh
 
 define step
-	@printf "\e[0;33m${1}\e[0m\n"
+	@printf "\n\e[0;33m${1}\e[0m\n\n"
 endef
 
 .PHONY: $(PHONY)
