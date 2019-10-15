@@ -1,7 +1,6 @@
-ARG ALPINE_VERSION
 ARG PHP_VERSION
 
-FROM druidfi/php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION}
+FROM druidfi/php:${PHP_VERSION}-fpm
 
 LABEL maintainer="druid.fi"
 

@@ -15,13 +15,13 @@ build-base: ## Build base image
 		--build-arg ALPINE_VERSION=$(ALPINE)
 
 PHONY += build-php-fpm
-build-php-fpm: ALPINE := 3.10
 build-php-fpm: ## Build PHP-FPM images
-	$(call step,Build druidfi/php:7.3-fpm-alpine$(ALPINE))
-	docker build --force-rm php-fpm -t druidfi/php:7.3-fpm-alpine$(ALPINE) \
-		--build-arg ALPINE_VERSION=$(ALPINE) --build-arg PHP_VERSION=7.3 --build-arg COMPOSER_VERSION=1.9
-#	docker build --force-rm php-fpm -t druidfi/php:7.4.0RC3-fpm-alpine3.10 \
-#		--build-arg ALPINE_VERSION=3.10 --build-arg PHP_VERSION=7.4.0RC3 --build-arg COMPOSER_VERSION=1.9
+#	$(call step,Build druidfi/php:7.2-fpm)
+#	docker build --force-rm php-fpm -t druidfi/php:7.2-fpm \
+#		--build-arg ALPINE_VERSION=3.9 --build-arg PHP_VERSION=7.2 --build-arg COMPOSER_VERSION=1.9
+	$(call step,Build druidfi/php:7.3-fpm)
+	docker build --force-rm php-fpm -t druidfi/php:7.3-fpm \
+		--build-arg ALPINE_VERSION=3.10 --build-arg PHP_VERSION=7.3 --build-arg COMPOSER_VERSION=1.9
 
 PHONY += build-drupal
 build-drupal: ALPINE := 3.10

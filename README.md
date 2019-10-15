@@ -19,7 +19,7 @@ Env variables:
 
 Tags:
 
-- `7.3-fpm-alpine3.10` based on `druidfi/base:alpine3.10`
+- `7.3-fpm` based on `druidfi/base:alpine3.10`
 
 Added features:
 
@@ -32,11 +32,16 @@ Added features:
 
 Tags:
 
-- `7.3` based on `druidfi/php:7.3-fpm-alpine3.10`
+- `7.3` based on `druidfi/php:7.3-fpm`
 
 Added features:
 
 - PHP extensions needed by Drupal
+
+Needs:
+
+- Nginx container
+- Database
 
 ## druidfi/drupal-web
 
@@ -47,3 +52,7 @@ Tags:
 Added features:
 
 - Nginx with Drupal specific configuration
+
+Needs:
+
+- Database
