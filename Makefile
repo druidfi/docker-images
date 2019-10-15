@@ -1,7 +1,7 @@
 PHONY :=
 
 PHONY += build-all
-build-all: build-base build-php-fpm build-drupal ## Build all PHP images
+build-all: build-base build-php-fpm build-nginx build-drupal ## Build all PHP images
 
 #
 # BUILD TARGETS
@@ -18,21 +18,29 @@ PHONY += build-php-fpm
 build-php-fpm: ## Build PHP-FPM images
 #	$(call step,Build druidfi/php:7.2-fpm)
 #	docker build --force-rm php-fpm -t druidfi/php:7.2-fpm \
-#		--build-arg ALPINE_VERSION=3.9 --build-arg PHP_VERSION=7.2 --build-arg COMPOSER_VERSION=1.9
+#		--build-arg ALPINE_VERSION=3.9 --build-arg PHP_VERSION=7.2 --build-arg COMPOSER_VERSION=1.9.0
 	$(call step,Build druidfi/php:7.3-fpm)
 	docker build --force-rm php-fpm -t druidfi/php:7.3-fpm \
-		--build-arg ALPINE_VERSION=3.10 --build-arg PHP_VERSION=7.3 --build-arg COMPOSER_VERSION=1.9
+		--build-arg ALPINE_VERSION=3.10 \
+		--build-arg PHP_VERSION=7.3 \
+		--build-arg COMPOSER_VERSION=1.9.0
+
+PHONY += build-nginx
+build-nginx: ## Build Nginx images
+	$(call step,Build druidfi/nginx:1.17)
+	docker build --force-rm nginx -t druidfi/nginx:1.17 \
+		--build-arg NGINX_VERSION=1.17
 
 PHONY += build-drupal
-build-drupal: ALPINE := 3.10
 build-drupal: PHP := 7.3
 build-drupal: ## Build Drupal images
 	$(call step,Build druidfi/drupal:$(PHP))
 	docker build --force-rm drupal -t druidfi/drupal:$(PHP) \
-    		--build-arg ALPINE_VERSION=$(ALPINE) --build-arg PHP_VERSION=$(PHP)
+    		--build-arg PHP_VERSION=$(PHP)
 	$(call step,Build druidfi/drupal-web:$(PHP))
 	docker build --force-rm drupal-web -t druidfi/drupal-web:$(PHP) \
-    		--build-arg PHP_VERSION=$(PHP)
+    		--build-arg PHP_VERSION=$(PHP) \
+    		--build-arg NGINX_VERSION=1.17
 
 #
 # TEST TARGETS

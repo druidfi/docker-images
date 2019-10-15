@@ -1,5 +1,7 @@
+ARG NGINX_VERSION
 ARG PHP_VERSION
 
+FROM druidfi/nginx:${NGINX_VERSION} AS nginx
 FROM druidfi/drupal:${PHP_VERSION}
 
 LABEL maintainer="druid.fi"
@@ -9,3 +11,8 @@ RUN apk --update --no-cache add nginx
 
 # Copy configuration files and scripts
 COPY files/ /
+
+# Copy Nginx configuration
+COPY --from=nginx /etc/nginx/nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80
