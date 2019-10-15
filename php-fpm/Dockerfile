@@ -11,7 +11,9 @@ ARG USER=druid
 ARG APP=/app
 ARG UID=1000
 
-ENV COMPOSER_HOME=/home/${USER}/.composer
+ENV COMPOSER_HOME=/home/${USER}/.composer \
+    # Add /app/vendor/bin to PATH
+    PATH="${APP}/vendor/bin:${PATH}"
 
 # Add Composer binary
 COPY --from=composer /usr/bin/composer /usr/local/bin/composer
