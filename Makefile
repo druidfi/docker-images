@@ -26,13 +26,14 @@ build-php-fpm: ## Build PHP-FPM images
 		--build-arg COMPOSER_VERSION=1.9.0
 
 PHONY += build-nginx
+build-nginx: NGINX := 1.17
 build-nginx: ## Build Nginx images
-	$(call step,Build druidfi/nginx:1.17)
-	docker build --force-rm nginx -t druidfi/nginx:1.17 \
-		--build-arg NGINX_VERSION=1.17
-	$(call step,Build druidfi/nginx-drupal:1.17)
-	docker build --force-rm nginx-drupal -t druidfi/nginx-drupal:1.17 \
-		--build-arg NGINX_VERSION=1.17
+	$(call step,Build druidfi/nginx:$(NGINX))
+	docker build --force-rm nginx -t druidfi/nginx:$(NGINX) \
+		--build-arg NGINX_VERSION=$(NGINX)
+	$(call step,Build druidfi/nginx-drupal:$(NGINX))
+	docker build --force-rm nginx-drupal -t druidfi/nginx:$(NGINX)-drupal \
+		--build-arg NGINX_VERSION=$(NGINX)
 
 PHONY += build-drupal
 build-drupal: PHP := 7.3
@@ -41,7 +42,7 @@ build-drupal: ## Build Drupal images
 	docker build --force-rm drupal -t druidfi/drupal:$(PHP) \
     		--build-arg PHP_VERSION=$(PHP)
 	$(call step,Build druidfi/drupal-web:$(PHP))
-	docker build --force-rm drupal-web -t druidfi/drupal-web:$(PHP) \
+	docker build --force-rm drupal-web -t druidfi/drupal:$(PHP)-web \
     		--build-arg PHP_VERSION=$(PHP) \
     		--build-arg NGINX_VERSION=1.17
 
@@ -71,6 +72,10 @@ test-drupal-running: PHP := 7.3
 test-drupal-running:
 	docker-compose -f tests/drupal-and-nginx/docker-compose.yml up -d --remove-orphans
 
+PHONY += example-drupal
+example-drupal:
+	cd examples/drupal-separate-services && docker-compose up -d --remove-orphans
+
 #
 # SHELL TARGETS
 #
@@ -88,6 +93,19 @@ shell-drupal: IMG := drupal
 shell-drupal: TAG := 7.3
 shell-drupal: ## Login to Drupal container
 	docker run --rm -it --user=druid druidfi/$(IMG):$(TAG) sh
+
+#
+# PUSH TARGETS
+#
+
+push-all:
+#	docker push IMAGE:TAG
+	docker push druidfi/base:alpine3.10
+	docker push druidfi/php:7.3-fpm
+	docker push druidfi/nginx:1.17
+	docker push druidfi/nginx:1.17-drupal
+	docker push druidfi/drupal:7.3
+	docker push druidfi/drupal:7.3-web
 
 define step
 	@printf "\n\e[0;33m${1}\e[0m\n\n"
