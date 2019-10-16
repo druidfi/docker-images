@@ -1,6 +1,5 @@
 ARG ALPINE_VERSION
 ARG COMPOSER_VERSION
-ARG PHP_VERSION
 
 FROM composer:${COMPOSER_VERSION} AS composer
 FROM druidfi/base:alpine${ALPINE_VERSION}
@@ -35,3 +34,5 @@ COPY files/ /
 # Set directories and permissions
 RUN chown -R ${USER}:${USER} ${COMPOSER_HOME} && \
     chmod -R g+rwX ${COMPOSER_HOME}
+
+CMD ["/usr/sbin/php-fpm7", "-F", "-R"]
