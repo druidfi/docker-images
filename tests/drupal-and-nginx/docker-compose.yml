@@ -1,0 +1,67 @@
+version: '3.7'
+
+services:
+
+  nginx:
+    #hostname: "${DRUPAL_HOSTNAME}"
+    #container_name: "${COMPOSE_PROJECT_NAME}-nginx"
+    image: druidfi/nginx-drupal:1.17
+    tty: true
+    volumes:
+      - .:/app:delegated
+    labels:
+      traefik.enable: true
+      traefik.frontend.rule: "Host:test-drupal.docker.sh"
+      traefik.frontend.redirect.entryPoint: https
+    networks:
+      - internal
+      - dev-network
+    depends_on:
+      - php
+
+  php:
+    #container_name: "${COMPOSE_PROJECT_NAME}-php"
+    image: druidfi/drupal:7.3
+    tty: true
+    volumes:
+      - .:/app:delegated
+      - ssh:/tmp/amazeeio_ssh-agent:ro
+    environment:
+      DRUSH_OPTIONS_URI: "https://test-drupal.docker.sh" # Site URI for Drush 9
+      DRUPAL_DB_NAME: drupal
+      DRUPAL_DB_USER: drupal
+      DRUPAL_DB_PASS: drupal
+      DRUPAL_DB_HOST: db
+      DRUPAL_DB_PORT: 3306
+    networks:
+      - internal
+    depends_on:
+      - db
+
+  db:
+    #container_name: "${COMPOSE_PROJECT_NAME}-db"
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: drupal
+      MYSQL_USER: drupal
+      MYSQL_PASSWORD: drupal
+      MYSQL_ROOT_PASSWORD: drupal
+    ports:
+      - 3306
+    networks:
+      - internal
+
+networks:
+  internal:
+    external: false
+  dev-network:
+    name: stonehenge-network
+    external: true
+
+volumes:
+  db_data:
+  ssh:
+    name: stonehenge-ssh
+    external: true

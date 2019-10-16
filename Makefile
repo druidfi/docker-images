@@ -30,6 +30,9 @@ build-nginx: ## Build Nginx images
 	$(call step,Build druidfi/nginx:1.17)
 	docker build --force-rm nginx -t druidfi/nginx:1.17 \
 		--build-arg NGINX_VERSION=1.17
+	$(call step,Build druidfi/nginx-drupal:1.17)
+	docker build --force-rm nginx-drupal -t druidfi/nginx-drupal:1.17 \
+		--build-arg NGINX_VERSION=1.17
 
 PHONY += build-drupal
 build-drupal: PHP := 7.3
@@ -62,6 +65,11 @@ test-drupal: ## Test PHP-FPM images
 	docker run --rm -it --user=root druidfi/drupal-web:$(PHP) cat /etc/nginx/conf.d/default.conf
 	$(call step,MySQL/MariaDB version FROM druidfi/drupal-all:$(PHP))
 	docker run --rm -it --user=root druidfi/drupal-all:$(PHP) mysql -V
+
+PHONY += test-drupal-running
+test-drupal-running: PHP := 7.3
+test-drupal-running:
+	docker-compose -f tests/drupal-and-nginx/docker-compose.yml up -d --remove-orphans
 
 #
 # SHELL TARGETS
