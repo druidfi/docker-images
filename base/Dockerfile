@@ -41,6 +41,4 @@ RUN apk update && apk upgrade && \
 
 WORKDIR ${APP}
 
-ENTRYPOINT ["/sbin/tini", "--"]
-
-CMD ["entrypoint.sh"]
+ENTRYPOINT ["/sbin/tini", "--", "entrypoint.sh"]
