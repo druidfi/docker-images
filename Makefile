@@ -80,19 +80,23 @@ example-drupal:
 # SHELL TARGETS
 #
 
+HOST := test.druid.fi
+
 PHONY += shell-base
 shell-base: ## Login to base container
-	docker run --rm -it --user=druid druidfi/base:alpine3.10 sh
+	docker run --rm -it --user=druid --hostname $(HOST) druidfi/base:alpine3.10 bash
 
 PHONY += shell-php-fpm
+shell-php-fpm: IMG := php
+shell-php-fpm: TAG := 7.3-fpm
 shell-php-fpm: ## Login to PHP-FPM container
-	docker run --rm -it --user=druid druidfi/php:7.3-fpm-alpine3.10 sh
+	docker run --rm -it --user=druid --hostname $(HOST) druidfi/$(IMG):$(TAG) bash
 
 PHONY += shell-drupal
 shell-drupal: IMG := drupal
 shell-drupal: TAG := 7.3
 shell-drupal: ## Login to Drupal container
-	docker run --rm -it --user=druid druidfi/$(IMG):$(TAG) sh
+	docker run --rm -it --user=druid --hostname $(HOST) druidfi/$(IMG):$(TAG) bash
 
 #
 # PUSH TARGETS
