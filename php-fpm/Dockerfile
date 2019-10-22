@@ -10,7 +10,8 @@ ARG USER=druid
 ARG APP=/app
 ARG UID=1000
 
-ENV COMPOSER_HOME=/home/${USER}/.composer \
+ENV APP_ENV=prod \
+    COMPOSER_HOME=/home/${USER}/.composer \
     # Add /app/vendor/bin to PATH
     PATH="${APP}/vendor/bin:${PATH}"
 
