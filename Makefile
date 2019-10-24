@@ -46,6 +46,11 @@ build-drupal: ## Build Drupal images
     		--build-arg PHP_VERSION=$(PHP) \
     		--build-arg NGINX_VERSION=1.17
 
+build-db: ## Build Database images
+	$(call step,Build druidfi/db:mysql5.7)
+	docker build --force-rm db/mysql5 -t druidfi/db:mysql5.7-drupal \
+			--build-arg MYSQL_VERSION=5.7
+
 #
 # TEST TARGETS
 #
@@ -109,6 +114,7 @@ push-all:
 	docker push druidfi/nginx:1.17-drupal
 	docker push druidfi/drupal:7.3
 	docker push druidfi/drupal:7.3-web
+	docker push druidfi/db:mysql5.7-drupal
 
 define step
 	@printf "\n\e[0;33m${1}\e[0m\n\n"
