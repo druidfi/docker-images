@@ -2,7 +2,7 @@ ARG NGINX_VERSION
 ARG PHP_VERSION
 
 FROM druidfi/nginx:${NGINX_VERSION} AS nginx
-FROM druidfi/drupal:${PHP_VERSION}
+FROM druidfi/drupal:${PHP_VERSION} AS baseline
 
 LABEL maintainer="druid.fi"
 

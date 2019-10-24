@@ -1,6 +1,6 @@
 ARG PHP_VERSION
 
-FROM druidfi/php:${PHP_VERSION}-fpm
+FROM druidfi/php:${PHP_VERSION}-fpm AS baseline
 
 LABEL maintainer="druid.fi"
 
