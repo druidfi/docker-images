@@ -20,7 +20,7 @@ build-php-fpm: ## Build PHP-FPM images
 #	docker build --force-rm php-fpm -t druidfi/php:7.2-fpm \
 #		--build-arg ALPINE_VERSION=3.9 --build-arg PHP_VERSION=7.2 --build-arg COMPOSER_VERSION=1.9.0
 	$(call step,Build druidfi/php:7.3-fpm)
-	docker build --force-rm php-fpm -t druidfi/php:7.3-fpm \
+	docker build --force-rm php-fpm -t druidfi/php:7.3-fpm --target baseline \
 		--build-arg ALPINE_VERSION=3.10 \
 		--build-arg PHP_VERSION=7.3 \
 		--build-arg COMPOSER_VERSION=1.9.0
@@ -41,8 +41,8 @@ build-drupal: ## Build Drupal images
 	$(call step,Build druidfi/drupal:$(PHP))
 	docker build --force-rm drupal -t druidfi/drupal:$(PHP) \
     		--build-arg PHP_VERSION=$(PHP)
-	$(call step,Build druidfi/drupal-web:$(PHP))
-	docker build --force-rm drupal-web -t druidfi/drupal:$(PHP)-web \
+	$(call step,Build druidfi/drupal:$(PHP)-web)
+	docker build --force-rm drupal-web -t druidfi/drupal:$(PHP)-web --target baseline \
     		--build-arg PHP_VERSION=$(PHP) \
     		--build-arg NGINX_VERSION=1.17
 
@@ -68,7 +68,6 @@ test-drupal: ## Test PHP-FPM images
 	docker run --rm -it --user=root druidfi/drupal-all:$(PHP) mysql -V
 
 PHONY += test-drupal-running
-test-drupal-running: PHP := 7.3
 test-drupal-running:
 	docker-compose -f tests/drupal-and-nginx/docker-compose.yml up -d --remove-orphans
 

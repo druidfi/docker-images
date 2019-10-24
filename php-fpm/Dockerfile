@@ -22,6 +22,8 @@ COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 RUN apk --update --no-cache add \
     # PHP extensions
     php7 php7-curl php7-fpm php7-json php7-mbstring php7-opcache php7-openssl php7-phar php7-session \
+    # Xdebug
+    php7-pecl-xdebug \
     # Patch for aplying patches in composer.json
     patch \
     # Unzip for unzipping possible zip packages in composer.json

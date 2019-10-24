@@ -38,6 +38,16 @@ Needs:
 - Nginx (`druidfi/nginx-drupal:1.17`)
 - Database (`mysql:5.7`)
 
+ENV variables:
+
+- `KIND=druid-docker-image`
+- `DRUPAL_DB_NAME=drupal`
+- `DRUPAL_DB_USER=drupal`
+- `DRUPAL_DB_PASS=drupal`
+- `DRUPAL_DB_HOST=db`
+- `DRUPAL_DB_PORT=3306`
+- `DRUSH_OPTIONS_URI=drupal.docker.sh`
+
 ### `7.3-web` based on `druidfi/drupal:7.3`
 
 Added features:
