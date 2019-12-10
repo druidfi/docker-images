@@ -1,8 +1,9 @@
 # General use Docker images for projects
 
+See https://hub.docker.com/u/druidfi for all the images.
 ## druidfi/base
 
-### `alpine3.10`
+### `alpine3.10` 
 
 Features:
 
@@ -53,6 +54,16 @@ ENV variables:
 Added features:
 
 - Nginx with Drupal specific configuration
+
+Needs:
+
+- Database (`mysql:5.7`)
+
+### `7.3-test` based on `druidfi/drupal:7.3-web`
+
+Added features:
+
+- Drupal 8 installation
 
 Needs:
 
