@@ -1,0 +1,44 @@
+version: '3.7'
+
+services:
+
+  app:
+    container_name: "${COMPOSE_PROJECT_NAME}-app"
+    hostname: "${DRUPAL_HOSTNAME}"
+    image: "${DRUPAL_IMAGE}"
+    volumes:
+      - ssh:/tmp/amazeeio_ssh-agent:ro
+    environment:
+      DRUSH_OPTIONS_URI: "https://${DRUPAL_HOSTNAME}" # Site URI for Drush 9
+    labels:
+      traefik.enable: true
+      traefik.frontend.rule: "Host:${DRUPAL_HOSTNAME}"
+      traefik.frontend.redirect.entryPoint: https
+    networks:
+      - internal
+      - dev-network
+    depends_on:
+      - db
+
+  db:
+    container_name: "${COMPOSE_PROJECT_NAME}-db"
+    image: druidfi/db:mysql5.7-drupal
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - 3306
+    networks:
+      - internal
+
+networks:
+  internal:
+    external: false
+  dev-network:
+    name: stonehenge-network
+    external: true
+
+volumes:
+  db_data:
+  ssh:
+    name: stonehenge-ssh
+    external: true
