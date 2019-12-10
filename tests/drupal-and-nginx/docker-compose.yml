@@ -28,11 +28,6 @@ services:
       - ssh:/tmp/amazeeio_ssh-agent:ro
     environment:
       DRUSH_OPTIONS_URI: "https://test-drupal.docker.sh" # Site URI for Drush 9
-      DRUPAL_DB_NAME: drupal
-      DRUPAL_DB_USER: drupal
-      DRUPAL_DB_PASS: drupal
-      DRUPAL_DB_HOST: db
-      DRUPAL_DB_PORT: 3306
     networks:
       - internal
     depends_on:
@@ -40,14 +35,9 @@ services:
 
   db:
     #container_name: "${COMPOSE_PROJECT_NAME}-db"
-    image: mysql:5.7
+    image: druidfi/db:mysql5.7-drupal
     volumes:
       - db_data:/var/lib/mysql
-    environment:
-      MYSQL_DATABASE: drupal
-      MYSQL_USER: drupal
-      MYSQL_PASSWORD: drupal
-      MYSQL_ROOT_PASSWORD: drupal
     ports:
       - 3306
     networks:
