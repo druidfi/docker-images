@@ -6,6 +6,7 @@ FROM druidfi/base:alpine${ALPINE_VERSION} AS baseline
 
 LABEL maintainer="druid.fi"
 
+ARG ALPINE_VERSION
 ARG USER=druid
 ARG APP=/app
 ARG UID=1000
@@ -13,7 +14,7 @@ ARG UID=1000
 ENV APP_ENV=prod \
     COMPOSER_HOME=/home/${USER}/.composer \
     # Add /app/vendor/bin to PATH
-    PATH="${APP}/vendor/bin:${PATH}"
+    PATH="/home/${USER}/.composer/vendor/bin:${APP}/vendor/bin:${PATH}"
 
 # Add Composer binary
 COPY --from=composer /usr/bin/composer /usr/local/bin/composer
@@ -21,16 +22,18 @@ COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 # Install software
 RUN apk --update --no-cache add \
     # PHP extensions
-    php7 php7-curl php7-fpm php7-iconv php7-json php7-mbstring php7-opcache php7-openssl php7-phar php7-session \
-    php7-zip \
+    php7 php7-curl php7-fileinfo php7-fpm php7-iconv php7-json php7-mbstring php7-opcache php7-openssl php7-phar \
+    php7-session php7-zip \
     # Xdebug
-    php7-pecl-xdebug \
+    #php7-pecl-xdebug \
     # Patch for aplying patches in composer.json
     patch \
     # Unzip for unzipping possible zip packages in composer.json
     unzip && \
     # Install hirak/prestissimo Composer plugin
     composer global require hirak/prestissimo
+
+RUN if [ "$ALPINE_VERSION" = "3.7" ] ; then apk --update --no-cache add php7-xdebug ; else apk --update --no-cache add php7-pecl-xdebug ; fi
 
 # Copy configuration files and scripts
 COPY files/ /
