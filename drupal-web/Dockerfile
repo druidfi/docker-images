@@ -15,9 +15,8 @@ COPY files/ /
 # Copy Nginx configuration
 COPY --from=nginx /etc/nginx/nginx.conf /etc/nginx/nginx.conf
 
-# Expose port 80 for Nginx
-# E.g. Traefik can automatically use this
-EXPOSE 80
+# Expose port 8080 for Nginx
+EXPOSE 8080
 
 ENTRYPOINT ["/sbin/tini", "--"]
 

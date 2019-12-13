@@ -12,6 +12,7 @@ services:
       DRUSH_OPTIONS_URI: "https://${DRUPAL_HOSTNAME}"
     labels:
       traefik.enable: true
+      traefik.port: 8080
       traefik.frontend.rule: "Host:${DRUPAL_HOSTNAME}"
       traefik.frontend.redirect.entryPoint: https
     networks:
