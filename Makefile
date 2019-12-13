@@ -96,7 +96,7 @@ test-images: ## Test images
 PHONY += test-drupal-running
 test-drupal-running:
 	$(call step,Run drupal-test container)
-	cd tests/drupal-test/ && docker-compose up -d --remove-orphans
+	cd tests/drupal-test/ && docker-compose down -v && docker-compose up -d --remove-orphans
 
 PHONY += example-drupal
 example-drupal:
