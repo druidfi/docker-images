@@ -32,12 +32,17 @@ RUN apk update && apk upgrade && \
     # adduser -u = User id
     adduser -S -G ${USER} -u ${UID} ${USER} && \
     #
-    # Set directories and permissions
+    # Add user to root group
+    #
+    addgroup ${USER} root && \
+    #
+    # Create app directory
     #
     mkdir -p ${APP} && \
-    chown -R ${USER}:${USER} /home/${USER} && \
-    chown -R ${USER}:${USER} ${APP} && \
-    chmod -R g+rwX ${APP}
+    #
+    # Set permissions
+    #
+    fix-permissions ${APP}
 
 WORKDIR ${APP}
 
