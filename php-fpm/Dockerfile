@@ -31,16 +31,14 @@ RUN apk --update --no-cache add \
     # Unzip for unzipping possible zip packages in composer.json
     unzip && \
     # Install hirak/prestissimo Composer plugin
-    composer global require hirak/prestissimo
+    composer global require hirak/prestissimo && \
+    #
+    # Set permissions on Composer home directory
+    #
+    fix-permissions ${COMPOSER_HOME}
 
 # When Alpine 3.7 is not used anymore, remove this line and uncomment php7-pecl-xdebug above
 RUN if [ "$ALPINE_VERSION" = "3.7" ] ; then apk --update --no-cache add php7-xdebug ; else apk --update --no-cache add php7-pecl-xdebug ; fi
 
 # Copy configuration files and scripts
 COPY files/ /
-
-# Set directories and permissions
-RUN chown -R ${USER}:${USER} ${COMPOSER_HOME} && \
-    chmod -R g+rwX ${COMPOSER_HOME}
-
-CMD ["/usr/sbin/php-fpm7", "-F", "-R"]
