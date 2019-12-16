@@ -11,23 +11,24 @@ services:
       - .:/app:delegated
     labels:
       traefik.enable: true
+      traefik.port: 8080
       traefik.frontend.rule: "Host:test-drupal.docker.sh"
       traefik.frontend.redirect.entryPoint: https
     networks:
       - internal
       - dev-network
     depends_on:
-      - php
+      - app
 
-  php:
+  app:
     #container_name: "${COMPOSE_PROJECT_NAME}-php"
     image: druidfi/drupal:7.3
     tty: true
     volumes:
       - .:/app:delegated
-      - ssh:/tmp/amazeeio_ssh-agent:ro
+    #  - ssh:/tmp/amazeeio_ssh-agent:ro
     environment:
-      DRUSH_OPTIONS_URI: "https://test-drupal.docker.sh" # Site URI for Drush 9
+      DRUSH_OPTIONS_URI: "https://test-drupal.docker.sh"
     networks:
       - internal
     depends_on:
@@ -36,8 +37,8 @@ services:
   db:
     #container_name: "${COMPOSE_PROJECT_NAME}-db"
     image: druidfi/db:mysql5.7-drupal
-    volumes:
-      - db_data:/var/lib/mysql
+    #volumes:
+    #  - db_data:/var/lib/mysql
     ports:
       - 3306
     networks:
@@ -50,8 +51,8 @@ networks:
     name: stonehenge-network
     external: true
 
-volumes:
-  db_data:
-  ssh:
-    name: stonehenge-ssh
-    external: true
+#volumes:
+#  db_data:
+#  ssh:
+#    name: stonehenge-ssh
+#    external: true
