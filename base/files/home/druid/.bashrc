@@ -12,4 +12,4 @@ if [ "$PS1" ]; then
 fi
 
 # Aliases
-alias ll="ls -l"
+alias ll="ls -lah"
