@@ -33,6 +33,7 @@ RUN apk --update --no-cache add \
     # Install hirak/prestissimo Composer plugin
     composer global require hirak/prestissimo
 
+# When Alpine 3.7 is not used anymore, remove this line and uncomment php7-pecl-xdebug above
 RUN if [ "$ALPINE_VERSION" = "3.7" ] ; then apk --update --no-cache add php7-xdebug ; else apk --update --no-cache add php7-pecl-xdebug ; fi
 
 # Copy configuration files and scripts
