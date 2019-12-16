@@ -17,9 +17,9 @@ COPY files/ /
 # Upgrade existing packages
 RUN apk update && apk upgrade && \
     #
-    # Install bash, curl, git and tini
+    # Install bash, curl, git, nano and tini
     #
-    apk --update --no-cache add bash curl git tini && \
+    apk --update --no-cache add bash curl git nano tini && \
     #
     # Create user group
     #
@@ -46,4 +46,7 @@ RUN apk update && apk upgrade && \
 
 WORKDIR ${APP}
 
-ENTRYPOINT ["/sbin/tini", "--", "entrypoint.sh"]
+ENTRYPOINT ["/sbin/tini", "--"]
+
+# Default command: Start up multiple services via entrypoint
+CMD ["entrypoint"]
