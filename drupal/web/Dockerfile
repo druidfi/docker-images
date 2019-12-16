@@ -6,8 +6,14 @@ FROM druidfi/drupal:${PHP_VERSION} AS baseline
 
 LABEL maintainer="druid.fi"
 
+ARG USER=druid
+ARG APP=/app
+ARG UID=1000
+
 # Install Nginx
-RUN apk --update --no-cache add nginx
+RUN apk --update --no-cache add nginx && \
+    addgroup ${USER} nginx && \
+    addgroup ${USER} www-data
 
 # Copy configuration files and scripts
 COPY files/ /

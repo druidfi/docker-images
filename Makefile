@@ -60,6 +60,9 @@ build-drupal-%: ## Build Drupal images
 	docker build --force-rm drupal/web -t druidfi/drupal:$*-web --target baseline \
 		--build-arg PHP_VERSION=$* \
 		--build-arg NGINX_VERSION=1.17
+	$(call step,Build druidfi/drupal:$*-web-openshift)
+	docker build --force-rm drupal/web-openshift -t druidfi/drupal:$*-web-openshift --target baseline \
+		--build-arg PHP_VERSION=$*
 
 PHONY += build-test-drupal-%
 build-test-drupal-%: ## Build Drupal test images
@@ -137,6 +140,7 @@ push-all: ## Push all images to Docker Hub
 	docker push druidfi/drupal:7.1-web
 	docker push druidfi/drupal:7.3
 	docker push druidfi/drupal:7.3-web
+	docker push druidfi/drupal:7.3-web-openshift
 	docker push druidfi/drupal:7.3-test
 	docker push druidfi/nginx:1.17
 	docker push druidfi/nginx:1.17-drupal

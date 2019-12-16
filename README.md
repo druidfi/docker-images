@@ -59,6 +59,17 @@ Needs:
 
 - Database (`mysql:5.7`)
 
+### `7.3-web-openshift` based on `druidfi/drupal:7.3-web`
+
+Added features:
+
+- s2i scripts (run, assemble, save-artifacts, usage)
+- Runs as UID 1000
+
+Needs:
+
+- Database
+
 ### `7.3-test` based on `druidfi/drupal:7.3-web`
 
 Added features:
