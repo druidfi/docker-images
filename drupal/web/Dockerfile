@@ -18,7 +18,5 @@ COPY --from=nginx /etc/nginx/nginx.conf /etc/nginx/nginx.conf
 # Expose port 8080 for Nginx
 EXPOSE 8080
 
-ENTRYPOINT ["/sbin/tini", "--"]
-
-# Start up multiple services via entrypoint
-CMD ["entrypoint.sh"]
+# Default command: Start up multiple services via entrypoint
+CMD ["entrypoint"]

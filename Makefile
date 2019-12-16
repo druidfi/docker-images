@@ -37,7 +37,7 @@ build-base-%: ## Build base image
 PHONY += build-php-fpm-%
 build-php-fpm-%: ## Build PHP-FPM images
 	$(call step,Build druidfi/php:$*-fpm)
-	docker build --no-cache --force-rm php-fpm -t druidfi/php:$*-fpm --target baseline \
+	docker build --no-cache --force-rm php/fpm -t druidfi/php:$*-fpm --target baseline \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION) \
 		--build-arg PHP_VERSION=$* \
 		--build-arg COMPOSER_VERSION=$(COMPOSER_VERSION)
@@ -45,26 +45,26 @@ build-php-fpm-%: ## Build PHP-FPM images
 PHONY += build-nginx-%
 build-nginx-%: ## Build Nginx images
 	$(call step,Build druidfi/nginx:$*)
-	docker build --force-rm nginx -t druidfi/nginx:$* \
+	docker build --force-rm nginx/base -t druidfi/nginx:$* \
 		--build-arg NGINX_VERSION=$*
 	$(call step,Build druidfi/nginx-drupal:$*)
-	docker build --force-rm nginx-drupal -t druidfi/nginx:$*-drupal \
+	docker build --force-rm nginx/drupal -t druidfi/nginx:$*-drupal \
 		--build-arg NGINX_VERSION=$*
 
 PHONY += build-drupal-%
 build-drupal-%: ## Build Drupal images
 	$(call step,Build druidfi/drupal:$*)
-	docker build --force-rm drupal -t druidfi/drupal:$* \
+	docker build --force-rm drupal/base -t druidfi/drupal:$* \
 		--build-arg PHP_VERSION=$*
 	$(call step,Build druidfi/drupal:$*-web)
-	docker build --force-rm drupal-web -t druidfi/drupal:$*-web --target baseline \
+	docker build --force-rm drupal/web -t druidfi/drupal:$*-web --target baseline \
 		--build-arg PHP_VERSION=$* \
 		--build-arg NGINX_VERSION=1.17
 
 PHONY += build-test-drupal-%
 build-test-drupal-%: ## Build Drupal test images
 	$(call step,Build druidfi/drupal:$*-test)
-	docker build --force-rm drupal-test -t druidfi/drupal:$*-test \
+	docker build --force-rm drupal/test -t druidfi/drupal:$*-test \
 		--build-arg PHP_VERSION=$*
 
 PHONY += build-db-%
@@ -100,7 +100,7 @@ test-drupal-running:
 
 PHONY += example-drupal
 example-drupal:
-	cd examples/drupal-separate-services && docker-compose up -d --remove-orphans
+	cd examples/drupal-separate-services && docker-compose down -v && docker-compose up -d --remove-orphans
 
 #
 # SHELL TARGETS

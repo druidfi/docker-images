@@ -42,3 +42,6 @@ RUN if [ "$ALPINE_VERSION" = "3.7" ] ; then apk --update --no-cache add php7-xde
 
 # Copy configuration files and scripts
 COPY files/ /
+
+# Default command
+CMD ["/usr/sbin/php-fpm7", "-F", "-R"]
