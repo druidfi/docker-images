@@ -73,7 +73,7 @@ build-test-drupal-%: ## Build Drupal test images
 PHONY += build-db-%
 build-db-%: ## Build Database images
 	$(call step,Build druidfi/db:mysql$*)
-	docker build --force-rm db/mysql5 -t druidfi/db:mysql$*-drupal \
+	docker build --force-rm db/mysql -t druidfi/db:mysql$*-drupal \
 		--build-arg MYSQL_VERSION=$*
 
 #
