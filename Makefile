@@ -76,6 +76,11 @@ build-db-%: ## Build Database images
 	docker build --force-rm db/mysql -t druidfi/db:mysql$*-drupal \
 		--build-arg MYSQL_VERSION=$*
 
+PHONY += build-varnish
+build-varnish: ## Build Varnish images
+	$(call step,Build druidfi/varnish:6-drupal)
+	docker build --force-rm varnish -t druidfi/varnish:6-drupal
+
 #
 # TEST TARGETS
 #
@@ -145,6 +150,7 @@ push-all: ## Push all images to Docker Hub
 	docker push druidfi/nginx:1.17
 	docker push druidfi/nginx:1.17-drupal
 	docker push druidfi/db:mysql5.7-drupal
+	docker push druidfi/varnish:6-drupal
 
 define step
 	@printf "\n\e[0;33m${1}\e[0m\n\n"
