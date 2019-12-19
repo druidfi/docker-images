@@ -42,7 +42,8 @@ RUN apk update && apk upgrade && \
     #
     # Set permissions
     #
-    fix-permissions ${APP}
+    fix-permissions ${APP} && \
+    chown -R ${USER}:${USER} /home/${USER}
 
 WORKDIR ${APP}
 
