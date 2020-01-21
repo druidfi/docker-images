@@ -9,7 +9,7 @@ ENV DRUPAL_DB_NAME=drupal \
     DRUPAL_DB_PASS=drupal \
     DRUPAL_DB_HOST=db \
     DRUPAL_DB_PORT=3306 \
-    DRUSH_OPTIONS_URI=drupal.docker.sh \
+    DRUSH_OPTIONS_URI=http://drupal.docker.sh \
     SSH_AUTH_SOCK=/tmp/ssh-agent
 
 # Install PHP extensions needed by Drupal

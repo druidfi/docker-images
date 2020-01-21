@@ -47,7 +47,7 @@ ENV variables:
 - `DRUPAL_DB_PASS=drupal`
 - `DRUPAL_DB_HOST=db`
 - `DRUPAL_DB_PORT=3306`
-- `DRUSH_OPTIONS_URI=drupal.docker.sh`
+- `DRUSH_OPTIONS_URI=http://drupal.docker.sh`
 
 ### `7.3-web` based on `druidfi/drupal:7.3`
 
