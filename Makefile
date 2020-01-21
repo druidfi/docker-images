@@ -1,6 +1,6 @@
 PHONY :=
 
-ALPINE_VERSION := 3.10
+ALPINE_VERSION := 3.11
 COMPOSER_VERSION := 1.9.1
 
 PHONY += help
@@ -19,7 +19,7 @@ build-php-71: ALPINE_VERSION := 3.7
 build-php-71: build-base-3.7 build-php-fpm-7.1 build-drupal-7.1 ## Build all PHP 7.1 images
 
 PHONY += build-php-73
-build-php-73: build-base-3.10 build-php-fpm-7.3 build-drupal-7.3 build-test-drupal-7.3 ## Build all PHP 7.3 images
+build-php-73: build-base-3.11 build-php-fpm-7.3 build-drupal-7.3 build-test-drupal-7.3 ## Build all PHP 7.3 images
 
 PHONY += build-db
 build-db: build-db-5.7 ## Build all database images
@@ -84,6 +84,9 @@ build-varnish: ## Build Varnish images
 build-dnsmasq: ## Build dnsmasq images
 	docker build --force-rm dnsmasq -t druidfi/dnsmasq:alpine$(ALPINE_VERSION) \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION)
+
+build-ssh-agent: ## Build ssh-agent images
+	docker build --no-cache --force-rm ssh-agent -t druidfi/ssh-agent:alpine$(ALPINE_VERSION)
 
 #
 # TEST TARGETS
