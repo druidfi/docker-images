@@ -9,7 +9,7 @@ help: ## List all make commands
 	@cat $(MAKEFILE_LIST) | grep -e "^[a-zA-Z_\-]*: *.*## *" | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' | sort
 
 PHONY += build-all
-build-all: build-php build-nginx-1.17 build-db build-dnsmasq ## Build all images
+build-all: build-php build-nginx-1.17 build-node build-db build-dnsmasq ## Build all images
 
 PHONY += build-php
 build-php: build-php-71 build-php-73  ## Build all PHP images
@@ -20,6 +20,9 @@ build-php-71: build-base-3.7 build-php-fpm-7.1 build-drupal-7.1 ## Build all PHP
 
 PHONY += build-php-73
 build-php-73: build-base-3.11 build-php-fpm-7.3 build-drupal-7.3 build-test-drupal-7.3 ## Build all PHP 7.3 images
+
+PHONY += build-node
+build-node: build-node-8 build-node-10 build-node-12 ## Build all Node images
 
 PHONY += build-db
 build-db: build-db-5.7 ## Build all database images
@@ -69,6 +72,12 @@ build-test-drupal-%: ## Build Drupal test images
 	$(call step,Build druidfi/drupal:$*-test)
 	docker build --force-rm drupal/test -t druidfi/drupal:$*-test \
 		--build-arg PHP_VERSION=$*
+
+PHONY += build-node-%
+build-node-%: ## Build Node images
+	$(call step,Build druidfi/node:$*)
+	docker build --force-rm node -t druidfi/node:$* \
+		--build-arg NODE_VERSION=$*
 
 PHONY += build-db-%
 build-db-%: ## Build Database images
@@ -143,9 +152,11 @@ shell-drupal: ## Login to Drupal container
 # PUSH TARGETS
 #
 
+PHONY += push-all
 push-all: ## Push all images to Docker Hub
 	docker push druidfi/base:alpine3.7
-	docker push druidfi/base:alpine3.10
+	#docker push druidfi/base:alpine3.10
+	docker push druidfi/base:alpine3.11
 	docker push druidfi/php:7.1-fpm
 	docker push druidfi/php:7.3-fpm
 	docker push druidfi/drupal:7.1
@@ -159,6 +170,12 @@ push-all: ## Push all images to Docker Hub
 	docker push druidfi/db:mysql5.7-drupal
 	docker push druidfi/varnish:6-drupal
 	docker push druidfi/dnsmasq:alpine3.10
+
+PHONY += push-node
+push-node: ## Push all Node images to Docker Hub
+	docker push druidfi/node:8
+	docker push druidfi/node:10
+	docker push druidfi/node:12
 
 define step
 	@printf "\n\e[0;33m${1}\e[0m\n\n"
