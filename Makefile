@@ -1,7 +1,7 @@
 PHONY :=
 
 ALPINE_VERSION := 3.11
-COMPOSER_VERSION := 1.9.1
+COMPOSER_VERSION := 1.9.2
 
 PHONY += help
 help: ## List all make commands
