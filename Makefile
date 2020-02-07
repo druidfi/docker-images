@@ -16,13 +16,13 @@ build-php: build-php-71 build-php-73  ## Build all PHP images
 
 PHONY += build-php-71
 build-php-71: ALPINE_VERSION := 3.7
-build-php-71: build-base-3.7 build-php-fpm-7.1 build-drupal-7.1 ## Build all PHP 7.1 images
+build-php-71: build-base-3.7 build-php-7.1 build-php-fpm-7.1 build-drupal-7.1 ## Build all PHP 7.1 images
 
 PHONY += build-php-73
-build-php-73: build-base-3.11 build-php-fpm-7.3 build-drupal-7.3 build-test-drupal-7.3 ## Build all PHP 7.3 images
+build-php-73: build-base-3.11 build-php-7.3 build-php-fpm-7.3 build-drupal-7.3 build-test-drupal-7.3 ## Build all PHP 7.3 images
 
 PHONY += build-node
-build-node: build-node-8 build-node-10 build-node-12 ## Build all Node images
+build-node: build-node-8 build-node-10 build-node-12 ## Build all Node LTS images
 
 PHONY += build-db
 build-db: build-db-5.7 ## Build all database images
@@ -37,13 +37,19 @@ build-base-%: ## Build base image
 	docker build --force-rm base -t druidfi/base:alpine$* \
 		--build-arg ALPINE_VERSION=$*
 
+PHONY += build-php-%
+build-php-%: ## Build PHP images
+	$(call step,Build druidfi/php:$*)
+	docker build --no-cache --force-rm php/base -t druidfi/php:$* --target baseline \
+		--build-arg ALPINE_VERSION=$(ALPINE_VERSION) \
+		--build-arg PHP_VERSION=$* \
+		--build-arg COMPOSER_VERSION=$(COMPOSER_VERSION)
+
 PHONY += build-php-fpm-%
 build-php-fpm-%: ## Build PHP-FPM images
 	$(call step,Build druidfi/php:$*-fpm)
 	docker build --no-cache --force-rm php/fpm -t druidfi/php:$*-fpm --target baseline \
-		--build-arg ALPINE_VERSION=$(ALPINE_VERSION) \
-		--build-arg PHP_VERSION=$* \
-		--build-arg COMPOSER_VERSION=$(COMPOSER_VERSION)
+		--build-arg PHP_VERSION=$*
 
 PHONY += build-nginx-%
 build-nginx-%: ## Build Nginx images
@@ -153,23 +159,34 @@ shell-drupal: ## Login to Drupal container
 #
 
 PHONY += push-all
-push-all: ## Push all images to Docker Hub
+push-all: push-base php-php push-drupal push-node ## Push all images to Docker Hub
+	docker push druidfi/varnish:6-drupal
+	docker push druidfi/dnsmasq:alpine3.10
+
+PHONY += push-base
+push-base: ## Push all base images to Docker Hub
 	docker push druidfi/base:alpine3.7
 	#docker push druidfi/base:alpine3.10
 	docker push druidfi/base:alpine3.11
+	docker push druidfi/nginx:1.17
+
+PHONY += push-php
+push-php: ## Push all PHP images to Docker Hub
+	docker push druidfi/php:7.1
+	docker push druidfi/php:7.3
 	docker push druidfi/php:7.1-fpm
 	docker push druidfi/php:7.3-fpm
+
+PHONY += push-drupal
+push-drupal: ## Push all Drupal images to Docker Hub
 	docker push druidfi/drupal:7.1
 	docker push druidfi/drupal:7.1-web
 	docker push druidfi/drupal:7.3
 	docker push druidfi/drupal:7.3-web
 	docker push druidfi/drupal:7.3-web-openshift
 	docker push druidfi/drupal:7.3-test
-	docker push druidfi/nginx:1.17
 	docker push druidfi/nginx:1.17-drupal
 	docker push druidfi/db:mysql5.7-drupal
-	docker push druidfi/varnish:6-drupal
-	docker push druidfi/dnsmasq:alpine3.10
 
 PHONY += push-node
 push-node: ## Push all Node images to Docker Hub
