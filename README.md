@@ -3,7 +3,7 @@
 See https://hub.docker.com/u/druidfi for all the images.
 ## druidfi/base
 
-### `alpine3.10` 
+### `alpine3.11` 
 
 Features:
 
@@ -17,7 +17,7 @@ ENV variables:
 
 ## druidfi/php
 
-### `7.3-fpm` based on `druidfi/base:alpine3.10`
+### `7.3` based on `druidfi/base:alpine3.10`
 
 Added features:
 
@@ -25,6 +25,12 @@ Added features:
 - Composer 1.9
 - hirak/prestissimo Composer plugin
 - `/app/vendor/bin` added  to `$PATH`
+
+### `7.3-fpm` based on `druidfi/php:7.3`
+
+Added features:
+
+- PHP-FPM running
 
 ## druidfi/drupal
 
