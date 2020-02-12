@@ -17,9 +17,9 @@ COPY files/ /
 # Upgrade existing packages
 RUN apk update && apk upgrade && \
     #
-    # Install bash, curl, git, nano and tini
+    # Install bash, curl, git, make, nano and tini
     #
-    apk --update --no-cache add bash curl git nano tini && \
+    apk --update --no-cache add bash curl git make nano tini && \
     #
     # Create user group
     #
