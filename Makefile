@@ -1,7 +1,7 @@
 PHONY :=
 
 ALPINE_VERSION := 3.11
-COMPOSER_VERSION := 1.9.2
+COMPOSER_VERSION := 1.9.3
 
 PHONY += help
 help: ## List all make commands
@@ -72,6 +72,13 @@ build-drupal-%: ## Build Drupal images
 	$(call step,Build druidfi/drupal:$*-web-openshift)
 	docker build --force-rm drupal/web-openshift -t druidfi/drupal:$*-web-openshift --target baseline \
 		--build-arg PHP_VERSION=$*
+
+PHONY += build-qa-toolset
+build-qa-toolset: PHP_VERSION := 7.3
+build-qa-toolset: ## Build Drupal QA toolset image
+	$(call step,Build druidfi/drupal-qa:8)
+	docker build --no-cache --force-rm drupal/qa -t druidfi/drupal-qa:8 \
+		--build-arg PHP_VERSION=$(PHP_VERSION)
 
 PHONY += build-test-drupal-%
 build-test-drupal-%: ## Build Drupal test images
@@ -160,6 +167,10 @@ shell-drupal: TAG := 7.3
 shell-drupal: ## Login to Drupal container
 	docker run --rm -it --user=druid --hostname $(HOST) druidfi/$(IMG):$(TAG) bash
 
+PHONY += shell-qa-toolset
+shell-qa-toolset: ## Login to QA toolset container
+	docker run --rm -it --user=druid --hostname drupal-qa druidfi/drupal-qa:8 bash
+
 #
 # PUSH TARGETS
 #
@@ -190,7 +201,8 @@ push-drupal: ## Push all Drupal images to Docker Hub
 	docker push druidfi/drupal:7.3
 	docker push druidfi/drupal:7.3-web
 	docker push druidfi/drupal:7.3-web-openshift
-	docker push druidfi/drupal:7.3-test
+#	docker push druidfi/drupal:7.3-test
+	docker push druidfi/drupal-qa:8
 	docker push druidfi/nginx:1.17-drupal
 	docker push druidfi/db:mysql5.7-drupal
 
