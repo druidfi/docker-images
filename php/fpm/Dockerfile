@@ -2,10 +2,8 @@ ARG PHP_VERSION
 
 FROM druidfi/php:${PHP_VERSION} AS baseline
 
-LABEL maintainer="druid.fi"
-
 # Install software
-RUN apk --update --no-cache add \
+RUN sudo apk --update --no-cache add \
     # PHP extensions
     php7-fpm
 
@@ -13,4 +11,4 @@ RUN apk --update --no-cache add \
 COPY files/ /
 
 # Default command
-CMD ["/usr/sbin/php-fpm7", "-F", "-R"]
+CMD ["sudo", "/usr/sbin/php-fpm7", "-F", "-R"]

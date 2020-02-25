@@ -4,23 +4,16 @@ ARG COMPOSER_VERSION
 FROM composer:${COMPOSER_VERSION} AS composer
 FROM druidfi/base:alpine${ALPINE_VERSION} AS baseline
 
-LABEL maintainer="druid.fi"
-
-ARG ALPINE_VERSION
-ARG USER=druid
-ARG APP=/app
-ARG UID=1000
-
 ENV APP_ENV=prod \
-    COMPOSER_HOME=/home/${USER}/.composer \
+    COMPOSER_HOME=/home/${DEFAULT_USER}/.composer \
     # Add /app/vendor/bin to PATH
-    PATH="/home/${USER}/.composer/vendor/bin:${APP}/vendor/bin:${PATH}"
+    PATH="/home/${DEFAULT_USER}/.composer/vendor/bin:${APP_PATH}/vendor/bin:${PATH}"
 
 # Add Composer binary
 COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 
 # Install software
-RUN apk --update --no-cache add \
+RUN sudo apk --update --no-cache add \
     # PHP extensions
     php7 php7-curl php7-fileinfo php7-iconv php7-json php7-mbstring php7-opcache php7-openssl php7-phar \
     php7-session php7-zip \
@@ -38,10 +31,10 @@ RUN apk --update --no-cache add \
     fix-permissions ${COMPOSER_HOME}
 
 # When Alpine 3.7 is not used anymore, remove this line and uncomment php7-pecl-xdebug above
-RUN if [ "$ALPINE_VERSION" = "3.7" ] ; then apk --update --no-cache add php7-xdebug ; else apk --update --no-cache add php7-pecl-xdebug ; fi
+RUN if [ "$ALPINE_VERSION" = "3.7" ] ; then sudo apk --update --no-cache add php7-xdebug ; else sudo apk --update --no-cache add php7-pecl-xdebug ; fi
 
 # Copy configuration files and scripts
 COPY files/ /
 
 # Default command
-CMD ["php", "-v"]
+CMD ["sudo", "php", "-v"]
