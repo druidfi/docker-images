@@ -2,14 +2,16 @@ ARG ALPINE_VERSION
 
 FROM alpine:${ALPINE_VERSION}
 
+ARG ALPINE_VERSION
+
 LABEL maintainer="druid.fi"
 
-ARG USER=druid
-ARG APP=/app
-ARG UID=1000
-
 # All images based on this one will have this ENV var
-ENV KIND=druid-docker-image
+ENV KIND=druid-docker-image \
+    ALPINE_VERSION=${ALPINE_VERSION} \
+    APP_PATH=/app \
+    DEFAULT_USER=druid \
+    DEFAULT_USER_UID=1000
 
 # Copy configuration files and scripts
 COPY files/ /
@@ -17,35 +19,45 @@ COPY files/ /
 # Upgrade existing packages
 RUN apk update && apk upgrade && \
     #
-    # Install bash, curl, git, make, nano and tini
+    # Install needed packages
     #
-    apk --update --no-cache add bash curl git make nano tini && \
+    apk --update --no-cache add bash curl git make nano sudo tini && \
     #
     # Create user group
     #
-    addgroup -S ${USER} -g ${UID} && \
+    addgroup -S ${DEFAULT_USER} -g ${DEFAULT_USER_UID} && \
     #
     # Create user
     #
     # adduser -S = Create a system user
     # adduser -G = Add user to existing group
     # adduser -u = User id
-    adduser -S -G ${USER} -u ${UID} ${USER} && \
+    adduser -S -G ${DEFAULT_USER} -u ${DEFAULT_USER_UID} ${DEFAULT_USER} && \
     #
     # Add user to root group
     #
-    addgroup ${USER} root && \
+    addgroup ${DEFAULT_USER} root && \
+    #
+    # Add user to sudoers
+    #
+    echo "${DEFAULT_USER} ALL=(ALL) NOPASSWD:SETENV:ALL" > /etc/sudoers.d/${DEFAULT_USER} && \
+    chmod 0440 /etc/sudoers.d/${DEFAULT_USER} && \
+    #
+    # Quiet down Sudo
+    #
+    echo "Set disable_coredump false" > /etc/sudo.conf && \
     #
     # Create app directory
     #
-    mkdir -p ${APP} && \
+    mkdir -p ${APP_PATH} && \
     #
     # Set permissions
     #
-    fix-permissions ${APP} && \
-    chown -R ${USER}:${USER} /home/${USER}
+    fix-permissions ${APP_PATH} && \
+    chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER}
 
-WORKDIR ${APP}
+USER ${DEFAULT_USER}
+WORKDIR ${APP_PATH}
 
 ENTRYPOINT ["/sbin/tini", "--"]
 
