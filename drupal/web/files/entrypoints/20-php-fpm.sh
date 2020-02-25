@@ -2,4 +2,4 @@
 
 echo "Start up PHP-FPM..."
 
-php-fpm7
+sudo php-fpm7

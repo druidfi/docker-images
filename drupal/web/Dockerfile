@@ -4,16 +4,10 @@ ARG PHP_VERSION
 FROM druidfi/nginx:${NGINX_VERSION} AS nginx
 FROM druidfi/drupal:${PHP_VERSION} AS baseline
 
-LABEL maintainer="druid.fi"
-
-ARG USER=druid
-ARG APP=/app
-ARG UID=1000
-
 # Install Nginx
-RUN apk --update --no-cache add nginx && \
-    addgroup ${USER} nginx && \
-    addgroup ${USER} www-data
+RUN sudo apk --update --no-cache add nginx && \
+    sudo addgroup ${DEFAULT_USER} nginx && \
+    sudo addgroup ${DEFAULT_USER} www-data
 
 # Copy configuration files and scripts
 COPY files/ /

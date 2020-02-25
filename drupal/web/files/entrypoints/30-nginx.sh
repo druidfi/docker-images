@@ -2,4 +2,4 @@
 
 echo "Start up Nginx..."
 
-nginx -g 'daemon off;'
+sudo nginx -g 'daemon off;'
