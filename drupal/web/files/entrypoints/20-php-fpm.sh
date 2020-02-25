@@ -2,4 +2,7 @@
 
 echo "Start up PHP-FPM..."
 
-sudo php-fpm7
+#
+# NOTE! Don't run this with sudo, as then ENVs will not work
+#
+php-fpm7
