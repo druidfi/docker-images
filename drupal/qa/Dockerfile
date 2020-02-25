@@ -2,8 +2,6 @@ ARG PHP_VERSION
 
 FROM druidfi/php:${PHP_VERSION}-fpm AS baseline
 
-LABEL maintainer="druid.fi"
-
 ARG DPCI_VERSION=^0.6
 ARG DRUPAL_CODER_VERSION=^8.3
 ARG PANTHER_VERSION=^0.6
