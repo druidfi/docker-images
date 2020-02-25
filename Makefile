@@ -16,10 +16,10 @@ build-php: build-php-71 build-php-73  ## Build all PHP images
 
 PHONY += build-php-71
 build-php-71: ALPINE_VERSION := 3.7
-build-php-71: build-base-3.7 build-php-7.1 build-php-fpm-7.1 build-drupal-7.1 ## Build all PHP 7.1 images
+build-php-71: build-base-3.7 build-php-7.1 build-drupal-7.1 ## Build all PHP 7.1 images
 
 PHONY += build-php-73
-build-php-73: build-base-3.11 build-php-7.3 build-php-fpm-7.3 build-drupal-7.3 build-test-drupal-7.3 ## Build all PHP 7.3 images
+build-php-73: build-base-3.11 build-php-7.3 build-drupal-7.3 build-test-drupal-7.3 ## Build all PHP 7.3 images
 
 PHONY += build-node
 build-node: build-node-8 build-node-10 build-node-12 ## Build all Node LTS images
@@ -34,19 +34,15 @@ build-db: build-db-5.7 ## Build all database images
 PHONY += build-base-%
 build-base-%: ## Build base image
 	$(call step,Build druidfi/base:alpine$*)
-	docker build --force-rm base -t druidfi/base:alpine$* \
+	docker build --no-cache --force-rm base -t druidfi/base:alpine$* \
 		--build-arg ALPINE_VERSION=$*
 
 PHONY += build-php-%
-build-php-%: ## Build PHP images
+build-php-%: ## Build PHP and PHP-FPM images
 	$(call step,Build druidfi/php:$*)
 	docker build --no-cache --force-rm php/base -t druidfi/php:$* --target baseline \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION) \
-		--build-arg PHP_VERSION=$* \
 		--build-arg COMPOSER_VERSION=$(COMPOSER_VERSION)
-
-PHONY += build-php-fpm-%
-build-php-fpm-%: ## Build PHP-FPM images
 	$(call step,Build druidfi/php:$*-fpm)
 	docker build --no-cache --force-rm php/fpm -t druidfi/php:$*-fpm --target baseline \
 		--build-arg PHP_VERSION=$*
@@ -63,14 +59,14 @@ build-nginx-%: ## Build Nginx images
 PHONY += build-drupal-%
 build-drupal-%: ## Build Drupal images
 	$(call step,Build druidfi/drupal:$*)
-	docker build --force-rm drupal/base -t druidfi/drupal:$* \
+	docker build --no-cache --force-rm drupal/base -t druidfi/drupal:$* \
 		--build-arg PHP_VERSION=$*
 	$(call step,Build druidfi/drupal:$*-web)
-	docker build --force-rm drupal/web -t druidfi/drupal:$*-web --target baseline \
+	docker build --no-cache --force-rm drupal/web -t druidfi/drupal:$*-web --target baseline \
 		--build-arg PHP_VERSION=$* \
 		--build-arg NGINX_VERSION=1.17
 	$(call step,Build druidfi/drupal:$*-web-openshift)
-	docker build --force-rm drupal/web-openshift -t druidfi/drupal:$*-web-openshift --target baseline \
+	docker build --no-cache --force-rm drupal/web-openshift -t druidfi/drupal:$*-web-openshift --target baseline \
 		--build-arg PHP_VERSION=$*
 
 PHONY += build-qa-toolset
@@ -176,7 +172,7 @@ shell-qa-toolset: ## Login to QA toolset container
 #
 
 PHONY += push-all
-push-all: push-base php-php push-drupal push-node ## Push all images to Docker Hub
+push-all: push-base push-php push-drupal push-node ## Push all images to Docker Hub
 	docker push druidfi/varnish:6-drupal
 	docker push druidfi/dnsmasq:alpine3.10
 
