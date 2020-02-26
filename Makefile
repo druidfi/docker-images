@@ -74,7 +74,12 @@ build-qa-toolset: PHP_VERSION := 7.3
 build-qa-toolset: ## Build Drupal QA toolset image
 	$(call step,Build druidfi/drupal-qa:8)
 	docker build --no-cache --force-rm drupal/qa -t druidfi/drupal-qa:8 \
-		--build-arg PHP_VERSION=$(PHP_VERSION)
+		--build-arg PHP_VERSION=$(PHP_VERSION) \
+		--build-arg DRUPAL_VERSION=8
+	$(call step,Build druidfi/drupal-qa:7)
+	docker build --no-cache --force-rm drupal/qa -t druidfi/drupal-qa:7 \
+		--build-arg PHP_VERSION=$(PHP_VERSION) \
+		--build-arg DRUPAL_VERSION=7
 
 PHONY += build-test-drupal-%
 build-test-drupal-%: ## Build Drupal test images
@@ -197,8 +202,9 @@ push-drupal: ## Push all Drupal images to Docker Hub
 	docker push druidfi/drupal:7.3
 	docker push druidfi/drupal:7.3-web
 	docker push druidfi/drupal:7.3-web-openshift
-#	docker push druidfi/drupal:7.3-test
+	docker push druidfi/drupal:7.3-test
 	docker push druidfi/drupal-qa:8
+	docker push druidfi/drupal-qa:7
 	docker push druidfi/nginx:1.17-drupal
 	docker push druidfi/db:mysql5.7-drupal
 
