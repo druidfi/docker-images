@@ -17,7 +17,7 @@ ENV variables:
 
 ## druidfi/php
 
-### `7.3` based on `druidfi/base:alpine3.10`
+### `7.3` based on `druidfi/base:alpine3.11`
 
 Added features:
 
