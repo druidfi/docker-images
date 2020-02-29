@@ -104,6 +104,10 @@ build-varnish: ## Build Varnish images
 	$(call step,Build druidfi/varnish:6-drupal)
 	docker build --force-rm varnish -t druidfi/varnish:6-drupal
 
+build-curl: ## Build Curl images
+	docker build --force-rm curl -t druidfi/curl:alpine$(ALPINE_VERSION) \
+		--build-arg ALPINE_VERSION=$(ALPINE_VERSION)
+
 build-dnsmasq: ## Build dnsmasq images
 	docker build --force-rm dnsmasq -t druidfi/dnsmasq:alpine$(ALPINE_VERSION) \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION)
@@ -177,9 +181,7 @@ shell-qa-toolset: ## Login to QA toolset container
 #
 
 PHONY += push-all
-push-all: push-base push-php push-drupal push-node ## Push all images to Docker Hub
-	docker push druidfi/varnish:6-drupal
-	docker push druidfi/dnsmasq:alpine3.10
+push-all: push-base push-php push-drupal push-node push-misc ## Push all images to Docker Hub
 
 PHONY += push-base
 push-base: ## Push all base images to Docker Hub
@@ -213,6 +215,12 @@ push-node: ## Push all Node images to Docker Hub
 	docker push druidfi/node:8
 	docker push druidfi/node:10
 	docker push druidfi/node:12
+
+PHONY += push-misc
+push-misc: ## Push all other images to Docker Hub
+	docker push druidfi/curl:alpine3.11
+	docker push druidfi/varnish:6-drupal
+	docker push druidfi/dnsmasq:alpine3.11
 
 define step
 	@printf "\n\e[0;33m${1}\e[0m\n\n"
