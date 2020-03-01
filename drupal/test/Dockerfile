@@ -2,6 +2,7 @@ ARG PHP_VERSION
 
 FROM druidfi/drupal:${PHP_VERSION}-web AS baseline
 
+ARG BUILD_DATE=${BUILD_DATE}
 ARG BRANCH=master
 
 # Install make and create Drupal project
@@ -10,7 +11,7 @@ RUN sudo apk --update --no-cache add make && \
     #
     # Install some modules for testing
     #
-    composer req drupal/admin_toolbar drupal/paragraphs drupal/pathauto drupal/simplei && \
+    composer req drupal/admin_toolbar drupal/metatag drupal/paragraphs drupal/pathauto drupal/pwa drupal/simplei && \
     #
     # Set up file folders
     #
