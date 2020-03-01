@@ -1,6 +1,7 @@
 PHONY :=
 
 ALPINE_VERSION := 3.11
+BUILD_DATE := $(shell date +%F)
 COMPOSER_VERSION := 1.9.3
 
 PHONY += help
@@ -85,7 +86,8 @@ PHONY += build-test-drupal-%
 build-test-drupal-%: ## Build Drupal test images
 	$(call step,Build druidfi/drupal:$*-test)
 	docker build --force-rm drupal/test -t druidfi/drupal:$*-test \
-		--build-arg PHP_VERSION=$*
+		--build-arg PHP_VERSION=$* \
+		--build-arg BUILD_DATE=$(BUILD_DATE)
 
 PHONY += build-node-%
 build-node-%: ## Build Node images
