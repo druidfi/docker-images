@@ -2,7 +2,7 @@ PHONY :=
 
 ALPINE_VERSION := 3.11
 BUILD_DATE := $(shell date +%F)
-COMPOSER_VERSION := 1.9.3
+COMPOSER_VERSION := 1.10.1
 
 PHONY += help
 help: ## List all make commands
@@ -35,6 +35,7 @@ build-db: build-db-5.7 ## Build all database images
 PHONY += build-base-%
 build-base-%: ## Build base image
 	$(call step,Build druidfi/base:alpine$*)
+	docker pull alpine:$*
 	docker build --no-cache --force-rm base -t druidfi/base:alpine$* \
 		--build-arg ALPINE_VERSION=$*
 
