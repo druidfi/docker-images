@@ -9,10 +9,16 @@ ENV DRUPAL_DB_NAME=drupal \
     DRUPAL_DB_PORT=3306 \
     SSH_AUTH_SOCK=/tmp/ssh-agent
 
-# Install PHP extensions needed by Drupal
 RUN sudo apk --update --no-cache add \
-    php7-bcmath php7-ctype php7-dom php7-gd php7-intl php7-pdo php7-pdo_mysql php7-simplexml php7-sockets php7-tokenizer \
-    php7-xml php7-xmlreader php7-xmlwriter php7-zlib \
+    #
+    # Install ImageMagick
+    #
+    imagemagick \
+    #
+    # PHP extensions needed by Drupal
+    #
+    php7-bcmath php7-ctype php7-dom php7-exif php7-gd php7-intl php7-pdo php7-pdo_mysql php7-simplexml php7-sockets \
+    php7-tokenizer php7-xml php7-xmlreader php7-xmlwriter php7-zlib \
     #
     # Install MySQL client
     #
