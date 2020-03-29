@@ -1,5 +1,6 @@
 ARG PHP_VERSION
 
+FROM druidfi/php-pecl-uploadprogress:${PHP_VERSION} as uploadprogress
 FROM druidfi/php:${PHP_VERSION}-fpm AS baseline
 
 ENV DRUPAL_DB_NAME=drupal \
@@ -30,3 +31,12 @@ RUN sudo apk --update --no-cache add \
 
 # Copy configuration files and scripts
 COPY files/ /
+
+# Copy uploadprogress extension
+COPY --from=uploadprogress /usr/lib/php7/modules/uploadprogress.so /usr/lib/php7/modules/uploadprogress.so
+
+USER root
+
+RUN echo 'extension=uploadprogress.so' > /etc/php7/conf.d/20_uploadprogress.ini
+
+USER ${DEFAULT_USER}
