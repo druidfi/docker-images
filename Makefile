@@ -3,6 +3,7 @@ PHONY :=
 ALPINE_VERSION := 3.11
 BUILD_DATE := $(shell date +%F)
 COMPOSER_VERSION := 1.10.1
+SIMPLESAMLPHP_VERSION := 1.18.5
 
 PHONY += help
 help: ## List all make commands
@@ -17,10 +18,10 @@ build-php: build-php-71 build-php-73  ## Build all PHP images
 
 PHONY += build-php-71
 build-php-71: ALPINE_VERSION := 3.7
-build-php-71: build-base-3.7 build-php-7.1 build-drupal-7.1 ## Build all PHP 7.1 images
+build-php-71: build-base-3.7 build-pecl-7.1 build-php-7.1 build-drupal-7.1 ## Build all PHP 7.1 images
 
 PHONY += build-php-73
-build-php-73: build-base-3.11 build-php-7.3 build-drupal-7.3 build-test-drupal-7.3 ## Build all PHP 7.3 images
+build-php-73: build-base-3.11 build-pecl-7.3 build-php-7.3 build-drupal-7.3 build-test-drupal-7.3 ## Build all PHP 7.3 images
 
 PHONY += build-node
 build-node: build-node-8 build-node-10 build-node-12 ## Build all Node LTS images
@@ -38,6 +39,13 @@ build-base-%: ## Build base image
 	docker pull alpine:$*
 	docker build --no-cache --force-rm base -t druidfi/base:alpine$* \
 		--build-arg ALPINE_VERSION=$*
+
+PHONY += build-pecl-%
+build-pecl-%: ## Build pecl extensions
+	$(call step,Build druidfi/php-pecl-uploadprogress:$*)
+	docker build --no-cache --force-rm php/pecl/uploadprogress -t druidfi/php-pecl-uploadprogress:$* \
+		--build-arg ALPINE_VERSION=$(ALPINE_VERSION) \
+		--build-arg PHP_VERSION=$*
 
 PHONY += build-php-%
 build-php-%: ## Build PHP and PHP-FPM images
@@ -107,16 +115,24 @@ build-varnish: ## Build Varnish images
 	$(call step,Build druidfi/varnish:6-drupal)
 	docker build --force-rm varnish -t druidfi/varnish:6-drupal
 
+PHONY += build-curl
 build-curl: ## Build Curl images
 	docker build --force-rm curl -t druidfi/curl:alpine$(ALPINE_VERSION) \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION)
 
+PHONY += build-dnsmasq
 build-dnsmasq: ## Build dnsmasq images
 	docker build --force-rm dnsmasq -t druidfi/dnsmasq:alpine$(ALPINE_VERSION) \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION)
 
+PHONY += build-ssh-agent
 build-ssh-agent: ## Build ssh-agent images
 	docker build --no-cache --force-rm ssh-agent -t druidfi/ssh-agent:alpine$(ALPINE_VERSION)
+
+PHONY += build-saml-idp
+build-saml-idp: ## Build build-saml-idp images
+	docker build --no-cache --force-rm saml-idp -t druidfi/saml-idp:$(SIMPLESAMLPHP_VERSION) \
+		--build-arg SIMPLESAMLPHP_VERSION=$(SIMPLESAMLPHP_VERSION)
 
 #
 # TEST TARGETS
@@ -224,6 +240,7 @@ push-misc: ## Push all other images to Docker Hub
 	docker push druidfi/curl:alpine3.11
 	docker push druidfi/varnish:6-drupal
 	docker push druidfi/dnsmasq:alpine3.11
+	docker push druidfi/saml-idp:$(SIMPLESAMLPHP_VERSION)
 
 define step
 	@printf "\n\e[0;33m${1}\e[0m\n\n"
