@@ -33,7 +33,7 @@ RUN sudo apk --update --no-cache add \
 COPY files/ /
 
 # Copy uploadprogress extension
-COPY --from=uploadprogress /usr/lib/php7/modules/uploadprogress.so /usr/lib/php7/modules/uploadprogress.so
+COPY --from=uploadprogress /uploadprogress.so /usr/lib/php7/modules/uploadprogress.so
 
 USER root
 
