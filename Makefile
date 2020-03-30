@@ -1,33 +1,38 @@
 PHONY :=
+.DEFAULT_GOAL := help
 
 ALPINE_VERSION := 3.11
 BUILD_DATE := $(shell date +%F)
 COMPOSER_VERSION := 1.10.1
 SIMPLESAMLPHP_VERSION := 1.18.5
 
-PHONY += help
-help: ## List all make commands
-	$(call step,Available make commands:)
-	@cat $(MAKEFILE_LIST) | grep -e "^[a-zA-Z_\-]*: *.*## *" | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' | sort
-
 PHONY += build-all
-build-all: build-php build-nginx-1.17 build-node build-db build-dnsmasq ## Build all images
+build-all: build-all-nginx build-all-php build-all-db build-all-misc build-all-node ## Build all images
 
-PHONY += build-php
-build-php: build-php-71 build-php-73  ## Build all PHP images
+PHONY += build-all-base
+build-all-base: build-base-3.7 build-base-3.11 ## Build all base images
 
-PHONY += build-php-71
-build-php-71: ALPINE_VERSION := 3.7
-build-php-71: build-base-3.7 build-pecl-7.1 build-php-7.1 build-drupal-7.1 ## Build all PHP 7.1 images
+PHONY += build-all-nginx
+build-all-nginx: build-nginx-1.17 ## Build all Nginx images
 
-PHONY += build-php-73
-build-php-73: build-base-3.11 build-pecl-7.3 build-php-7.3 build-drupal-7.3 build-test-drupal-7.3 ## Build all PHP 7.3 images
+PHONY += build-all-php
+build-all-php: build-all-php-71 build-all-php-73 ## Build all PHP images (7.1, 7.3)
 
-PHONY += build-node
-build-node: build-node-8 build-node-10 build-node-12 ## Build all Node LTS images
+PHONY += build-all-php-71
+build-all-php-71: ALPINE_VERSION := 3.7
+build-all-php-71: build-base-3.7 build-pecl-7.1 build-php-7.1 build-drupal-7.1 ## Build all PHP 7.1 images
 
-PHONY += build-db
-build-db: build-db-5.7 ## Build all database images
+PHONY += build-all-php-73
+build-all-php-73: build-base-3.11 build-pecl-7.3 build-php-7.3 build-drupal-7.3 build-test-drupal-7.3 ## Build all PHP 7.3 images
+
+PHONY += build-all-db
+build-all-db: build-db-5.7 ## Build all database images
+
+PHONY += build-all-misc
+build-all-misc: build-curl build-dnsmasq build-saml-idp build-varnish ## Build all misc images
+
+PHONY += build-all-node
+build-all-node: build-node-8 build-node-10 build-node-12 ## Build all Node LTS images (8, 10, 12)
 
 #
 # BUILD TARGETS
@@ -36,7 +41,6 @@ build-db: build-db-5.7 ## Build all database images
 PHONY += build-base-%
 build-base-%: ## Build base image
 	$(call step,Build druidfi/base:alpine$*)
-	docker pull alpine:$*
 	docker build --no-cache --force-rm base -t druidfi/base:alpine$* \
 		--build-arg ALPINE_VERSION=$*
 
@@ -52,18 +56,20 @@ build-php-%: ## Build PHP and PHP-FPM images
 	$(call step,Build druidfi/php:$*)
 	docker build --no-cache --force-rm php/base -t druidfi/php:$* --target baseline \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION) \
-		--build-arg COMPOSER_VERSION=$(COMPOSER_VERSION)
+		--build-arg COMPOSER_VERSION=$(COMPOSER_VERSION) \
+		--build-arg BUILD_DATE=$(BUILD_DATE)
 	$(call step,Build druidfi/php:$*-fpm)
 	docker build --no-cache --force-rm php/fpm -t druidfi/php:$*-fpm --target baseline \
-		--build-arg PHP_VERSION=$*
+		--build-arg PHP_VERSION=$* \
+		--build-arg BUILD_DATE=$(BUILD_DATE)
 
 PHONY += build-nginx-%
 build-nginx-%: ## Build Nginx images
 	$(call step,Build druidfi/nginx:$*)
-	docker build --force-rm nginx/base -t druidfi/nginx:$* \
+	docker build --no-cache --force-rm nginx/base -t druidfi/nginx:$* \
 		--build-arg NGINX_VERSION=$*
 	$(call step,Build druidfi/nginx-drupal:$*)
-	docker build --force-rm nginx/drupal -t druidfi/nginx:$*-drupal \
+	docker build --no-cache --force-rm nginx/drupal -t druidfi/nginx:$*-drupal \
 		--build-arg NGINX_VERSION=$*
 
 PHONY += build-drupal-%
@@ -75,9 +81,9 @@ build-drupal-%: ## Build Drupal images
 	docker build --no-cache --force-rm drupal/web -t druidfi/drupal:$*-web --target baseline \
 		--build-arg PHP_VERSION=$* \
 		--build-arg NGINX_VERSION=1.17
-	$(call step,Build druidfi/drupal:$*-web-openshift)
-	docker build --no-cache --force-rm drupal/web-openshift -t druidfi/drupal:$*-web-openshift --target baseline \
-		--build-arg PHP_VERSION=$*
+#	$(call step,Build druidfi/drupal:$*-web-openshift)
+#	docker build --no-cache --force-rm drupal/web-openshift -t druidfi/drupal:$*-web-openshift --target baseline \
+#		--build-arg PHP_VERSION=$*
 
 PHONY += build-qa-toolset
 build-qa-toolset: PHP_VERSION := 7.3
@@ -94,45 +100,49 @@ build-qa-toolset: ## Build Drupal QA toolset image
 PHONY += build-test-drupal-%
 build-test-drupal-%: ## Build Drupal test images
 	$(call step,Build druidfi/drupal:$*-test)
-	docker build --force-rm drupal/test -t druidfi/drupal:$*-test \
+	docker build --no-cache --force-rm drupal/test -t druidfi/drupal:$*-test \
 		--build-arg PHP_VERSION=$* \
 		--build-arg BUILD_DATE=$(BUILD_DATE)
 
 PHONY += build-node-%
 build-node-%: ## Build Node images
 	$(call step,Build druidfi/node:$*)
-	docker build --force-rm node -t druidfi/node:$* \
+	docker build --no-cache --force-rm node -t druidfi/node:$* \
 		--build-arg NODE_VERSION=$*
 
 PHONY += build-db-%
 build-db-%: ## Build Database images
 	$(call step,Build druidfi/db:mysql$*)
-	docker build --force-rm db/mysql -t druidfi/db:mysql$*-drupal \
+	docker build --no-cache --force-rm db/mysql -t druidfi/db:mysql$*-drupal \
 		--build-arg MYSQL_VERSION=$*
 
-PHONY += build-varnish
-build-varnish: ## Build Varnish images
-	$(call step,Build druidfi/varnish:6-drupal)
-	docker build --force-rm varnish -t druidfi/varnish:6-drupal
+#
+# BUILD: Misc images
+#
 
 PHONY += build-curl
-build-curl: ## Build Curl images
-	docker build --force-rm curl -t druidfi/curl:alpine$(ALPINE_VERSION) \
+build-curl: ## Build Curl image
+	docker build --no-cache --force-rm misc/curl -t druidfi/curl:alpine$(ALPINE_VERSION) \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION)
 
 PHONY += build-dnsmasq
-build-dnsmasq: ## Build dnsmasq images
-	docker build --force-rm dnsmasq -t druidfi/dnsmasq:alpine$(ALPINE_VERSION) \
+build-dnsmasq: ## Build dnsmasq image
+	docker build --no-cache --force-rm misc/dnsmasq -t druidfi/dnsmasq:alpine$(ALPINE_VERSION) \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION)
 
-PHONY += build-ssh-agent
-build-ssh-agent: ## Build ssh-agent images
-	docker build --no-cache --force-rm ssh-agent -t druidfi/ssh-agent:alpine$(ALPINE_VERSION)
-
 PHONY += build-saml-idp
-build-saml-idp: ## Build build-saml-idp images
-	docker build --no-cache --force-rm saml-idp -t druidfi/saml-idp:$(SIMPLESAMLPHP_VERSION) \
+build-saml-idp: ## Build build-saml-idp image
+	docker build --no-cache --force-rm misc/saml-idp -t druidfi/saml-idp:$(SIMPLESAMLPHP_VERSION) \
 		--build-arg SIMPLESAMLPHP_VERSION=$(SIMPLESAMLPHP_VERSION)
+
+PHONY += build-ssh-agent
+build-ssh-agent: ## Build ssh-agent image
+	docker build --no-cache --force-rm misc/ssh-agent -t druidfi/ssh-agent:alpine$(ALPINE_VERSION)
+
+PHONY += build-varnish
+build-varnish: ## Build Varnish image
+	$(call step,Build druidfi/varnish:6-drupal)
+	docker build --no-cache --force-rm misc/varnish -t druidfi/varnish:6-drupal
 
 #
 # TEST TARGETS
@@ -207,7 +217,6 @@ push-base: ## Push all base images to Docker Hub
 	docker push druidfi/base:alpine3.7
 	#docker push druidfi/base:alpine3.10
 	docker push druidfi/base:alpine3.11
-	docker push druidfi/nginx:1.17
 
 PHONY += push-php
 push-php: ## Push all PHP images to Docker Hub
@@ -237,10 +246,16 @@ push-node: ## Push all Node images to Docker Hub
 
 PHONY += push-misc
 push-misc: ## Push all other images to Docker Hub
+	docker push druidfi/nginx:1.17
 	docker push druidfi/curl:alpine3.11
 	docker push druidfi/varnish:6-drupal
 	docker push druidfi/dnsmasq:alpine3.11
 	docker push druidfi/saml-idp:$(SIMPLESAMLPHP_VERSION)
+
+PHONY += help
+help: ## List all make commands
+	$(call step,Available make commands:)
+	@cat $(MAKEFILE_LIST) | grep -e "^[a-zA-Z_\-]*: *.*## *" | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' | sort
 
 define step
 	@printf "\n\e[0;33m${1}\e[0m\n\n"
