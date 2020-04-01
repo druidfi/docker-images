@@ -7,7 +7,7 @@ ARG BRANCH=master
 
 # Install make and create Drupal project
 RUN sudo apk --update --no-cache add make && \
-    composer create-project druidfi/spell:dev-${BRANCH} ${APP_PATH} --no-interaction && \
+    COMPOSER_MEMORY_LIMIT=-1 composer create-project druidfi/spell:dev-${BRANCH} ${APP_PATH} --no-interaction && \
     #
     # Install some modules for testing
     #
