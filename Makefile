@@ -215,11 +215,12 @@ push-all: push-base push-php push-drupal push-node push-misc ## Push all images 
 PHONY += push-base
 push-base: ## Push all base images to Docker Hub
 	docker push druidfi/base:alpine3.7
-	#docker push druidfi/base:alpine3.10
 	docker push druidfi/base:alpine3.11
 
 PHONY += push-php
 push-php: ## Push all PHP images to Docker Hub
+	docker push druidfi/php-pecl-uploadprogress:7.1
+	docker push druidfi/php-pecl-uploadprogress:7.3
 	docker push druidfi/php:7.1
 	docker push druidfi/php:7.3
 	docker push druidfi/php:7.1-fpm
