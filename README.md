@@ -6,30 +6,43 @@ See https://hub.docker.com/u/druidfi for all the images.
 
 ## druidfi/base
 
-### `alpine3.11` 
+Tags:
+
+- `druidfi/base:alpine3.11`
+- `druidfi/base:alpine3.7`
 
 Features:
 
 - Workdir: `/app`
-- User: `druid (1000)`
-- Packages installed: `bash`, `curl`, `git` and `tini`
+- User: `druid (1000)` and added to sudoers
+- Packages installed: `bash`, `curl`, `git`, `make`, `nano` and `tini`
 
 ENV variables:
 
+- `ALPINE_VERSION=3.11|3.7`
+- `APP_PATH=/app`
+- `DEFAULT_USER=druid`
+- `DEFAULT_USER_UID=1000`
 - `KIND=druid-docker-image`
 
 ## druidfi/php
 
-### `7.3` based on `druidfi/base:alpine3.11`
+### Base variant
+
+- `druidfi/php:7.3` based on `druidfi/base:alpine3.11`
+- `druidfi/php:7.1` based on `druidfi/base:alpine3.7`
 
 Added features:
 
 - Minimal set of PHP extensions
-- Composer 1.9
+- Composer 1.10.x
 - hirak/prestissimo Composer plugin
 - `/app/vendor/bin` added  to `$PATH`
 
-### `7.3-fpm` based on `druidfi/php:7.3`
+### FPM variant
+
+- `druidfi/php:7.3-fpm` based on `druidfi/php:7.3`
+- `druidfi/php:7.1-fpm` based on `druidfi/php:7.1`
 
 Added features:
 
@@ -37,7 +50,10 @@ Added features:
 
 ## druidfi/drupal
 
-### `7.3` based on `druidfi/php:7.3-fpm`
+### Base variant
+
+- `druidfi/drupal:7.3` based on `druidfi/php:7.3-fpm`
+- `druidfi/drupal:7.1` based on `druidfi/php:7.1-fpm`
 
 Added features:
 
@@ -58,7 +74,10 @@ ENV variables:
 - `DRUPAL_DB_PORT=3306`
 - `DRUSH_OPTIONS_URI=http://drupal.docker.sh`
 
-### `7.3-web` based on `druidfi/drupal:7.3`
+### Web variant
+
+- `druidfi/drupal:7.3-web` based on `druidfi/drupal:7.3`
+- `druidfi/drupal:7.1-web` based on `druidfi/drupal:7.1`
 
 Added features:
 
@@ -68,7 +87,9 @@ Needs:
 
 - Database (`mysql:5.7`)
 
-### `7.3-web-openshift` based on `druidfi/drupal:7.3-web`
+### OpenShift variant
+
+- `druidfi/drupal:7.3-web-openshift` based on `druidfi/drupal:7.3-web`
 
 Added features:
 
@@ -79,7 +100,9 @@ Needs:
 
 - Database
 
-### `7.3-test` based on `druidfi/drupal:7.3-web`
+### Test variant
+
+- `druidfi/drupal:7.3-test` based on `druidfi/drupal:7.3-web`
 
 Added features:
 
@@ -91,13 +114,17 @@ Needs:
 
 ## druidfi/nginx
 
-### `1.17` based on `nginx:1.17-alpine`
+### Base variant
+
+- `1.17` based on `nginx:1.17-alpine`
 
 Added features:
 
 - Default Nginx configuration
 
-### `1.17-drupal` based on `druidfi/nginx:1.17`
+### Drupal variant
+
+- `1.17-drupal` based on `druidfi/nginx:1.17`
 
 Added features on `1.17-drupal`:
 
