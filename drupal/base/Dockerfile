@@ -29,6 +29,9 @@ RUN sudo apk --update --no-cache add \
     #
     openssh rsync
 
+# When Alpine 3.7 is not used anymore, remove this line
+RUN if [ "$ALPINE_VERSION" = "3.7" ] ; then sudo apk --update --no-cache add php7-mcrypt ; fi
+
 # Copy configuration files and scripts
 COPY files/ /
 
