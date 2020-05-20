@@ -2,7 +2,6 @@ PHONY :=
 .DEFAULT_GOAL := help
 PROJECT_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 
-# Include druidfi/tools config
 include $(PROJECT_DIR)/make/*.mk
 
 ALPINE_VERSION := 3.11
