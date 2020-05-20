@@ -30,6 +30,10 @@ RUN sudo apk --update --no-cache add \
     #
     fix-permissions ${COMPOSER_HOME}
 
+# Fix work iconv library with Alpine
+RUN sudo apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv
+ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
+
 # When Alpine 3.7 is not used anymore, remove this line and uncomment php7-pecl-xdebug above
 RUN if [ "$ALPINE_VERSION" = "3.7" ] ; then sudo apk --update --no-cache add php7-xdebug ; else sudo apk --update --no-cache add php7-pecl-xdebug ; fi
 
