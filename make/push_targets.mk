@@ -35,6 +35,7 @@ push-drupal: ## Push all Drupal images to Docker Hub
 	docker push druidfi/drupal-qa:7
 	docker push druidfi/nginx:1.17-drupal
 	docker push druidfi/db:mysql5.7-drupal
+	docker push druidfi/db:mysql8.0-drupal
 
 PHONY += push-node
 push-node: ## Push all Node images to Docker Hub

@@ -20,7 +20,7 @@ PHONY += build-all-php-73
 build-all-php-73: build-base-3.11 build-pecl-7.3 build-php-7.3 build-drupal-7.3 build-test-drupal-7.3 ## Build all PHP 7.3 images
 
 PHONY += build-all-db
-build-all-db: build-db-5.7 ## Build all database images
+build-all-db: build-db-5.7 build-db-8.0 ## Build all database images
 
 PHONY += build-all-misc
 build-all-misc: build-curl build-dnsmasq build-saml-idp build-varnish ## Build all misc images
@@ -111,9 +111,3 @@ build-test-drupal-%: ## Build Drupal test images
 	docker build --no-cache --force-rm drupal/test -t druidfi/drupal:$*-test \
 		--build-arg PHP_VERSION=$* \
 		--build-arg BUILD_DATE=$(BUILD_DATE)
-
-PHONY += build-node-%
-build-node-%: ## Build Node images
-	$(call step,Build druidfi/node:$*)
-	docker build --no-cache --force-rm node -t druidfi/node:$* \
-		--build-arg NODE_VERSION=$*
