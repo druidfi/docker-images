@@ -40,8 +40,8 @@ build-base-%: ## Build base image
 
 PHONY += build-pecl-%
 build-pecl-%: ## Build pecl extensions
-	$(call step,Build druidfi/php-pecl-uploadprogress:$*)
-	docker build --no-cache --force-rm php/pecl/uploadprogress -t druidfi/php-pecl-uploadprogress:$* \
+	$(call step,Build druidfi/php-pecl:uploadprogress-$*)
+	docker build --no-cache --force-rm php/pecl/uploadprogress -t druidfi/php-pecl:uploadprogress-$* \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION) \
 		--build-arg PHP_VERSION=$*
 
