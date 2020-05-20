@@ -1,6 +1,6 @@
 ARG PHP_VERSION
 
-FROM druidfi/php-pecl-uploadprogress:${PHP_VERSION} as uploadprogress
+FROM druidfi/php-pecl:uploadprogress-${PHP_VERSION} as uploadprogress
 FROM druidfi/php:${PHP_VERSION}-fpm AS baseline
 
 ENV DRUPAL_DB_NAME=drupal \
