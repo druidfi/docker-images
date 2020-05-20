@@ -6,7 +6,8 @@ LABEL maintainer="druid.fi"
 
 ARG DRUPAL_CONF="/etc/mysql/conf.d/drupal.cnf"
 
-ENV MYSQL_DATABASE=drupal \
+ENV KIND=druid-docker-image \
+    MYSQL_DATABASE=drupal \
     MYSQL_USER=drupal \
     MYSQL_PASSWORD=drupal \
     MYSQL_ROOT_PASSWORD=drupal
