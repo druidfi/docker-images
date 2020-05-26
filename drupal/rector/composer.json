@@ -1,0 +1,19 @@
+{
+  "name": "druidfi/rector",
+  "description": "description",
+  "minimum-stability": "dev",
+
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Druid Oy",
+      "email": "info@druid.fi"
+    }
+  ],
+  "require": {
+    
+  },
+  "require-dev": {
+    "palantirnet/drupal-rector": "^0.5.4"
+  }
+}
