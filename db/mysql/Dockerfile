@@ -12,8 +12,8 @@ ENV KIND=druid-docker-image \
     MYSQL_PASSWORD=drupal \
     MYSQL_ROOT_PASSWORD=drupal
 
-RUN printf '[mysqld]\nmax_allowed_packet=16M' >> ${DRUPAL_CONF}
-
-RUN if [ "$MYSQL_MAJOR" = "8.0" ] ; then printf '\ndefault-authentication-plugin=mysql_native_password' >> ${DRUPAL_CONF} ; fi
-
-RUN cat ${DRUPAL_CONF}
+RUN printf '[mysqld]\nmax_allowed_packet=16M' >> ${DRUPAL_CONF} && \
+    if [ "${MYSQL_MAJOR}" = "8.0" ] ; \
+        then printf '\ndefault-authentication-plugin=mysql_native_password' >> ${DRUPAL_CONF} ; \
+    fi && \
+    cat ${DRUPAL_CONF}
