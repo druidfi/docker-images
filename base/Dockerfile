@@ -16,6 +16,9 @@ ENV KIND=druid-docker-image \
 # Copy configuration files and scripts
 COPY files/ /
 
+# Download mhsendmail binary
+ADD https://github.com/mailhog/mhsendmail/releases/download/v0.2.0/mhsendmail_linux_amd64 /usr/local/bin/mhsendmail
+
 # Upgrade existing packages
 RUN apk update && apk upgrade && \
     #
@@ -54,7 +57,8 @@ RUN apk update && apk upgrade && \
     # Set permissions
     #
     fix-permissions ${APP_PATH} && \
-    chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER}
+    chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER} && \
+    chmod +x /usr/local/bin/mhsendmail
 
 USER ${DEFAULT_USER}
 WORKDIR ${APP_PATH}
