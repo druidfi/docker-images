@@ -2,24 +2,27 @@ ARG PHP_VERSION
 
 FROM druidfi/php:${PHP_VERSION} AS baseline
 
-COPY composer.json /app/composer.json
+ARG DRP=/opt/drupal-rector
+
+COPY composer.json ${DRP}/composer.json
+COPY rector.yml ${DRP}/rector.yml
 
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
-RUN sudo apk --update --no-cache add \
+RUN sudo chown -R ${DEFAULT_USER}:${DEFAULT_USER} ${DRP} && \
+    sudo apk --update --no-cache add \
     # PHP extensions
     php7-ctype php7-tokenizer && \
     # fix work iconv library with alphine
     sudo apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv && \
     #
-    composer install --prefer-dist && \
+    # Install drupal-rector
+    #
+    composer --working-dir=${DRP} install --prefer-dist --no-suggest && \
     composer clear-cache && \
     sudo rm /etc/php7/conf.d/xdebug.ini && \
     # Show version
-    rector --version # && ls -lahR /home/druid/.composer
-
-# Copy configuration files and scripts
-COPY rector.yml /app/rector.yml
+    ${DRP}/vendor/bin/rector --version
 
 # Default command
-CMD ["rector"]
+CMD ["${DRP}/vendor/bin/rector"]
