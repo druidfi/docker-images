@@ -1,19 +1,18 @@
-FROM alpine:3.11
+ARG ALPINE_VERSION
 
-LABEL maintainer="druid.fi"
+FROM druidfi/base-init:alpine${ALPINE_VERSION}
 
 ARG USER=druid
 ARG UID=1000
 
-ENV SOCKET_DIR=/tmp/ssh-agent
+ENV SOCKET_DIR=/tmp/${USER}_ssh-agent
 ENV SSH_AUTH_SOCK=${SOCKET_DIR}/socket
 ENV SSH_AUTH_PROXY_SOCK=${SOCKET_DIR}/proxy-socket
 
-RUN apk add --update openssh socat && \
+RUN apk --update --no-cache add openssh socat sudo && \
     rm -rf /var/cache/apk/* && \
-    mkdir ${SOCKET_DIR} && \
     adduser -D -u ${UID} ${USER} && \
-    chown ${USER} ${SOCKET_DIR}
+    mkdir ${SOCKET_DIR} && chown ${USER} ${SOCKET_DIR}
 
 # Copy configuration files and scripts
 COPY files/ /

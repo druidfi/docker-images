@@ -4,7 +4,7 @@ PROJECT_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 
 include $(PROJECT_DIR)/make/*.mk
 
-ALPINE_VERSION := 3.11
+ALPINE_VERSION := 3.12
 BUILD_DATE := $(shell date +%F)
 COMPOSER_VERSION := 1.10.6
 SIMPLESAMLPHP_VERSION := 1.18.5

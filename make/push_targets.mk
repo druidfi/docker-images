@@ -11,7 +11,7 @@ push-all: push-base \
 PHONY += push-base
 push-base: ## Push all base images to Docker Hub
 	docker push druidfi/base:alpine3.7
-	docker push druidfi/base:alpine3.11
+	docker push druidfi/base:alpine$(ALPINE_VERSION)
 
 PHONY += push-php-pecl
 push-php-pecl: ## Push all PHP Pecl images to Docker Hub
@@ -82,7 +82,7 @@ push-node: ## Push all Node images to Docker Hub
 PHONY += push-misc
 push-misc: ## Push all other images to Docker Hub
 	docker push druidfi/nginx:1.17
-	docker push druidfi/curl:alpine3.11
+	docker push druidfi/curl:alpine$(ALPINE_VERSION)
 	docker push druidfi/varnish:6-drupal
-	docker push druidfi/dnsmasq:alpine3.11
+	docker push druidfi/dnsmasq:alpine$(ALPINE_VERSION)
 	docker push druidfi/saml-idp:$(SIMPLESAMLPHP_VERSION)

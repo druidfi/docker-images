@@ -1,15 +1,11 @@
 ARG ALPINE_VERSION
 
-FROM alpine:${ALPINE_VERSION}
+FROM druidfi/base-init:alpine${ALPINE_VERSION}
 
 ARG ALPINE_VERSION
 
-LABEL maintainer="druid.fi"
-
 # All images based on this one will have this ENV var
-ENV KIND=druid-docker-image \
-    ALPINE_VERSION=${ALPINE_VERSION} \
-    APP_PATH=/app \
+ENV APP_PATH=/app \
     DEFAULT_USER=druid \
     DEFAULT_USER_UID=1000
 
@@ -17,7 +13,7 @@ ENV KIND=druid-docker-image \
 COPY files/ /
 
 # Download mhsendmail binary
-ADD https://github.com/mailhog/mhsendmail/releases/download/v0.2.0/mhsendmail_linux_amd64 /usr/local/bin/mhsendmail
+COPY binaries/mhsendmail_linux_amd64_v0.2.0 /usr/local/bin/mhsendmail
 
 # Upgrade existing packages
 RUN apk update && apk upgrade && \

@@ -4,7 +4,7 @@ PHONY += build-all
 build-all: build-all-nginx build-all-php build-all-db build-all-misc build-all-node ## Build all images
 
 PHONY += build-all-base
-build-all-base: build-base-3.7 build-base-3.11 ## Build all base images
+build-all-base: build-base-3.7 build-base-3.12 ## Build all base images
 
 PHONY += build-all-nginx
 build-all-nginx: build-nginx-1.17 ## Build all Nginx images
@@ -17,7 +17,7 @@ build-all-php-71: ALPINE_VERSION := 3.7
 build-all-php-71: build-base-3.7 build-pecl-7.1 build-php-7.1 build-drupal-7.1 ## Build all PHP 7.1 images
 
 PHONY += build-all-php-73
-build-all-php-73: build-base-3.11 build-pecl-7.3 build-php-7.3 build-drupal-7.3 build-test-drupal-7.3 ## Build all PHP 7.3 images
+build-all-php-73: build-base-3.12 build-pecl-7.3 build-php-7.3 build-drupal-7.3 build-test-drupal-7.3 ## Build all PHP 7.3 images
 
 PHONY += build-all-db
 build-all-db: build-db-5.7 build-db-8.0 ## Build all database images
@@ -32,8 +32,13 @@ build-all-node: build-node-8 build-node-10 build-node-12 ## Build all Node LTS i
 # BUILD TARGETS
 #
 
+PHONY += build-base-init-%
+build-base-init-%: ## build base-init images
+	$(call step,Build druidfi/base-init:alpine$*)
+	docker build __base-init -t druidfi/base-init:alpine$* --build-arg ALPINE_VERSION=$*
+
 PHONY += build-base-%
-build-base-%: ## Build base image
+build-base-%: build-base-init-% ## Build base images
 	$(call step,Build druidfi/base:alpine$*)
 	docker build --no-cache --force-rm base -t druidfi/base:alpine$* \
 		--build-arg ALPINE_VERSION=$*

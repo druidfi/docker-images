@@ -19,7 +19,8 @@ build-saml-idp: ## Build build-saml-idp image
 
 PHONY += build-ssh-agent
 build-ssh-agent: ## Build ssh-agent image
-	docker build --no-cache --force-rm misc/ssh-agent -t druidfi/ssh-agent:alpine$(ALPINE_VERSION)
+	docker build --no-cache --force-rm misc/ssh-agent -t druidfi/ssh-agent:alpine$(ALPINE_VERSION) \
+		--build-arg ALPINE_VERSION=$(ALPINE_VERSION)
 
 PHONY += build-varnish
 build-varnish: ## Build Varnish image
