@@ -1,41 +1,20 @@
-#!/usr/bin/env sh
-
-case "$1" in
-    # service mode...
-    ssh-agent)
-        echo "Creating proxy socket..."
-        rm -f "${SSH_AUTH_SOCK}" "${SSH_AUTH_PROXY_SOCK}" > /dev/null 2>&1
-        socat UNIX-LISTEN:"${SSH_AUTH_PROXY_SOCK}",perm=0666,fork UNIX-CONNECT:"${SSH_AUTH_SOCK}" &
-
-        echo "Launching ssh-agent..."
-        exec sudo -u druid /usr/bin/ssh-agent -a "${SSH_AUTH_SOCK}" -d 2>&1
-        ;;
-    # manage mode...
-    ssh-add)
-        shift
-
-        ;;
-    # command mode...
-    *)
-        exec $@;;
-esac
-
-#
-# Amazee.io run.sh
-#
 #!/bin/sh
+set -e
 
-#case "$1" in
-#    ssh-agent)
-#        # NOTE: openssh 6.9 introduces -D for running ssh-agent in the foreground.
-#        rm -f ${SSH_AUTH_SOCK}
-#        exec sudo -u drupal /usr/bin/ssh-agent -a ${SSH_AUTH_SOCK} -d 2>&1
-#        ;;
-#    windows-key-add)
-#        cp -f $2 $2_
-#        chmod 400 $2_
-#        exec ssh-add $2_ 2>&1
-#        ;;
-#    *)
-#        exec $@;;
-#esac
+# Service mode
+if [ "$1" = "ssh-agent" ]; then
+	# Clean up previous socket files
+	rm -f "${SSH_AUTH_SOCK}" "${SSH_AUTH_PROXY_SOCK}"
+
+	# Create proxy-socket for ssh-agent (to give anyone access to the ssh-agent socket)
+	echo "Creating proxy socket..."
+	socat UNIX-LISTEN:"${SSH_AUTH_PROXY_SOCK}",perm=0666,fork UNIX-CONNECT:"${SSH_AUTH_SOCK}" &
+
+	# Start ssh-agent
+	echo "Launching ssh-agent..."
+	exec /usr/bin/ssh-agent -a "${SSH_AUTH_SOCK}" -d
+
+# Command mode
+else
+	exec "$@"
+fi

@@ -1,16 +1,22 @@
 #!/bin/sh
 set -e
 
-# Test if ssh-agents are mounted and symlink them as our known ssh-auth-sock file.
-# This will only be used in local development
-if [ -S /tmp/mounted_ssh-agent/socket ]; then
-  echo "Found socket from /tmp/mounted_ssh-agent/socket"
-  echo "Symlink $SSH_AUTH_SOCK to /tmp/mounted_ssh-agent/socket..."
-  ln -sf /tmp/mounted_ssh-agent/socket "$SSH_AUTH_SOCK"
-elif [ -S /tmp/amazeeio_ssh-agent/socket ]; then
-  echo "Found socket from /tmp/amazeeio_ssh-agent/socket"
-  echo "Symlink $SSH_AUTH_SOCK to /tmp/amazeeio_ssh-agent/socket..."
-  ln -sf /tmp/amazeeio_ssh-agent/socket "$SSH_AUTH_SOCK"
-else
-  echo "No socket found from /tmp/amazeeio_ssh-agent/socket"
+SOCKET_NAMES="druid amazeeio"
+SOCKET_FOUND=0
+
+for i in ${SOCKET_NAMES}
+do
+   :
+   SOCKET="/tmp/${i}_ssh-agent/socket"
+
+   if [ -S "${SOCKET}" ]; then
+    echo "Found socket from ${SOCKET}"
+    echo "Symlink ${SSH_AUTH_SOCK} to ${SOCKET}..."
+    ln -sf "${SOCKET}" "$SSH_AUTH_SOCK"
+    SOCKET_FOUND=1
+  fi
+done
+
+if [ ${SOCKET_FOUND} = 0 ]; then
+  echo "No socket found"
 fi
