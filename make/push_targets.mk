@@ -71,6 +71,7 @@ push-drupal-qa: ## Push all Drupal QA images to Docker Hub
 
 PHONY += push-nginx
 push-nginx: ## Push all Nginx images to Docker Hub
+	docker push druidfi/nginx:1.17
 	docker push druidfi/nginx:1.17-drupal
 
 PHONY += push-node
@@ -81,8 +82,8 @@ push-node: ## Push all Node images to Docker Hub
 
 PHONY += push-misc
 push-misc: ## Push all other images to Docker Hub
-	docker push druidfi/nginx:1.17
 	docker push druidfi/curl:alpine$(ALPINE_VERSION)
-	docker push druidfi/varnish:6-drupal
 	docker push druidfi/dnsmasq:alpine$(ALPINE_VERSION)
 	docker push druidfi/saml-idp:$(SIMPLESAMLPHP_VERSION)
+	docker push druidfi/ssh-agent:alpine$(ALPINE_VERSION)
+	docker push druidfi/varnish:6-drupal
