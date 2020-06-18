@@ -6,10 +6,10 @@ include $(PROJECT_DIR)/make/*.mk
 
 ALPINE_VERSION := 3.12
 BUILD_DATE := $(shell date +%F)
-COMPOSER_VERSION := 1.10.6
+COMPOSER_VERSION := 1.10.7
 SIMPLESAMLPHP_VERSION := 1.18.5
 PHP_71_MINOR_TAG := 7.1.33
-PHP_73_MINOR_TAG := 7.3.18
+PHP_73_MINOR_TAG := 7.3.19
 
 PHONY += help
 help: ## List all make commands
