@@ -15,6 +15,9 @@ COPY files/ /
 # Download mhsendmail binary
 COPY binaries/mhsendmail_linux_amd64_v0.2.0 /usr/local/bin/mhsendmail
 
+# See https://docs.microsoft.com/en-us/azure/mysql/howto-configure-ssl
+ADD https://www.digicert.com/CACerts/BaltimoreCyberTrustRoot.crt.pem /opt/ssl/
+
 # Upgrade existing packages
 RUN apk update && apk upgrade && \
     #
@@ -54,7 +57,8 @@ RUN apk update && apk upgrade && \
     #
     fix-permissions ${APP_PATH} && \
     chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER} && \
-    chmod +x /usr/local/bin/mhsendmail
+    chmod +x /usr/local/bin/mhsendmail && \
+    chmod 0644 /opt/ssl/BaltimoreCyberTrustRoot.crt.pem
 
 USER ${DEFAULT_USER}
 WORKDIR ${APP_PATH}
