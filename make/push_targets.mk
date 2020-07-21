@@ -71,8 +71,8 @@ push-drupal-qa: ## Push all Drupal QA images to Docker Hub
 
 PHONY += push-nginx
 push-nginx: ## Push all Nginx images to Docker Hub
-	docker push druidfi/nginx:1.17
-	docker push druidfi/nginx:1.17-drupal
+	docker push druidfi/nginx:$(NGINX_STABLE_VERSION)
+	docker push druidfi/nginx:$(NGINX_STABLE_VERSION)-drupal
 
 PHONY += push-node
 push-node: ## Push all Node images to Docker Hub

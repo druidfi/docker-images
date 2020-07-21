@@ -7,7 +7,7 @@ PHONY += build-all-base
 build-all-base: build-base-3.7 build-base-3.12 ## Build all base images
 
 PHONY += build-all-nginx
-build-all-nginx: build-nginx-1.17 ## Build all Nginx images
+build-all-nginx: build-nginx ## Build all Nginx images
 
 PHONY += build-all-php
 build-all-php: build-all-php-71 build-all-php-73 build-qa-toolset ## Build all PHP images (7.1, 7.3)
@@ -62,14 +62,14 @@ build-php-%: ## Build PHP and PHP-FPM images
 		--build-arg PHP_VERSION=$* \
 		--build-arg BUILD_DATE=$(BUILD_DATE)
 
-PHONY += build-nginx-%
-build-nginx-%: ## Build Nginx images
-	$(call step,Build druidfi/nginx:$*)
-	docker build --no-cache --force-rm nginx/base -t druidfi/nginx:$* \
-		--build-arg NGINX_VERSION=$*
-	$(call step,Build druidfi/nginx-drupal:$*)
-	docker build --no-cache --force-rm nginx/drupal -t druidfi/nginx:$*-drupal \
-		--build-arg NGINX_VERSION=$*
+PHONY += build-nginx
+build-nginx: ## Build Nginx images
+	$(call step,Build druidfi/nginx:$(NGINX_STABLE_VERSION))
+	docker build --no-cache --force-rm nginx/base -t druidfi/nginx:$(NGINX_STABLE_VERSION) \
+		--build-arg NGINX_VERSION=$(NGINX_STABLE_VERSION)
+	$(call step,Build druidfi/nginx-drupal:$(NGINX_STABLE_VERSION))
+	docker build --no-cache --force-rm nginx/drupal -t druidfi/nginx:$(NGINX_STABLE_VERSION)-drupal \
+		--build-arg NGINX_VERSION=$(NGINX_STABLE_VERSION)
 
 PHONY += build-drupal-%
 build-drupal-%: ## Build Drupal images
@@ -79,7 +79,7 @@ build-drupal-%: ## Build Drupal images
 	$(call step,Build druidfi/drupal:$*-web)
 	docker build --no-cache --force-rm drupal/web -t druidfi/drupal:$*-web --target baseline \
 		--build-arg PHP_VERSION=$* \
-		--build-arg NGINX_VERSION=1.17
+		--build-arg NGINX_VERSION=$(NGINX_STABLE_VERSION)
 #	$(call step,Build druidfi/drupal:$*-web-openshift)
 #	docker build --no-cache --force-rm drupal/web-openshift -t druidfi/drupal:$*-web-openshift --target baseline \
 #		--build-arg PHP_VERSION=$*
@@ -89,7 +89,7 @@ build-wp: ## Build Wordpress images
 	$(call step,Build druidfi/wordpress)
 	docker build wp -t druidfi/wordpress:7.3 --target baseline \
 		--build-arg PHP_VERSION=7.3 \
-		--build-arg NGINX_VERSION=1.17
+		--build-arg NGINX_VERSION=$(NGINX_STABLE_VERSION)
 
 PHONY += build-qa-toolset
 build-qa-toolset: PHP_VERSION := 7.3

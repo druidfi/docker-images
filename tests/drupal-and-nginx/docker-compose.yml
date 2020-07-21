@@ -5,7 +5,7 @@ services:
   nginx:
     #hostname: "${DRUPAL_HOSTNAME}"
     #container_name: "${COMPOSE_PROJECT_NAME}-nginx"
-    image: druidfi/nginx-drupal:1.17
+    image: druidfi/nginx-drupal:1.18
     tty: true
     volumes:
       - .:/app:delegated

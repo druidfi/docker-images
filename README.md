@@ -8,7 +8,7 @@ See https://hub.docker.com/u/druidfi for all the images.
 
 Tags:
 
-- `druidfi/base:alpine3.11`
+- `druidfi/base:alpine3.12`
 - `druidfi/base:alpine3.7`
 
 Features:
@@ -19,7 +19,7 @@ Features:
 
 ENV variables:
 
-- `ALPINE_VERSION=3.11|3.7`
+- `ALPINE_VERSION=3.12|3.7`
 - `APP_PATH=/app`
 - `DEFAULT_USER=druid`
 - `DEFAULT_USER_UID=1000`
@@ -29,7 +29,7 @@ ENV variables:
 
 ### Base variant
 
-- `druidfi/php:7.3` based on `druidfi/base:alpine3.11`
+- `druidfi/php:7.3` based on `druidfi/base:alpine3.12`
 - `druidfi/php:7.1` based on `druidfi/base:alpine3.7`
 
 Added features:
@@ -61,7 +61,7 @@ Added features:
 
 Needs:
 
-- Nginx (`druidfi/nginx-drupal:1.17`)
+- Nginx (`druidfi/nginx-drupal:1.18`)
 - Database (`mysql:5.7`)
 
 ENV variables:
@@ -116,7 +116,7 @@ Needs:
 
 ### Base variant
 
-- `1.17` based on `nginx:1.17-alpine`
+- `1.18` based on `nginx:1.18-alpine`
 
 Added features:
 
@@ -124,9 +124,9 @@ Added features:
 
 ### Drupal variant
 
-- `1.17-drupal` based on `druidfi/nginx:1.17`
+- `1.18-drupal` based on `druidfi/nginx:1.18`
 
-Added features on `1.17-drupal`:
+Added features on `1.18-drupal`:
 
 - Drupal specific Nginx configuration
 - Expects that PHP in running at `php:9000`
