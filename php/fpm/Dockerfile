@@ -11,4 +11,4 @@ RUN sudo apk --update --no-cache add \
 COPY files/ /
 
 # Default command
-CMD ["sudo", "/usr/sbin/php-fpm7", "-F", "-R"]
+CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "/usr/sbin/php-fpm7", "-F", "-R"]
