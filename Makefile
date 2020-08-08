@@ -6,7 +6,6 @@ include $(PROJECT_DIR)/make/*.mk
 
 ALPINE_VERSION := 3.12
 BUILD_DATE := $(shell date +%F)
-COMPOSER_VERSION := 1.10.9
 # see https://www.nginx.com/blog/nginx-1-18-1-19-released/
 NGINX_STABLE_VERSION := 1.18
 PHP_71_MINOR_TAG := 7.1.33
