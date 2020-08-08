@@ -5,9 +5,10 @@ FROM druidfi/drupal:${PHP_VERSION}-web AS baseline
 ARG BUILD_DATE=${BUILD_DATE}
 ARG BRANCH=master
 
+ENV COMPOSER_MEMORY_LIMIT=-1
+
 # Install make and create Drupal project
-RUN sudo apk --update --no-cache add make && \
-    COMPOSER_MEMORY_LIMIT=-1 composer create-project druidfi/spell:dev-${BRANCH} ${APP_PATH} --no-interaction && \
+RUN composer create-project druidfi/spell:dev-${BRANCH} ${APP_PATH} --no-interaction && \
     #
     # Install some modules for testing
     #
