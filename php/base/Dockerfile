@@ -1,16 +1,11 @@
 ARG ALPINE_VERSION
-ARG COMPOSER_VERSION
 
-FROM composer:${COMPOSER_VERSION} AS composer
 FROM druidfi/base:alpine${ALPINE_VERSION} AS baseline
 
 ENV APP_ENV=prod \
     COMPOSER_HOME=/home/${DEFAULT_USER}/.composer \
     # Add /app/vendor/bin to PATH
     PATH="/home/${DEFAULT_USER}/.composer/vendor/bin:${APP_PATH}/vendor/bin:${PATH}"
-
-# Add Composer binary
-COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 
 # Install software
 RUN sudo apk --update --no-cache add \
@@ -23,6 +18,8 @@ RUN sudo apk --update --no-cache add \
     patch \
     # Unzip for unzipping possible zip packages in composer.json
     unzip && \
+    # Install Composer
+    sudo php -r "readfile('http://getcomposer.org/installer');" | sudo php -- --install-dir=/usr/bin/ --filename=composer && \
     # Install hirak/prestissimo Composer plugin
     composer global require hirak/prestissimo && \
     #
