@@ -32,7 +32,7 @@ RUN sudo apk --update --no-cache add \
     #
     # Set permissions
     #
-    chmod +x /usr/local/bin/mhsendmail
+    sudo chmod +x /usr/local/bin/mhsendmail
 
 # Fix work iconv library with Alpine
 RUN sudo apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv
