@@ -3,8 +3,7 @@
 #
 
 PHONY += push-all
-push-all: push-base \
-		  push-php \
+push-all: push-php \
 		  push-drupal push-drupal-db push-drupal-qa \
 		  push-nginx push-node push-misc ## Push all images to Docker Hub
 
@@ -23,7 +22,7 @@ push-php-pecl: ## Push all PHP Pecl images to Docker Hub
 	docker push druidfi/php-pecl:uploadprogress-$(PHP_73_MINOR_TAG)
 
 PHONY += push-php
-push-php: push-php-pecl ## Push all PHP images to Docker Hub
+push-php: ## Push all PHP images to Docker Hub
 	$(call step,Push all PHP images)
 	docker push druidfi/php:7.1
 	docker push druidfi/php:7.3

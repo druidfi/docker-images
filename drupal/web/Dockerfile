@@ -6,8 +6,7 @@ FROM druidfi/drupal:${PHP_VERSION} AS baseline
 
 # Install Nginx
 RUN sudo apk --update --no-cache add nginx && \
-    sudo addgroup ${DEFAULT_USER} nginx && \
-    sudo addgroup ${DEFAULT_USER} www-data
+    sudo adduser ${DEFAULT_USER} nginx
 
 # Copy configuration files and scripts
 COPY files/ /
