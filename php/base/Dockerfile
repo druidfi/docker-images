@@ -7,6 +7,9 @@ ENV APP_ENV=prod \
     # Add /app/vendor/bin to PATH
     PATH="/home/${DEFAULT_USER}/.composer/vendor/bin:${APP_PATH}/vendor/bin:${PATH}"
 
+# Download mhsendmail binary
+COPY binaries /usr/local/bin/mhsendmail
+
 # Install software
 RUN sudo apk --update --no-cache add \
     # PHP extensions
@@ -25,7 +28,11 @@ RUN sudo apk --update --no-cache add \
     #
     # Set permissions on Composer home directory
     #
-    fix-permissions ${COMPOSER_HOME}
+    fix-permissions ${COMPOSER_HOME} && \
+    #
+    # Set permissions
+    #
+    chmod +x /usr/local/bin/mhsendmail
 
 # Fix work iconv library with Alpine
 RUN sudo apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv
