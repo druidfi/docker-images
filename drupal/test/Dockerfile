@@ -18,6 +18,7 @@ RUN composer req \
         drupal/gin_login \
         drupal/gin_toolbar \
         drupal/metatag \
+        drupal/olivero \
         drupal/paragraphs \
         drupal/pathauto \
         drupal/simplei \
