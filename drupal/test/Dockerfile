@@ -8,11 +8,20 @@ ARG BRANCH=master
 ENV COMPOSER_MEMORY_LIMIT=-1
 
 # Install make and create Drupal project
-RUN composer create-project druidfi/spell:dev-${BRANCH} ${APP_PATH} --no-interaction && \
+RUN composer create-project druidfi/spell:dev-${BRANCH} ${APP_PATH} --no-interaction
     #
     # Install some modules for testing
     #
-    composer req drupal/admin_toolbar drupal/metatag drupal/paragraphs drupal/pathauto drupal/pwa drupal/simplei && \
+RUN composer req \
+        drupal/admin_toolbar \
+        drupal/gin \
+        drupal/gin_login \
+        drupal/gin_toolbar \
+        drupal/metatag \
+        drupal/paragraphs \
+        drupal/pathauto \
+        drupal/simplei \
+        drupal/pwa && \
     #
     # Set up file folders
     #
