@@ -28,7 +28,7 @@ RUN sudo apk --update --no-cache add \
     #
     # Set permissions on Composer home directory
     #
-    fix-permissions ${COMPOSER_HOME} && \
+    sudo chown -R ${DEFAULT_USER}:${DEFAULT_USER} ${COMPOSER_HOME} && \
     #
     # Set permissions
     #
