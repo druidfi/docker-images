@@ -1,6 +1,6 @@
 FROM php:7.4-apache
 
-ARG SIMPLESAMLPHP_VERSION=1.18.5
+ARG SIMPLESAMLPHP_VERSION=1.18.7
 ARG SIMPLESAMLPHP_URL=https://github.com/simplesamlphp/simplesamlphp/releases/download/v${SIMPLESAMLPHP_VERSION}/simplesamlphp-${SIMPLESAMLPHP_VERSION}.tar.gz
 
 LABEL maintainer="druid.fi"

@@ -10,7 +10,7 @@ BUILD_DATE := $(shell date +%F)
 NGINX_STABLE_VERSION := 1.18
 PHP_71_MINOR_TAG := 7.1.33
 PHP_73_MINOR_TAG := 7.3.21
-SIMPLESAMLPHP_VERSION := 1.18.5
+SIMPLESAMLPHP_VERSION := 1.18.7
 
 PHONY += help
 help: ## List all make commands
