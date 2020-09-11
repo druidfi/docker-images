@@ -3,9 +3,7 @@ ARG PHP_VERSION
 FROM druidfi/php:${PHP_VERSION} AS baseline
 
 # Install software
-RUN sudo apk --update --no-cache add \
-    # PHP extensions
-    php7-fpm
+RUN sudo apk --update --no-cache add php7-fpm
 
 # Copy configuration files and scripts
 COPY files/ /

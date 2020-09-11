@@ -78,10 +78,14 @@ build-drupal-%: ## Build Drupal images
 	$(call step,Build druidfi/drupal:$*)
 	docker build --no-cache --force-rm drupal/base -t druidfi/drupal:$* \
 		--build-arg PHP_VERSION=$*
+	docker tag druidfi/drupal:$* druidfi/drupal:$(shell docker run --rm -it druidfi/drupal:$* bash -c "php -v | grep ^PHP | cut -d' ' -f2")
 	$(call step,Build druidfi/drupal:$*-web)
 	docker build --no-cache --force-rm drupal/web -t druidfi/drupal:$*-web --target baseline \
 		--build-arg PHP_VERSION=$* \
 		--build-arg NGINX_VERSION=$(NGINX_STABLE_VERSION)
+	$(call step,Tag specific version for druidfi/drupal:$*-web)
+	docker tag druidfi/drupal:$*-web druidfi/drupal:$(shell docker run --rm -it druidfi/drupal:$*-web bash -c "php -v | grep ^PHP | cut -d' ' -f2")-web
+
 #	$(call step,Build druidfi/drupal:$*-web-openshift)
 #	docker build --no-cache --force-rm drupal/web-openshift -t druidfi/drupal:$*-web-openshift --target baseline \
 #		--build-arg PHP_VERSION=$*
