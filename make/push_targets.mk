@@ -56,7 +56,7 @@ push-drupal: ## Push all Drupal images to Docker Hub
 	docker push druidfi/drupal:$(PHP_73_MINOR_TAG)
 	docker push druidfi/drupal:$(PHP_71_MINOR_TAG)-web
 	docker push druidfi/drupal:$(PHP_73_MINOR_TAG)-web
-	docker push druidfi/drupal:$(PHP_73_MINOR_TAG)-test
+	docker push druidfi/drupal:$(PHP_73_MINOR_TAG)-test || true
 
 PHONY += push-drupal-db
 push-drupal-db: ## Push all Drupal database images to Docker Hub
