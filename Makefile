@@ -1,6 +1,7 @@
 PHONY :=
 .DEFAULT_GOAL := help
 PROJECT_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
+DBC := DOCKER_BUILDKIT=1 docker build --progress=plain
 
 include $(PROJECT_DIR)/make/*.mk
 
@@ -9,7 +10,8 @@ BUILD_DATE := $(shell date +%F)
 # see https://www.nginx.com/blog/nginx-1-18-1-19-released/
 NGINX_STABLE_VERSION := 1.18
 PHP_71_MINOR_TAG := 7.1.33
-PHP_73_MINOR_TAG := 7.3.22
+PHP_73_MINOR_TAG := 7.3.23
+PHP_74_MINOR_TAG := 7.4.11
 SIMPLESAMLPHP_VERSION := 1.18.8
 
 PHONY += help
