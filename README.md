@@ -13,7 +13,6 @@ See https://hub.docker.com/u/druidfi for all the images.
 Tags:
 
 - `druidfi/base:alpine3.12`
-- `druidfi/base:alpine3.7`
 
 Features:
 
@@ -23,7 +22,7 @@ Features:
 
 ENV variables:
 
-- `ALPINE_VERSION=3.12|3.7`
+- `ALPINE_VERSION=3.12`
 - `APP_PATH=/app`
 - `DEFAULT_USER=druid`
 - `DEFAULT_USER_UID=1000`
@@ -34,7 +33,7 @@ ENV variables:
 ### Base variant
 
 - `druidfi/php:7.3` based on `druidfi/base:alpine3.12`
-- `druidfi/php:7.1` based on `druidfi/base:alpine3.7`
+- `druidfi/php:7.4` based on `druidfi/base:alpine3.12`
 
 Added features:
 
@@ -46,7 +45,7 @@ Added features:
 ### FPM variant
 
 - `druidfi/php:7.3-fpm` based on `druidfi/php:7.3`
-- `druidfi/php:7.1-fpm` based on `druidfi/php:7.1`
+- `druidfi/php:7.4-fpm` based on `druidfi/php:7.4`
 
 Added features:
 
@@ -57,7 +56,7 @@ Added features:
 ### Base variant
 
 - `druidfi/drupal:7.3` based on `druidfi/php:7.3-fpm`
-- `druidfi/drupal:7.1` based on `druidfi/php:7.1-fpm`
+- `druidfi/drupal:7.4` based on `druidfi/php:7.4-fpm`
 
 Added features:
 
@@ -81,7 +80,7 @@ ENV variables:
 ### Web variant
 
 - `druidfi/drupal:7.3-web` based on `druidfi/drupal:7.3`
-- `druidfi/drupal:7.1-web` based on `druidfi/drupal:7.1`
+- `druidfi/drupal:7.4-web` based on `druidfi/drupal:7.4`
 
 Added features:
 
@@ -90,19 +89,6 @@ Added features:
 Needs:
 
 - Database (`mysql:5.7`)
-
-### OpenShift variant
-
-- `druidfi/drupal:7.3-web-openshift` based on `druidfi/drupal:7.3-web`
-
-Added features:
-
-- s2i scripts (run, assemble, save-artifacts, usage)
-- Runs as UID 1000
-
-Needs:
-
-- Database
 
 ### Test variant
 
