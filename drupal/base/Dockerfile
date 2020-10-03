@@ -1,7 +1,8 @@
 ARG PHP_VERSION
+ARG PHP_SHORT_VERSION
 
 FROM druidfi/php-pecl:uploadprogress-${PHP_VERSION} as uploadprogress
-FROM druidfi/php:${PHP_VERSION}-fpm AS baseline
+FROM druidfi/php:${PHP_VERSION}-fpm AS build
 
 ENV DRUPAL_DB_NAME=drupal \
     DRUPAL_DB_USER=drupal \
@@ -16,11 +17,6 @@ RUN sudo apk --update --no-cache add \
     #
     imagemagick \
     #
-    # PHP extensions needed by Drupal
-    #
-    php7-bcmath php7-ctype php7-dom php7-exif php7-gd php7-intl php7-pdo php7-pdo_mysql php7-simplexml php7-sockets \
-    php7-tokenizer php7-xml php7-xmlreader php7-xmlwriter php7-zlib \
-    #
     # Install MySQL client
     #
     mysql-client \
@@ -33,8 +29,19 @@ RUN sudo apk --update --no-cache add \
     #
     mkdir -p /home/${DEFAULT_USER}/.drush /home/${DEFAULT_USER}/drush-backups/drupal
 
-# When Alpine 3.7 is not used anymore, remove this line
-RUN if [ "$ALPINE_VERSION" = "3.7" ] ; then sudo apk --update --no-cache add php7-mcrypt ; fi
+FROM build as build-php-73
+
+RUN sudo apk --update --no-cache add \
+    php7-bcmath php7-ctype php7-dom php7-exif php7-gd php7-intl php7-pdo php7-pdo_mysql php7-simplexml php7-sockets \
+    php7-tokenizer php7-xml php7-xmlreader php7-xmlwriter php7-zlib
+
+FROM build as build-php-74
+
+RUN sudo apk --update --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community add \
+    php7-bcmath php7-ctype php7-dom php7-exif php7-gd php7-intl php7-pdo php7-pdo_mysql php7-simplexml php7-sockets \
+    php7-tokenizer php7-xml php7-xmlreader php7-xmlwriter php7-zlib
+
+FROM build-php-${PHP_SHORT_VERSION} as final
 
 # Copy configuration files and scripts
 COPY files/ /
