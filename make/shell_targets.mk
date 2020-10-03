@@ -6,7 +6,7 @@ HOST := test.druid.fi
 
 PHONY += shell-base
 shell-base: ## Login to base container
-	docker run --rm -it --user=druid --hostname $(HOST) druidfi/base:alpine3.10 bash
+	docker run --rm -it --user=druid --hostname $(HOST) druidfi/base:alpine3.12 bash
 
 PHONY += shell-php
 shell-php: IMG := php

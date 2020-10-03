@@ -14,11 +14,11 @@ build-all-php: build-all-php-73 build-all-php-74 build-qa-toolset ## Build all P
 
 PHONY += build-all-php-73
 build-all-php-73: PHP_SHORT_VERSION := 73
-build-all-php-73: build-base-3.12 build-pecl-7.3 build-php-7.3 build-drupal-7.3 ## Build all PHP 7.3 images
+build-all-php-73: build-base-3.12 build-pecl-7.3 build-php-7.3 build-drupal-7.3 build-test-drupal-7.3 ## Build all PHP 7.3 images
 
 PHONY += build-all-php-74
 build-all-php-74: PHP_SHORT_VERSION := 74
-build-all-php-74: build-base-3.12 build-pecl-7.4 build-php-7.4 build-drupal-7.4 ## Build all PHP 7.4 images
+build-all-php-74: build-base-3.12 build-pecl-7.4 build-php-7.4 build-drupal-7.4 build-test-drupal-7.4 ## Build all PHP 7.4 images
 
 PHONY += build-all-db
 build-all-db: build-db-5.7 build-db-8.0 ## Build all database images

@@ -37,7 +37,7 @@ push-php: php-version-checker ## Push all PHP images to Docker Hub
 	docker push druidfi/php:7.4
 	docker push druidfi/php:7.3-fpm
 	docker push druidfi/php:7.4-fpm
-	$(call step,Tag PHP minor versions for PHP images)
+	$(call step,Tag and push PHP minor versions for PHP images)
 	docker tag druidfi/php:7.3 druidfi/php:$(PHP_73_MINOR_TAG)
 	docker tag druidfi/php:7.4 druidfi/php:$(PHP_74_MINOR_TAG)
 	docker tag druidfi/php:7.3-fpm druidfi/php:$(PHP_73_MINOR_TAG)-fpm
@@ -54,13 +54,13 @@ push-drupal: php-version-checker ## Push all Drupal images to Docker Hub
 	docker push druidfi/drupal:7.4
 	docker push druidfi/drupal:7.3-web
 	docker push druidfi/drupal:7.4-web
-	docker push druidfi/drupal:7.3-test
-	$(call step,Tag PHP minor versions for Drupal images)
+	docker push druidfi/drupal:7.3-test || true
+	$(call step,Tag and push PHP minor versions for Drupal images)
 	docker tag druidfi/drupal:7.3 druidfi/drupal:$(PHP_73_MINOR_TAG)
 	docker tag druidfi/drupal:7.4 druidfi/drupal:$(PHP_74_MINOR_TAG)
 	docker tag druidfi/drupal:7.3-web druidfi/drupal:$(PHP_73_MINOR_TAG)-web
 	docker tag druidfi/drupal:7.4-web druidfi/drupal:$(PHP_74_MINOR_TAG)-web
-	docker tag druidfi/drupal:7.3-test druidfi/drupal:$(PHP_73_MINOR_TAG)-test
+	docker tag druidfi/drupal:7.3-test druidfi/drupal:$(PHP_73_MINOR_TAG)-test || true
 	docker push druidfi/drupal:$(PHP_73_MINOR_TAG)
 	docker push druidfi/drupal:$(PHP_74_MINOR_TAG)
 	docker push druidfi/drupal:$(PHP_73_MINOR_TAG)-web

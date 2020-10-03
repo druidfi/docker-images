@@ -27,7 +27,7 @@ RUN composer req \
     # Set up file folders
     #
     mkdir ${APP_PATH}/public/sites/default/files && \
-    chown -R ${DEFAULT_USER}:${DEFAULT_USER} ${APP_PATH}/public/sites/default/files && \
+    sudo chown -R www-data:www-data ${APP_PATH}/public/sites/default/files && \
     #
     # Cleanup
     #

@@ -11,13 +11,15 @@ services:
     environment:
       DRUSH_OPTIONS_URI: "https://${DRUPAL_HOSTNAME}"
     labels:
-      traefik.enable: true
-      traefik.port: 8080
-      traefik.frontend.rule: "Host:${DRUPAL_HOSTNAME}"
-      traefik.frontend.redirect.entryPoint: https
+      - "traefik.enable=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.entrypoints=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.rule=Host(`${DRUPAL_HOSTNAME}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.tls=true"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-app.loadbalancer.server.port=8080"
+      - "traefik.docker.network=stonehenge-network"
     networks:
       - internal
-      - dev-network
+      - stonehenge-network
     depends_on:
       - db
 
@@ -34,8 +36,7 @@ services:
 networks:
   internal:
     external: false
-  dev-network:
-    name: stonehenge-network
+  stonehenge-network:
     external: true
 
 #volumes:
