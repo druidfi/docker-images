@@ -100,13 +100,17 @@ build-wp: ## Build Wordpress images
 PHONY += build-qa-toolset
 build-qa-toolset: ## Build Drupal QA toolset image
 	$(call step,Build druidfi/drupal-qa:8)
-	$(DBC) --no-cache --force-rm php/qa/drupal -t druidfi/drupal-qa:8 \
-		--build-arg DRUPAL_VERSION=8
+	$(DBC) --no-cache --force-rm php/qa/base -t druidfi/qa:drupal-8 \
+		--build-arg QA_SET=drupal-8
 	$(call step,Build druidfi/drupal-qa:7)
-	$(DBC) --no-cache --force-rm php/qa/drupal -t druidfi/drupal-qa:7 \
-		--build-arg DRUPAL_VERSION=7
+	$(DBC) --no-cache --force-rm php/qa/base -t druidfi/qa:drupal-7 \
+		--build-arg QA_SET=drupal-7
 	$(call step,Build druidfi/qa:symfony)
-	$(DBC) --no-cache --force-rm php/qa/symfony -t druidfi/qa:symfony
+	$(DBC) --no-cache --force-rm php/qa/base -t druidfi/qa:symfony \
+		--build-arg QA_SET=symfony
+	$(call step,Build druidfi/qa:wordpress)
+	$(DBC) --no-cache --force-rm php/qa/base -t druidfi/qa:wordpress \
+		--build-arg QA_SET=wordpress
 
 PHONY += build-rector
 build-rector: PHP_VERSION := 7.3

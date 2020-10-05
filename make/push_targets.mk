@@ -3,8 +3,8 @@
 #
 
 PHONY += php-version-checker
-php-version-checker: PHP_73_IMG := druidfi/drupal:7.3
-php-version-checker: PHP_74_IMG := druidfi/drupal:7.4
+php-version-checker: PHP_73_IMG := druidfi/php:7.3
+php-version-checker: PHP_74_IMG := druidfi/php:7.4
 php-version-checker:
 	$(eval PHP_73_MINOR_TAG := $(shell docker run --rm -it $(PHP_73_IMG) bash -c "php -v | grep ^PHP | cut -d' ' -f2"))
 	@test $(PHP_73_MINOR_TAG) || (echo "PHP_73_MINOR_TAG not set! Have you build PHP images?" && exit 1)
@@ -14,7 +14,8 @@ php-version-checker:
 PHONY += push-all
 push-all: php-version-checker \
 		  push-php \
-		  push-drupal push-drupal-db push-drupal-qa \
+		  push-drupal push-drupal-db \
+		  push-qa \
 		  push-nginx push-node push-misc ## Push all images to Docker Hub
 
 PHONY += push-base
@@ -75,10 +76,16 @@ push-drupal-db: ## Push all Drupal database images to Docker Hub
 	docker push druidfi/db:mysql5.7-drupal
 	docker push druidfi/db:mysql8.0-drupal
 
-PHONY += push-drupal-qa
-push-drupal-qa: ## Push all Drupal QA images to Docker Hub
+PHONY += push-qa
+push-qa: ## Push all QA images to Docker Hub
+	docker push druidfi/qa:drupal-8
+	docker push druidfi/qa:drupal-7
+	docker tag druidfi/qa:drupal-8 druidfi/drupal-qa:8
+	docker tag druidfi/qa:drupal-7 druidfi/drupal-qa:7
 	docker push druidfi/drupal-qa:8
 	docker push druidfi/drupal-qa:7
+	docker push druidfi/qa:symfony
+	docker push druidfi/qa:wordpress
 
 PHONY += push-nginx
 push-nginx: ## Push all Nginx images to Docker Hub
