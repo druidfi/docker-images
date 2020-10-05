@@ -55,17 +55,20 @@ push-drupal: php-version-checker ## Push all Drupal images to Docker Hub
 	docker push druidfi/drupal:7.3-web
 	docker push druidfi/drupal:7.4-web
 	docker push druidfi/drupal:7.3-test || true
+	docker push druidfi/drupal:7.4-test || true
 	$(call step,Tag and push PHP minor versions for Drupal images)
 	docker tag druidfi/drupal:7.3 druidfi/drupal:$(PHP_73_MINOR_TAG)
 	docker tag druidfi/drupal:7.4 druidfi/drupal:$(PHP_74_MINOR_TAG)
 	docker tag druidfi/drupal:7.3-web druidfi/drupal:$(PHP_73_MINOR_TAG)-web
 	docker tag druidfi/drupal:7.4-web druidfi/drupal:$(PHP_74_MINOR_TAG)-web
 	docker tag druidfi/drupal:7.3-test druidfi/drupal:$(PHP_73_MINOR_TAG)-test || true
+	docker tag druidfi/drupal:7.4-test druidfi/drupal:$(PHP_74_MINOR_TAG)-test || true
 	docker push druidfi/drupal:$(PHP_73_MINOR_TAG)
 	docker push druidfi/drupal:$(PHP_74_MINOR_TAG)
 	docker push druidfi/drupal:$(PHP_73_MINOR_TAG)-web
 	docker push druidfi/drupal:$(PHP_74_MINOR_TAG)-web
 	docker push druidfi/drupal:$(PHP_73_MINOR_TAG)-test || true
+	docker push druidfi/drupal:$(PHP_74_MINOR_TAG)-test || true
 
 PHONY += push-drupal-db
 push-drupal-db: ## Push all Drupal database images to Docker Hub
