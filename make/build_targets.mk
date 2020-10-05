@@ -98,19 +98,15 @@ build-wp: ## Build Wordpress images
 		--build-arg NGINX_VERSION=$(NGINX_STABLE_VERSION)
 
 PHONY += build-qa-toolset
-build-qa-toolset: PHP_VERSION := 7.3
 build-qa-toolset: ## Build Drupal QA toolset image
 	$(call step,Build druidfi/drupal-qa:8)
-	$(DBC) --no-cache --force-rm drupal/qa -t druidfi/drupal-qa:8 \
-		--build-arg PHP_VERSION=$(PHP_VERSION) \
+	$(DBC) --no-cache --force-rm php/qa/drupal -t druidfi/drupal-qa:8 \
 		--build-arg DRUPAL_VERSION=8
 	$(call step,Build druidfi/drupal-qa:7)
-	$(DBC) --no-cache --force-rm drupal/qa -t druidfi/drupal-qa:7 \
-		--build-arg PHP_VERSION=$(PHP_VERSION) \
+	$(DBC) --no-cache --force-rm php/qa/drupal -t druidfi/drupal-qa:7 \
 		--build-arg DRUPAL_VERSION=7
 	$(call step,Build druidfi/qa:symfony)
-	$(DBC) --no-cache --force-rm php/qa/symfony -t druidfi/qa:symfony \
-		--build-arg PHP_VERSION=$(PHP_VERSION)
+	$(DBC) --no-cache --force-rm php/qa/symfony -t druidfi/qa:symfony
 
 PHONY += build-rector
 build-rector: PHP_VERSION := 7.3
