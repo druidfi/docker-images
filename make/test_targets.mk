@@ -22,6 +22,12 @@ test-drupal-running:
 	@(cd tests/drupal-test/ && docker-compose down -v && docker-compose up -d --remove-orphans)
 	$(call step,See the example site: https://test-drupal.docker.sh)
 
+PHONY += test-wp-running
+test-wp-running:
+	$(call step,Run wp-test container)
+	@(cd tests/wp-test/ && docker-compose down -v && docker-compose up -d --remove-orphans)
+	$(call step,See the example site: https://test-wp.docker.sh)
+
 PHONY += example-drupal
 example-drupal:
 	$(call step,Setup example Drupal setup with Nginx and PHP containers)

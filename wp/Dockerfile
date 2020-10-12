@@ -10,7 +10,7 @@ RUN sudo apk --update --no-cache add \
     #
     imagemagick \
     #
-    # PHP extensions needed by Drupal
+    # PHP extensions needed by WordPress
     #
     php7-bcmath php7-ctype php7-dom php7-exif php7-gd php7-intl php7-mysqli php7-pdo php7-pdo_mysql php7-simplexml php7-sockets \
     php7-tokenizer php7-xml php7-xmlreader php7-xmlwriter php7-zlib \
@@ -21,9 +21,7 @@ RUN sudo apk --update --no-cache add \
     #
     # Install Nginx
     #
-    nginx && \
-    sudo addgroup ${DEFAULT_USER} nginx && \
-    sudo addgroup ${DEFAULT_USER} www-data
+    nginx
 
 # Copy configuration files and scripts
 COPY files/ /

@@ -2,7 +2,5 @@
 
 echo "Start up PHP-FPM..."
 
-#
-# NOTE! Don't run this with sudo, as then ENVs will not work
-#
-php-fpm7
+# -E option of sudo copies all env variables of current user to the root
+sudo -E LD_PRELOAD=/usr/lib/preloadable_libiconv.so php-fpm7

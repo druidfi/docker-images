@@ -1,0 +1,50 @@
+version: '3.7'
+
+services:
+
+  app:
+    container_name: "${COMPOSE_PROJECT_NAME}-app"
+    hostname: "${WP_HOSTNAME}"
+    image: "${WP_IMAGE}"
+#    volumes:
+#      - ssh:/tmp/amazeeio_ssh-agent:ro
+    environment:
+      WP_SITEURL: "https://${WP_HOSTNAME}"
+      DB_HOST: "db"
+      DB_NAME: "drupal"
+      DB_USER: "drupal"
+      DB_PASSWORD: "drupal"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.entrypoints=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.rule=Host(`${WP_HOSTNAME}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.tls=true"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-app.loadbalancer.server.port=8080"
+      - "traefik.docker.network=stonehenge-network"
+    networks:
+      - internal
+      - stonehenge-network
+    depends_on:
+      - db
+
+  db:
+    container_name: "${COMPOSE_PROJECT_NAME}-db"
+    image: druidfi/db:mysql5.7-drupal
+#    volumes:
+#      - db_data:/var/lib/mysql
+    ports:
+      - 3306
+    networks:
+      - internal
+
+networks:
+  internal:
+    external: false
+  stonehenge-network:
+    external: true
+
+#volumes:
+#  db_data:
+#  ssh:
+#    name: stonehenge-ssh
+#    external: true
