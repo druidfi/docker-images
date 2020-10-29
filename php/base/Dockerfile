@@ -32,8 +32,6 @@ FROM build-php-${PHP_SHORT_VERSION} as final
 
 # Install software
 RUN sudo php -r "readfile('http://getcomposer.org/installer');" | sudo php -- --install-dir=/usr/bin/ --filename=composer && \
-    # Install hirak/prestissimo Composer plugin
-    composer global require hirak/prestissimo && \
     #
     # Set permissions on Composer home directory
     #
