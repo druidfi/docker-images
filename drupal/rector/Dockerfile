@@ -18,7 +18,7 @@ RUN sudo chown -R ${DEFAULT_USER}:${DEFAULT_USER} ${DRP} && \
     #
     # Install drupal-rector
     #
-    composer --working-dir=${DRP} install --prefer-dist --no-suggest && \
+    composer --working-dir=${DRP} install --prefer-dist && \
     composer clear-cache && \
     sudo rm /etc/php7/conf.d/xdebug.ini && \
     # Show version
