@@ -2,8 +2,6 @@
 
 See https://hub.docker.com/u/druidfi for all the images.
 
-[![buddy pipeline](https://app.buddy.works/druid/docker-images/pipelines/pipeline/247351/badge.svg?token=00e9b792cb528237d5cb48cfc2a8ef03098512d5e45465b2e948702e16c0d6e0 "buddy pipeline")](https://app.buddy.works/druid/docker-images/pipelines/pipeline/247351)
-
 ## Requirements
 
 - `DOCKER_BUILDKIT=1` << this is enabled on build commands.
@@ -38,8 +36,7 @@ ENV variables:
 Added features:
 
 - Minimal set of PHP extensions
-- Composer 1.10.x
-- hirak/prestissimo Composer plugin
+- Composer 2.0.x
 - `/app/vendor/bin` added  to `$PATH`
 
 ### FPM variant
