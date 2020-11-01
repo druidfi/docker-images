@@ -8,7 +8,7 @@ ARG BRANCH=master
 ENV COMPOSER_MEMORY_LIMIT=-1
 
 # Install make and create Drupal project
-RUN composer create-project druidfi/spell:dev-${BRANCH} ${APP_PATH} --no-interaction
+RUN composer create-project --no-progress druidfi/spell:dev-${BRANCH} ${APP_PATH} --no-interaction
     #
     # Install some modules for testing
     #
