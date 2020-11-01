@@ -6,10 +6,7 @@ FROM druidfi/base:alpine${ALPINE_VERSION} AS build
 ENV APP_ENV=prod \
     COMPOSER_HOME=/home/${DEFAULT_USER}/.composer \
     # Add /app/vendor/bin to PATH
-    PATH="/home/${DEFAULT_USER}/.composer/vendor/bin:${APP_PATH}/vendor/bin:${PATH}"
-
-# Download mhsendmail binary
-COPY binaries /usr/local/bin/mhsendmail
+    PATH="${PATH}:/home/${DEFAULT_USER}/.composer/vendor/bin:${APP_PATH}/vendor/bin"
 
 # Install software
 RUN sudo apk --update --no-cache add patch unzip
@@ -35,11 +32,8 @@ RUN sudo php -r "readfile('http://getcomposer.org/installer');" | sudo php -- --
     #
     # Set permissions on Composer home directory
     #
-    sudo chown -R ${DEFAULT_USER}:${DEFAULT_USER} ${COMPOSER_HOME} && \
-    #
-    # Set permissions
-    #
-    sudo chmod +x /usr/local/bin/mhsendmail
+    sudo mkdir -p ${COMPOSER_HOME} && \
+    sudo chown -R ${DEFAULT_USER}:${DEFAULT_USER} ${COMPOSER_HOME}
 
 # Fix work iconv library with Alpine
 RUN sudo apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv
