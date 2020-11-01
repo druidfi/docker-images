@@ -12,6 +12,11 @@ build-dnsmasq: ## Build dnsmasq image
 	docker build --no-cache --force-rm misc/dnsmasq -t druidfi/dnsmasq:alpine$(ALPINE_VERSION) \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION)
 
+PHONY += build-mailhog
+build-mailhog: ## Build mailhog image
+	docker build --no-cache --force-rm misc/mailhog -t druidfi/mailhog:$(MAILHOG_VERSION) \
+		--build-arg MAILHOG_VERSION=$(MAILHOG_VERSION)
+
 PHONY += build-saml-idp
 build-saml-idp: ## Build build-saml-idp image
 	docker build --no-cache --force-rm misc/saml-idp -t druidfi/saml-idp:$(SIMPLESAMLPHP_VERSION) \
