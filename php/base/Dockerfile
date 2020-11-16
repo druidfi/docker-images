@@ -30,6 +30,10 @@ FROM build-php-${PHP_SHORT_VERSION} as final
 # Install software
 RUN sudo php -r "readfile('http://getcomposer.org/installer');" | sudo php -- --install-dir=/usr/bin/ --filename=composer && \
     #
+    #
+    #
+    sudo composer self-update --1 && \
+    #
     # Set permissions on Composer home directory
     #
     sudo mkdir -p ${COMPOSER_HOME} && \
