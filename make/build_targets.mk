@@ -1,10 +1,12 @@
+BUILD_TARGETS := build-all-nginx build-all-php
+
 include $(PROJECT_DIR)/make/build/*.mk
 
 PHONY += build-all
-build-all: build-all-nginx build-all-php build-all-db build-all-misc build-all-node clean-up ## Build all images
+build-all: $(BUILD_TARGETS) clean-up ## Build all images
 
 PHONY += build-all-base
-build-all-base: build-base-3.12 ## Build all base images
+build-all-base: build-base-3.12.1 ## Build all base images
 
 PHONY += build-all-nginx
 build-all-nginx: build-nginx ## Build all Nginx images
@@ -13,28 +15,25 @@ PHONY += build-all-php
 build-all-php: build-all-php-73 build-all-php-74 build-qa-toolset ## Build all PHP images (7.3, 7.4)
 
 PHONY += build-all-php-73
+#build-all-php-73: ALPINE_VERSION := $(ALPINE_VERSION)
 build-all-php-73: PHP_SHORT_VERSION := 73
-build-all-php-73: build-base-3.12 build-pecl-7.3 build-php-7.3 build-drupal-7.3 build-test-drupal-7.3 ## Build all PHP 7.3 images
+build-all-php-73: --build-base build-pecl-7.3 build-php-7.3 build-drupal-7.3 build-test-drupal-7.3 ## Build all PHP 7.3 images
 
 PHONY += build-all-php-74
+#build-all-php-74: ALPINE_VERSION := $(ALPINE_VERSION)
 build-all-php-74: PHP_SHORT_VERSION := 74
-build-all-php-74: build-base-3.12 build-pecl-7.4 build-php-7.4 build-drupal-7.4 build-test-drupal-7.4 ## Build all PHP 7.4 images
-
-PHONY += build-all-db
-build-all-db: build-db-5.7 build-db-8.0 ## Build all database images
-
-PHONY += build-all-misc
-build-all-misc: build-curl build-dnsmasq build-saml-idp build-varnish ## Build all misc images
-
-PHONY += build-all-node
-build-all-node: build-node-8 build-node-10 build-node-12 build-node-14 ## Build all Node LTS images (8, 10, 12, 14)
+build-all-php-74: --build-base build-pecl-7.4 build-php-7.4 build-drupal-7.4 build-test-drupal-7.4 ## Build all PHP 7.4 images
 
 PHONY += build-all-test
-build-all-test: build-test-drupal-7.3
+build-all-test: build-test-drupal-7.3 build-test-drupal-7.4
 
 #
 # BUILD TARGETS
 #
+
+PHONY += --build-base
+--build-base:
+	@$(MAKE) build-base-$(ALPINE_VERSION)
 
 PHONY += build-base-init-%
 build-base-init-%: ## build base-init images
