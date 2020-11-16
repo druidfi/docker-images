@@ -4,8 +4,8 @@ FROM druidfi/php:7.3 AS build
 
 ENV PANTHER_NO_SANDBOX=1
 ENV PANTHER_CHROME_DRIVER_BINARY=/usr/lib/chromium/chromedriver
-ENV PANTHER_WEB_SERVER_PORT 9800
-ENV PANTHER_CHROME_ARGUMENTS '--ignore-certificate-errors'
+ENV PANTHER_WEB_SERVER_PORT=9800
+ENV PANTHER_CHROME_ARGUMENTS='--ignore-certificate-errors'
 
 RUN sudo apk --update --no-cache add \
     # PHP extensions
