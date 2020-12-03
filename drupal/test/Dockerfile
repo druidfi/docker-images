@@ -12,13 +12,12 @@ RUN composer create-project --no-progress druidfi/spell:dev-${BRANCH} ${APP_PATH
     #
     # Install some modules for testing
     #
-RUN composer req \
+RUN composer req --no-progress \
         drupal/admin_toolbar \
         drupal/gin \
         drupal/gin_login \
         drupal/gin_toolbar \
         drupal/metatag \
-        drupal/olivero \
         drupal/paragraphs \
         drupal/pathauto \
         drupal/simplei \
