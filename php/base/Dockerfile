@@ -13,26 +13,38 @@ RUN sudo apk --update --no-cache add patch unzip
 
 FROM build as build-php-73
 
+ENV PHP_MAJOR_VERSION=7
+
 RUN sudo apk --update --no-cache add \
     php7 php7-curl php7-fileinfo php7-iconv php7-json php7-mbstring php7-opcache php7-openssl php7-phar \
     php7-session php7-zip \
-    php7-pecl-xdebug php7-pecl-apcu
+    php7-pecl-apcu php7-pecl-uploadprogress php7-pecl-xdebug
 
 FROM build as build-php-74
+
+ENV PHP_MAJOR_VERSION=7
 
 RUN sudo apk --update --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community add \
     php7 php7-curl php7-fileinfo php7-iconv php7-json php7-mbstring php7-opcache php7-openssl php7-phar \
     php7-session php7-zip \
-    php7-pecl-xdebug php7-pecl-apcu
+    php7-pecl-apcu php7-pecl-uploadprogress php7-pecl-xdebug
+
+FROM build as build-php-80
+
+ENV PHP_MAJOR_VERSION=8
+
+RUN sudo apk --update --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community add libzip && \
+    sudo apk --update --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community add \
+    php8 php8-curl php8-fileinfo php8-iconv php8-mbstring php8-opcache php8-openssl php8-phar \
+    php8-session php8-zip && \
+    sudo apk --update --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing add \
+    php8-pecl-apcu php8-pecl-uploadprogress php8-pecl-xdebug && \
+    sudo ln -sfn /usr/bin/php8 /usr/bin/php
 
 FROM build-php-${PHP_SHORT_VERSION} as final
 
 # Install software
-RUN sudo php -r "readfile('http://getcomposer.org/installer');" | sudo php -- --install-dir=/usr/bin/ --filename=composer && \
-    #
-    #
-    #
-    sudo composer self-update --1 && \
+RUN sudo php -r "readfile('http://getcomposer.org/installer');" | sudo php -- --install-dir=/usr/local/bin/ --filename=composer && \
     #
     # Set permissions on Composer home directory
     #
@@ -47,4 +59,4 @@ ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 COPY files/ /
 
 # Default command
-CMD ["sudo", "php", "-v"]
+CMD ["php", "-v"]

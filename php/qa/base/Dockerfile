@@ -13,14 +13,14 @@ RUN sudo apk --update --no-cache add \
     # Chromium for Panther
     chromium chromium-chromedriver && \
     # Install Panther
-    composer global require \
-        dealerdirect/phpcodesniffer-composer-installer:^0.6 \
+    composer global require --no-progress \
+        dealerdirect/phpcodesniffer-composer-installer:^0.7 \
         symfony/panther:^0.8
 
 FROM build as drupal
 
 # Install Drupal ruleset for CodeSniffer
-RUN composer global require drupal/coder:^8.3
+RUN composer global require --no-progress drupal/coder:^8.3
 
 # Default command
 CMD ["phpcs", "-i"]
@@ -37,7 +37,7 @@ COPY files/drupal_8/ /
 
 FROM build AS symfony
 
-RUN composer global require \
+RUN composer global require --no-progress \
         escapestudios/symfony2-coding-standard:^3.11 \
         friendsofphp/php-cs-fixer
 
@@ -50,7 +50,7 @@ CMD ["php-cs-fixer", "--version"]
 FROM build AS wordpress
 
 # Install Wordpress ruleset for CodeSniffer
-RUN composer global require wp-coding-standards/wpcs
+RUN composer global require --no-progress wp-coding-standards/wpcs
 
 # Default command
 CMD ["phpcs", "-i"]

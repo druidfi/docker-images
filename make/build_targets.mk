@@ -5,24 +5,26 @@ include $(PROJECT_DIR)/make/build/*.mk
 PHONY += build-all
 build-all: $(BUILD_TARGETS) clean-up ## Build all images
 
-PHONY += build-all-base
-build-all-base: build-base-3.12.1 ## Build all base images
-
 PHONY += build-all-nginx
 build-all-nginx: build-nginx ## Build all Nginx images
 
 PHONY += build-all-php
-build-all-php: build-all-php-73 build-all-php-74 build-qa-toolset ## Build all PHP images (7.3, 7.4)
+build-all-php: build-all-php-73 build-all-php-74 build-all-php-80 build-qa-toolset ## Build all PHP images (7.3, 7.4, 8.0)
 
 PHONY += build-all-php-73
 #build-all-php-73: ALPINE_VERSION := $(ALPINE_VERSION)
 build-all-php-73: PHP_SHORT_VERSION := 73
-build-all-php-73: --build-base build-pecl-7.3 build-php-7.3 build-drupal-7.3 build-test-drupal-7.3 ## Build all PHP 7.3 images
+build-all-php-73: --build-base build-php-7.3 build-drupal-7.3 build-test-drupal-7.3 ## Build all PHP 7.3 images
 
 PHONY += build-all-php-74
 #build-all-php-74: ALPINE_VERSION := $(ALPINE_VERSION)
 build-all-php-74: PHP_SHORT_VERSION := 74
-build-all-php-74: --build-base build-pecl-7.4 build-php-7.4 build-drupal-7.4 build-test-drupal-7.4 ## Build all PHP 7.4 images
+build-all-php-74: --build-base build-php-7.4 build-drupal-7.4 ## Build all PHP 7.4 images
+
+PHONY += build-all-php-80
+#build-all-php-80: ALPINE_VERSION := $(ALPINE_VERSION)
+build-all-php-80: PHP_SHORT_VERSION := 80
+build-all-php-80: --build-base build-php-8.0 build-drupal-8.0 ## Build all PHP 8.0 images
 
 PHONY += build-all-test
 build-all-test: build-test-drupal-7.3 build-test-drupal-7.4
@@ -45,13 +47,6 @@ build-base-%: build-base-init-% ## Build base images
 	$(call step,Build druidfi/base:alpine$*)
 	$(DBC) --no-cache --force-rm base -t druidfi/base:alpine$* \
 		--build-arg ALPINE_VERSION=$*
-
-PHONY += build-pecl-%
-build-pecl-%: ## Build pecl extensions
-	$(call step,Build druidfi/php-pecl:uploadprogress-$*)
-	$(DBC) --no-cache --force-rm php/pecl/uploadprogress -t druidfi/php-pecl:uploadprogress-$* \
-		--build-arg ALPINE_VERSION=$(ALPINE_VERSION) \
-		--build-arg PHP_SHORT_VERSION=$(PHP_SHORT_VERSION)
 
 PHONY += build-php-%
 build-php-%: ## Build PHP and PHP-FPM images
@@ -130,5 +125,3 @@ clean-up:
 	$(call step,Remove images which are not used...)
 	docker image rm alpine:$(ALPINE_VERSION) || true
 	docker image rm druidfi/base-init:alpine$(ALPINE_VERSION) || true
-	docker image rm druidfi/php-pecl:uploadprogress-7.3 || true
-	docker image rm druidfi/php-pecl:uploadprogress-7.4 || true
