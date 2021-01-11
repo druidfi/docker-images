@@ -23,7 +23,7 @@ services:
 
   app:
     container_name: "${COMPOSE_PROJECT_NAME}-php"
-    image: druidfi/drupal:7.3
+    image: druidfi/drupal:7.4
     volumes:
       - .:/app:delegated
     #  - ssh:/tmp/amazeeio_ssh-agent:ro
@@ -36,7 +36,7 @@ services:
 
   db:
     container_name: "${COMPOSE_PROJECT_NAME}-db"
-    image: druidfi/db:mysql5.7-drupal
+    image: druidfi/db:mysql8.0-drupal
     #volumes:
     #  - db_data:/var/lib/mysql
     ports:
