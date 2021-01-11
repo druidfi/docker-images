@@ -14,7 +14,7 @@ build-all-php: build-all-php-73 build-all-php-74 build-all-php-80 build-qa-tools
 PHONY += build-all-php-73
 #build-all-php-73: ALPINE_VERSION := $(ALPINE_VERSION)
 build-all-php-73: PHP_SHORT_VERSION := 73
-build-all-php-73: --build-base build-php-7.3 build-drupal-7.3 build-test-drupal-7.3 ## Build all PHP 7.3 images
+build-all-php-73: --build-base build-php-7.3 build-drupal-7.3 ## Build all PHP 7.3 images
 
 PHONY += build-all-php-74
 #build-all-php-74: ALPINE_VERSION := $(ALPINE_VERSION)
@@ -93,18 +93,12 @@ build-wp: ## Build Wordpress images
 
 PHONY += build-qa-toolset
 build-qa-toolset: ## Build Drupal QA toolset image
-	$(call step,Build druidfi/drupal-qa:8)
-	$(DBC) --no-cache --force-rm php/qa/base -t druidfi/qa:drupal-8 \
-		--build-arg QA_SET=drupal-8
-	$(call step,Build druidfi/drupal-qa:7)
-	$(DBC) --no-cache --force-rm php/qa/base -t druidfi/qa:drupal-7 \
-		--build-arg QA_SET=drupal-7
-	$(call step,Build druidfi/qa:symfony)
-	$(DBC) --no-cache --force-rm php/qa/base -t druidfi/qa:symfony \
-		--build-arg QA_SET=symfony
-	$(call step,Build druidfi/qa:wordpress)
-	$(DBC) --no-cache --force-rm php/qa/base -t druidfi/qa:wordpress \
-		--build-arg QA_SET=wordpress
+	$(call step,Build druidfi/qa:php-7.3)
+	$(DBC) --no-cache --force-rm php/qa -t druidfi/qa:php-7.3 \
+		--build-arg PHP_VERSION=7.3 --build-arg PHP_SHORT_VERSION=73
+	$(call step,Build druidfi/qa:php-7.4)
+	$(DBC) --no-cache --force-rm php/qa -t druidfi/qa:php-7.4 \
+		--build-arg PHP_VERSION=7.4 --build-arg PHP_SHORT_VERSION=74
 
 PHONY += build-rector
 build-rector: PHP_VERSION := 7.3

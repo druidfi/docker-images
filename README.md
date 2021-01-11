@@ -6,11 +6,38 @@ See https://hub.docker.com/u/druidfi for all the images.
 
 - `DOCKER_BUILDKIT=1` << this is enabled on build commands.
 
+## Essential images
+
+### PHP images
+
+Name | Tag | xxx | yyy
+--- | ------ | ----------- | ---
+druidfi/php | 7.3 | - | -
+druidfi/php | 7.3-fpm | - | -
+druidfi/php | 7.4 | - | -
+druidfi/php | 7.4-fpm | - | -
+druidfi/php | 8.0 | - | -
+druidfi/php | 8.0-fpm | - | -
+
+### Drupal images
+
+Name | Tag | xxx | yyy
+--- | ------ | ----------- | ---
+druidfi/drupal | 7.3 | - | -
+druidfi/drupal | 7.3-web | - | -
+druidfi/drupal | 7.4 | - | -
+druidfi/drupal | 7.4-web | - | -
+druidfi/drupal | 8.0 | - | -
+druidfi/drupal | 8.0-web | - | -
+
+### Nginx images
+
+Name | Tag | xxx | yyy
+--- | ------ | ----------- | ---
+druidfi/nginx | 1.18 | - | -
+druidfi/nginx | 1.18-drupal | - | -
+
 ## druidfi/base
-
-Tags:
-
-- `druidfi/base:alpine3.12`
 
 Features:
 
@@ -20,7 +47,7 @@ Features:
 
 ENV variables:
 
-- `ALPINE_VERSION=3.12`
+- `ALPINE_VERSION=3.12.3`
 - `APP_PATH=/app`
 - `DEFAULT_USER=druid`
 - `DEFAULT_USER_UID=1000`
@@ -30,8 +57,9 @@ ENV variables:
 
 ### Base variant
 
-- `druidfi/php:7.3` based on `druidfi/base:alpine3.12`
-- `druidfi/php:7.4` based on `druidfi/base:alpine3.12`
+- `druidfi/php:7.3` based on `druidfi/base:alpine3.12.3`
+- `druidfi/php:7.4` based on `druidfi/base:alpine3.12.3`
+- `druidfi/php:8.0` based on `druidfi/base:alpine3.12.3`
 
 Added features:
 
@@ -43,10 +71,11 @@ Added features:
 
 - `druidfi/php:7.3-fpm` based on `druidfi/php:7.3`
 - `druidfi/php:7.4-fpm` based on `druidfi/php:7.4`
+- `druidfi/php:8.0-fpm` based on `druidfi/php:8.0`
 
 Added features:
 
-- PHP-FPM running
+- PHP-FPM running and configured
 
 ## druidfi/drupal
 
@@ -54,6 +83,7 @@ Added features:
 
 - `druidfi/drupal:7.3` based on `druidfi/php:7.3-fpm`
 - `druidfi/drupal:7.4` based on `druidfi/php:7.4-fpm`
+- `druidfi/drupal:8.0` based on `druidfi/php:8.0-fpm`
 
 Added features:
 
@@ -61,23 +91,22 @@ Added features:
 
 Needs:
 
-- Nginx (`druidfi/nginx-drupal:1.18`)
-- Database (`mysql:5.7`)
+- Nginx (`druidfi/nginx:1.18-drupal`)
+- Database (`druidfi/db:mysql8.0-drupal`)
 
 ENV variables:
 
-- `KIND=druid-docker-image`
 - `DRUPAL_DB_NAME=drupal`
 - `DRUPAL_DB_USER=drupal`
 - `DRUPAL_DB_PASS=drupal`
 - `DRUPAL_DB_HOST=db`
 - `DRUPAL_DB_PORT=3306`
-- `DRUSH_OPTIONS_URI=http://drupal.docker.sh`
 
 ### Web variant
 
 - `druidfi/drupal:7.3-web` based on `druidfi/drupal:7.3`
 - `druidfi/drupal:7.4-web` based on `druidfi/drupal:7.4`
+- `druidfi/drupal:8.0-web` based on `druidfi/drupal:8.0`
 
 Added features:
 
@@ -85,7 +114,7 @@ Added features:
 
 Needs:
 
-- Database (`mysql:5.7`)
+- Database (`druidfi/db:mysql8.0-drupal`)
 
 ### Test variant
 
@@ -97,7 +126,7 @@ Added features:
 
 Needs:
 
-- Database (`mysql:5.7`)
+- Database (`druidfi/db:mysql8.0-drupal`)
 
 ## druidfi/nginx
 

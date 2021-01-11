@@ -84,14 +84,8 @@ push-drupal-db: ## Push all Drupal database images to Docker Hub
 
 PHONY += push-qa
 push-qa: ## Push all QA images to Docker Hub
-	docker push druidfi/qa:drupal-8
-	docker push druidfi/qa:drupal-7
-	docker tag druidfi/qa:drupal-8 druidfi/drupal-qa:8
-	docker tag druidfi/qa:drupal-7 druidfi/drupal-qa:7
-	docker push druidfi/drupal-qa:8
-	docker push druidfi/drupal-qa:7
-	docker push druidfi/qa:symfony
-	docker push druidfi/qa:wordpress
+	docker push druidfi/qa:php-7.3
+	docker push druidfi/qa:php-7.4
 
 PHONY += push-nginx
 push-nginx: ## Push all Nginx images to Docker Hub

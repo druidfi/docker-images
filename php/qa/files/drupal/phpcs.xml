@@ -10,8 +10,8 @@
     <exclude-pattern>**sites/default/files/**</exclude-pattern>
     <exclude-pattern>**vendor/**</exclude-pattern>
     <exclude-pattern>**autoload.php</exclude-pattern>
-
-    <config name="drupal_core_version" value="7"/>
+    <exclude-pattern>**files/**</exclude-pattern>
+    <exclude-pattern>**features/**</exclude-pattern>
 
     <!-- display progress -->
     <arg value="p"/>
