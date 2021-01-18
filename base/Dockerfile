@@ -1,11 +1,15 @@
 ARG ALPINE_VERSION
 
-FROM druidfi/base-init:alpine${ALPINE_VERSION}
+FROM alpine:${ALPINE_VERSION}
 
 ARG ALPINE_VERSION
 
-# All images based on this one will have this ENV var
-ENV APP_PATH=/app \
+LABEL maintainer="druid.fi"
+
+# All images based on this one will have these ENV vars
+ENV KIND=druid-docker-image \
+    ALPINE_VERSION=${ALPINE_VERSION} \
+    APP_PATH=/app \
     DEFAULT_USER=druid \
     DEFAULT_USER_UID=1000
 

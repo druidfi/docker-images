@@ -13,7 +13,7 @@ COPY files/99_custom.ini /etc/php7/conf.d/99_custom.ini
 
 FROM build as build-php-74
 
-RUN sudo apk --update --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community add \
+RUN sudo apk --update --no-cache add \
     # PHP extensions
     php7-dom php7-simplexml php7-tokenizer php7-xml php7-xmlwriter
 
