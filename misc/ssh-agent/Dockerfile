@@ -1,6 +1,8 @@
 ARG ALPINE_VERSION
 
-FROM druidfi/base-init:alpine${ALPINE_VERSION}
+FROM alpine:${ALPINE_VERSION}
+
+LABEL maintainer="druid.fi"
 
 ARG USER=druid
 ARG UID=1000

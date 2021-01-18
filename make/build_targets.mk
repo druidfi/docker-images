@@ -3,7 +3,7 @@ BUILD_TARGETS := build-all-base build-all-nginx build-all-php
 include $(PROJECT_DIR)/make/build/*.mk
 
 PHONY += build-all
-build-all: $(BUILD_TARGETS) clean-up ## Build all images
+build-all: $(BUILD_TARGETS) ## Build all images
 
 PHONY += build-all-base
 build-all-base: build-base-3.12.3 build-base-3.13 ## Build all Base images
@@ -27,7 +27,7 @@ build-all-php-80: PHP_SHORT_VERSION := 80
 build-all-php-80: build-php-8.0 build-drupal-8.0 ## Build all PHP 8.0 images
 
 PHONY += build-all-test
-build-all-test: build-test-drupal-7.3 build-test-drupal-7.4
+build-all-test: build-test-drupal-7.3 build-test-drupal-7.4 build-test-drupal-8.0
 
 #
 # BUILD TARGETS
@@ -103,8 +103,3 @@ build-test-drupal-%: ## Build Drupal test images
 	$(DBC) --no-cache --force-rm drupal/test -t druidfi/drupal:$*-test \
 		--build-arg PHP_VERSION=$* \
 		--build-arg BUILD_DATE=$(BUILD_DATE)
-
-PHONY += clean-up
-clean-up:
-	$(call step,Remove images which are not used...)
-	docker image rm druidfi/base-init:alpine$(ALPINE_VERSION) || true

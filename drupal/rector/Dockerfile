@@ -14,7 +14,7 @@ RUN sudo chown -R ${DEFAULT_USER}:${DEFAULT_USER} ${DRP} && \
     # PHP extensions
     php7-ctype php7-tokenizer && \
     # fix work iconv library with alphine
-    sudo apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv && \
+    sudo apk add --no-cache --allow-untrusted gnu-libiconv && \
     #
     # Install drupal-rector
     #

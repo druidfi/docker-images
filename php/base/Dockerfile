@@ -25,11 +25,11 @@ FROM druidfi/base:alpine3.13 as build-php-80
 ENV PHP_MAJOR_VERSION=8
 ENV PHP_SHORT_VERSION=80
 
-RUN sudo apk --update --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community add libzip && \
-    sudo apk --update --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community add \
+RUN sudo apk --update --no-cache add libzip && \
+    sudo apk --update --no-cache add \
     php8 php8-curl php8-fileinfo php8-iconv php8-mbstring php8-opcache php8-openssl php8-phar \
     php8-session php8-zip && \
-    sudo apk --update --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community add \
+    sudo apk --update --no-cache add \
     php8-pecl-apcu php8-pecl-uploadprogress php8-pecl-xdebug && \
     sudo ln -sfn /usr/bin/php8 /usr/bin/php
 
@@ -50,7 +50,7 @@ RUN sudo apk --update --no-cache add patch unzip && \
     sudo chown -R ${DEFAULT_USER}:${DEFAULT_USER} ${COMPOSER_HOME}
 
 # Fix work iconv library with Alpine
-RUN sudo apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv
+RUN sudo apk add --no-cache --allow-untrusted gnu-libiconv
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 # Copy configuration files and scripts

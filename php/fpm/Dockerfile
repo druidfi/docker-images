@@ -15,7 +15,7 @@ CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "/usr/sbin/php
 
 FROM build as build-php-74
 
-RUN sudo apk --update --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community add php7-fpm
+RUN sudo apk --update --no-cache add php7-fpm
 
 # Copy configuration files and scripts
 COPY files/etc/php7/php-fpm.d/www.conf /etc/php7/php-fpm.d/www.conf
@@ -25,7 +25,7 @@ CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "/usr/sbin/php
 
 FROM build as build-php-80
 
-RUN sudo apk --update --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community add php8-fpm
+RUN sudo apk --update --no-cache add php8-fpm
 
 # Copy configuration files and scripts
 COPY files/etc/php8/php-fpm.d/www.conf /etc/php8/php-fpm.d/www.conf
@@ -34,4 +34,3 @@ COPY files/etc/php8/php-fpm.d/www.conf /etc/php8/php-fpm.d/www.conf
 CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "/usr/sbin/php-fpm8", "-F", "-R"]
 
 FROM build-php-${PHP_SHORT_VERSION} as final
-

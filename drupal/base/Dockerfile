@@ -36,13 +36,13 @@ RUN sudo apk --update --no-cache add \
 
 FROM build as build-php-74
 
-RUN sudo apk --update --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community add \
+RUN sudo apk --update --no-cache add \
     php7-bcmath php7-ctype php7-dom php7-exif php7-gd php7-intl php7-pdo php7-pdo_mysql php7-simplexml php7-sockets \
     php7-tokenizer php7-xml php7-xmlreader php7-xmlwriter php7-zlib
 
 FROM build as build-php-80
 
-RUN sudo apk --update --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community add \
+RUN sudo apk --update --no-cache add \
     php8-bcmath php8-ctype php8-dom php8-exif php8-gd php8-intl php8-pdo php8-pdo_mysql php8-simplexml php8-sockets \
     php8-tokenizer php8-xml php8-xmlreader php8-xmlwriter
 
