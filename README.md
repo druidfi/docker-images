@@ -32,10 +32,10 @@ druidfi/drupal | 8.0-web | alpine:3.13 | -
 
 ### Nginx images
 
-Name | Tag | xxx | yyy
+Name | Tag | Baseimage | yyy
 --- | ------ | ----------- | ---
-druidfi/nginx | 1.18 | - | -
-druidfi/nginx | 1.18-drupal | - | -
+druidfi/nginx | 1.18 | nginx:1.18-alpine | -
+druidfi/nginx | 1.18-drupal | nginx:1.18-alpine | -
 
 ## druidfi/base
 
@@ -47,7 +47,7 @@ Features:
 
 ENV variables:
 
-- `ALPINE_VERSION=3.12.3`
+- `ALPINE_VERSION=3.13`
 - `APP_PATH=/app`
 - `DEFAULT_USER=druid`
 - `DEFAULT_USER_UID=1000`
@@ -119,10 +119,11 @@ Needs:
 ### Test variant
 
 - `druidfi/drupal:7.3-test` based on `druidfi/drupal:7.3-web`
+- `druidfi/drupal:7.4-test` based on `druidfi/drupal:7.4-web`
 
 Added features:
 
-- Drupal 8 installation
+- Drupal 9 installation
 
 Needs:
 
