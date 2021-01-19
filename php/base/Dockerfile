@@ -41,7 +41,9 @@ ENV APP_ENV=prod \
     PATH="${PATH}:/home/${DEFAULT_USER}/.composer/vendor/bin:${APP_PATH}/vendor/bin"
 
 # Install software
-RUN sudo apk --update --no-cache add patch unzip && \
+# Fix iconv library with Alpine by gnu-libiconv
+RUN sudo apk --update --no-cache add gnu-libiconv patch unzip && \
+    test -f /usr/lib/preloadable_libiconv.so && \
     sudo php -r "readfile('http://getcomposer.org/installer');" | sudo php -- --install-dir=/usr/local/bin/ --filename=composer && \
     #
     # Set permissions on Composer home directory
@@ -49,12 +51,11 @@ RUN sudo apk --update --no-cache add patch unzip && \
     sudo mkdir -p ${COMPOSER_HOME} && \
     sudo chown -R ${DEFAULT_USER}:${DEFAULT_USER} ${COMPOSER_HOME}
 
-# Fix work iconv library with Alpine
-RUN sudo apk add --no-cache --allow-untrusted gnu-libiconv
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 # Copy configuration files and scripts
-COPY files/ /
+COPY files/entrypoints /entrypoints/
+COPY files/etc/php/conf.d/* /etc/php${PHP_MAJOR_VERSION}/conf.d/
 
 # Default command
 CMD ["php", "-v"]
