@@ -22,15 +22,15 @@ jobs:
     strategy:
       matrix:
         include:
-          - php: 7.3
-            php_short: 73
-            alpine: 3.12.3
-          - php: 7.4
-            php_short: 74
-            alpine: 3.13.1
-          - php: 8.0
-            php_short: 80
-            alpine: 3.13.1
+          - php: '7.3'
+            php_short: '73'
+            alpine: '3.12.3'
+          - php: '7.4'
+            php_short: '74'
+            alpine: '3.13.1'
+          - php: '8.0'
+            php_short: '80'
+            alpine: '3.13.1'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
