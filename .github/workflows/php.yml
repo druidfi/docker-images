@@ -20,9 +20,14 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: false
       matrix:
-        images: [ 'drupal:7.3-web', 'drupal:7.4-web', 'drupal:8.0-web' ]
+        include:
+          - php: 7.3
+            alpine: 3.12.3
+          - php: 7.4
+            alpine: 3.13.1
+          - php: 8.0
+            alpine: 3.13.1
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -30,7 +35,9 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build all PHP and Drupal images
-        run: make build-all-php
+        run: |
+          make build-base-${{ matrix.alpine }}
+          make build-all-php-${{ matrix.php }}
 
       - name: List built images
         run: docker images
@@ -38,7 +45,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'druidfi/${{ matrix.images }}'
+          image-ref: 'druidfi/drupal:${{ matrix.php }}-web'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
