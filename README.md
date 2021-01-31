@@ -14,10 +14,10 @@ Name | Tag | Baseimage | yyy
 --- | ------ | ----------- | ---
 druidfi/php | 7.3 | alpine:3.12.3 | -
 druidfi/php | 7.3-fpm | alpine:3.12.3 | -
-druidfi/php | 7.4 | alpine:3.13 | -
-druidfi/php | 7.4-fpm | alpine:3.13 | -
-druidfi/php | 8.0 | alpine:3.13 | -
-druidfi/php | 8.0-fpm | alpine:3.13 | -
+druidfi/php | 7.4 | alpine:3.13.1 | -
+druidfi/php | 7.4-fpm | alpine:3.13.1 | -
+druidfi/php | 8.0 | alpine:3.13.1 | -
+druidfi/php | 8.0-fpm | alpine:3.13.1 | -
 
 ### Drupal images
 
@@ -25,10 +25,10 @@ Name | Tag | Baseimage | yyy
 --- | ------ | ----------- | ---
 druidfi/drupal | 7.3 | alpine:3.12.3 | -
 druidfi/drupal | 7.3-web | alpine:3.12.3 | -
-druidfi/drupal | 7.4 | alpine:3.13 | -
-druidfi/drupal | 7.4-web | alpine:3.13 | -
-druidfi/drupal | 8.0 | alpine:3.13 | -
-druidfi/drupal | 8.0-web | alpine:3.13 | -
+druidfi/drupal | 7.4 | alpine:3.13.1 | -
+druidfi/drupal | 7.4-web | alpine:3.13.1 | -
+druidfi/drupal | 8.0 | alpine:3.13.1 | -
+druidfi/drupal | 8.0-web | alpine:3.13.1 | -
 
 ### Nginx images
 
@@ -47,7 +47,7 @@ Features:
 
 ENV variables:
 
-- `ALPINE_VERSION=3.13`
+- `ALPINE_VERSION=3.13.1`
 - `APP_PATH=/app`
 - `DEFAULT_USER=druid`
 - `DEFAULT_USER_UID=1000`
@@ -58,8 +58,8 @@ ENV variables:
 ### Base variant
 
 - `druidfi/php:7.3` based on `druidfi/base:alpine3.12.3`
-- `druidfi/php:7.4` based on `druidfi/base:alpine3.13`
-- `druidfi/php:8.0` based on `druidfi/base:alpine3.13`
+- `druidfi/php:7.4` based on `druidfi/base:alpine3.13.1`
+- `druidfi/php:8.0` based on `druidfi/base:alpine3.13.1`
 
 Added features:
 

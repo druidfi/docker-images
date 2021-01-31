@@ -10,7 +10,7 @@ RUN sudo apk --update --no-cache add \
     php7-session php7-zip \
     php7-pecl-apcu php7-pecl-uploadprogress php7-pecl-xdebug
 
-FROM druidfi/base:alpine3.13 as build-php-74
+FROM druidfi/base:alpine3.13.1 as build-php-74
 
 ENV PHP_MAJOR_VERSION=7
 ENV PHP_SHORT_VERSION=74
@@ -20,7 +20,7 @@ RUN sudo apk --update --no-cache add \
     php7-session php7-zip \
     php7-pecl-apcu php7-pecl-uploadprogress php7-pecl-xdebug
 
-FROM druidfi/base:alpine3.13 as build-php-80
+FROM druidfi/base:alpine3.13.1 as build-php-80
 
 ENV PHP_MAJOR_VERSION=8
 ENV PHP_SHORT_VERSION=80
