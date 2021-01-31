@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        images: [ drupal:7.3-web, drupal:7.4-web, drupal:8.0-web ]
+        images: [ 'drupal:7.3-web', 'drupal:7.4-web', 'drupal:8.0-web' ]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
