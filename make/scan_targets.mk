@@ -2,7 +2,7 @@
 # SCAN TARGETS
 #
 
-DRUPAL_IMAGES := drupal:7.3-web drupal:7.3-test drupal:7.4-web
+DRUPAL_IMAGES := drupal:7.3-web drupal:7.4-web drupal:8.0-web
 ALL_IMAGES := $(DRUPAL_IMAGES)
 
 PHONY += scan-drupal

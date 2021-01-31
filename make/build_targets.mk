@@ -1,4 +1,4 @@
-BUILD_TARGETS := build-all-base build-all-nginx build-all-php
+BUILD_TARGETS := build-all-base build-all-nginx build-all-php build-qa-toolset
 
 include $(PROJECT_DIR)/make/build/*.mk
 
@@ -12,7 +12,7 @@ PHONY += build-all-nginx
 build-all-nginx: build-nginx ## Build all Nginx images
 
 PHONY += build-all-php
-build-all-php: build-all-php-73 build-all-php-74 build-all-php-80 build-qa-toolset ## Build all PHP images (7.3, 7.4, 8.0)
+build-all-php: build-all-php-73 build-all-php-74 build-all-php-80 ## Build all PHP images (7.3, 7.4, 8.0)
 
 PHONY += build-all-php-73
 build-all-php-73: PHP_SHORT_VERSION := 73
