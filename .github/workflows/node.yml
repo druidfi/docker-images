@@ -1,6 +1,6 @@
-name: PHP images
+name: Node images
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
@@ -21,34 +21,20 @@ jobs:
 
     strategy:
       matrix:
-        include:
-          - php: '7.3'
-            php_short: '73'
-            alpine: '3.12.3'
-          - php: '7.4'
-            php_short: '74'
-            alpine: '3.13.1'
-          - php: '8.0'
-            php_short: '80'
-            alpine: '3.13.1'
+        node: [ 8, 10, 12, 14 ]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Build PHP and Drupal images using PHP ${{ matrix.php }}
-        run: |
-          make build-base-${{ matrix.alpine }}
-          make build-all-php-${{ matrix.php_short }}
-
-      - name: Run tests
-        run: make test-php-base-${{ matrix.php }}
+      - name: Build Node ${{ matrix.node }} image
+        run: make build-node-${{ matrix.node }}
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'druidfi/drupal:${{ matrix.php }}-web'
+          image-ref: 'druidfi/node:${{ matrix.node }}'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
