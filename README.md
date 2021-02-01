@@ -1,6 +1,7 @@
 # General use Docker images for projects
 
 ![PHP images](https://github.com/druidfi/docker-images/workflows/PHP%20images/badge.svg)
+![Node images](https://github.com/druidfi/docker-images/workflows/Node%20images/badge.svg)
 
 See https://hub.docker.com/u/druidfi for all the images.
 
