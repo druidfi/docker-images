@@ -8,7 +8,7 @@ test-all-php-base: test-php-base-7.3 test-php-base-7.4 test-php-base-8.0 ## Buil
 PHONY += test-php-base-%
 test-php-base-%:
 	$(call step,Run tests in druidfi/php:$*)
-	@docker run --rm -it -v $(CURDIR)/tests/scripts:/app/scripts druidfi/php:$* /app/scripts/tests.sh
+	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/php:$* /app/scripts/tests.sh
 
 PHONY += test-php-fpm
 test-php-fpm: TAG := 7.3-fpm
