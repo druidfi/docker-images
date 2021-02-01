@@ -2,6 +2,8 @@
 
 ![PHP images](https://github.com/druidfi/docker-images/workflows/PHP%20images/badge.svg)
 ![Node images](https://github.com/druidfi/docker-images/workflows/Node%20images/badge.svg)
+![Database images](https://github.com/druidfi/docker-images/workflows/Database%20images/badge.svg)
+![Misc images](https://github.com/druidfi/docker-images/workflows/Misc%20images/badge.svg)
 
 See https://hub.docker.com/u/druidfi for all the images.
 
