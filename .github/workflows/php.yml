@@ -42,8 +42,8 @@ jobs:
           make build-base-${{ matrix.alpine }}
           make build-all-php-${{ matrix.php_short }}
 
-      - name: List built images
-        run: docker images
+      - name: Run tests
+        run: make test-php-base-${{ matrix.php }}
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
