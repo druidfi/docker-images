@@ -89,6 +89,9 @@ build-qa-toolset: ## Build Drupal QA toolset image
 	$(call step,Build druidfi/qa:php-7.4)
 	$(DBC) --no-cache --force-rm php/qa -t druidfi/qa:php-7.4 \
 		--build-arg PHP_VERSION=7.4 --build-arg PHP_SHORT_VERSION=74
+	$(call step,Build druidfi/qa:php-8.0)
+	$(DBC) --no-cache --force-rm php/qa -t druidfi/qa:php-8.0 \
+		--build-arg PHP_VERSION=8.0 --build-arg PHP_SHORT_VERSION=80
 
 PHONY += build-rector
 build-rector: PHP_VERSION := 7.3
