@@ -21,6 +21,9 @@ push-all: php-version-checker \
 		  push-qa \
 		  push-nginx push-node push-misc ## Push all images to Docker Hub
 
+PHONY += push-all-php
+push-all-php: php-version-checker push-php push-drupal ## Push all PHP images to Docker Hub
+
 PHONY += push-base
 push-base: ## Push all base images to Docker Hub
 	docker push druidfi/base:alpine$(ALPINE_VERSION)
