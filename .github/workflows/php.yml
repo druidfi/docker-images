@@ -24,13 +24,13 @@ jobs:
         include:
           - php: '7.3'
             php_short: '73'
-            alpine: '3.12.3'
+            alpine: '3.12.4'
           - php: '7.4'
             php_short: '74'
-            alpine: '3.13.1'
+            alpine: '3.13.2'
           - php: '8.0'
             php_short: '80'
-            alpine: '3.13.1'
+            alpine: '3.13.2'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:

@@ -17,7 +17,13 @@ RUN sudo apk --update --no-cache add \
     # PHP extensions
     php7-dom php7-simplexml php7-tokenizer php7-xml php7-xmlwriter
 
-COPY files/99_custom.ini /etc/php7/conf.d/99_custom.ini
+COPY files/99_custom.ini /etc/php8/conf.d/99_custom.ini
+
+FROM build as build-php-80
+
+RUN sudo apk --update --no-cache add \
+    # PHP extensions
+    php8-dom php8-simplexml php8-tokenizer php8-xml php8-xmlwriter
 
 FROM build-php-${PHP_SHORT_VERSION} as final
 
@@ -30,7 +36,7 @@ RUN composer global require --no-progress \
         phpcompatibility/php-compatibility \
         friendsofphp/php-cs-fixer && \
     composer clear-cache && \
-    sudo rm /etc/php7/conf.d/xdebug.ini
+    sudo rm /etc/php$PHP_MAJOR_VERSION/conf.d/xdebug.ini
 
 COPY files/drupal/phpcs.xml /app/phpcs.xml
 COPY files/symfony/.php_cs.dist /app/.php_cs.dist

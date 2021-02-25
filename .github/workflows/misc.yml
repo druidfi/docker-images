@@ -32,6 +32,7 @@ jobs:
 
       - name: Build Mailhog image
         run: make build-mailhog
+        continue-on-error: true
 
       - name: Build SAML IdP image
         run: make build-saml-idp

@@ -6,7 +6,7 @@ PHONY += build-all
 build-all: $(BUILD_TARGETS) ## Build all images
 
 PHONY += build-all-base
-build-all-base: build-base-3.12.3 build-base-3.13.1 ## Build all Base images
+build-all-base: build-base-3.12.4 build-base-3.13.2 ## Build all Base images
 
 PHONY += build-all-nginx
 build-all-nginx: build-nginx ## Build all Nginx images
@@ -89,6 +89,9 @@ build-qa-toolset: ## Build Drupal QA toolset image
 	$(call step,Build druidfi/qa:php-7.4)
 	$(DBC) --no-cache --force-rm php/qa -t druidfi/qa:php-7.4 \
 		--build-arg PHP_VERSION=7.4 --build-arg PHP_SHORT_VERSION=74
+	$(call step,Build druidfi/qa:php-8.0)
+	$(DBC) --no-cache --force-rm php/qa -t druidfi/qa:php-8.0 \
+		--build-arg PHP_VERSION=8.0 --build-arg PHP_SHORT_VERSION=80
 
 PHONY += build-rector
 build-rector: PHP_VERSION := 7.3
