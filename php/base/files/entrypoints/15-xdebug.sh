@@ -1,6 +1,6 @@
 #!/bin/sh
 
-XDEBUG_INI=/etc/php7/conf.d/xdebug.ini
+XDEBUG_INI=/etc/php$PHP_MAJOR_VERSION/conf.d/xdebug.ini
 
 if [ "$XDEBUG_ENABLE" = "true" ]; then
   echo "Start with Xdebug enabled. Remove XDEBUG_ENABLE=true ENV variable to disable it."

@@ -49,7 +49,15 @@ RUN sudo apk --update --no-cache add gnu-libiconv patch unzip && \
     # Set permissions on Composer home directory
     #
     sudo mkdir -p ${COMPOSER_HOME} && \
-    sudo chown -R ${DEFAULT_USER}:${DEFAULT_USER} ${COMPOSER_HOME}
+    sudo chown -R ${DEFAULT_USER}:${DEFAULT_USER} ${COMPOSER_HOME} && \
+    #
+    # Install Blackfire probe
+    #
+    sudo curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/alpine/amd64/${PHP_SHORT_VERSION} && \
+    sudo mkdir -p /tmp/blackfire && \
+    sudo tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire && \
+    sudo mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so && \
+    sudo rm -rf /tmp/blackfire
 
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
