@@ -103,6 +103,7 @@ push-misc: ## Push all other images to Docker Hub
 	docker push druidfi/curl:alpine$(ALPINE_VERSION)
 	docker push druidfi/dnsmasq:alpine$(ALPINE_VERSION)
 	#docker push druidfi/mailhog:$(MAILHOG_VERSION)
+	docker push druidfi/s3-sync:alpine$(ALPINE_VERSION)
 	docker push druidfi/saml-idp:$(SIMPLESAMLPHP_VERSION)
 	docker push druidfi/ssh-agent:alpine$(ALPINE_VERSION)
 	docker push druidfi/varnish:6-drupal
