@@ -24,7 +24,7 @@ jobs:
         include:
           - php: '7.3'
             php_short: '73'
-            alpine: '3.12.4'
+            alpine: '3.12.5'
           - php: '7.4'
             php_short: '74'
             alpine: '3.13.2'

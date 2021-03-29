@@ -1,6 +1,6 @@
 ARG PHP_SHORT_VERSION
 
-FROM druidfi/base:alpine3.12.4 as build-php-73
+FROM druidfi/base:alpine3.12.5 as build-php-73
 
 ENV PHP_MAJOR_VERSION=7
 ENV PHP_SHORT_VERSION=73
