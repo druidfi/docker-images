@@ -6,7 +6,7 @@ PHONY += build-all
 build-all: $(BUILD_TARGETS) ## Build all images
 
 PHONY += build-all-base
-build-all-base: build-base-3.12.5 build-base-3.13.2 ## Build all Base images
+build-all-base: build-base-3.12.7 build-base-3.13.5 ## Build all Base images
 
 PHONY += build-all-nginx
 build-all-nginx: build-nginx ## Build all Nginx images

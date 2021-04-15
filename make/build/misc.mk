@@ -5,7 +5,7 @@
 BUILD_TARGETS += build-all-misc
 
 PHONY += build-all-misc
-build-all-misc: build-curl build-dnsmasq build-saml-idp build-ssh-agent build-varnish ## Build all misc images
+build-all-misc: build-curl build-dnsmasq build-s3-sync build-saml-idp build-ssh-agent build-varnish ## Build all misc images
 
 PHONY += build-curl
 build-curl: ## Build Curl image

@@ -17,12 +17,12 @@ See https://hub.docker.com/u/druidfi for all the images.
 
 Name | Tag | Baseimage | yyy
 --- | ------ | ----------- | ---
-druidfi/php | 7.3 | alpine:3.12.5 | -
-druidfi/php | 7.3-fpm | alpine:3.12.5 | -
-druidfi/php | 7.4 | alpine:3.13.2 | -
-druidfi/php | 7.4-fpm | alpine:3.13.2 | -
-druidfi/php | 8.0 | alpine:3.13.2 | -
-druidfi/php | 8.0-fpm | alpine:3.13.2 | -
+druidfi/php | 7.3 | alpine:3.12.7 | -
+druidfi/php | 7.3-fpm | alpine:3.12.7 | -
+druidfi/php | 7.4 | alpine:3.13.5 | -
+druidfi/php | 7.4-fpm | alpine:3.13.5 | -
+druidfi/php | 8.0 | alpine:3.13.5 | -
+druidfi/php | 8.0-fpm | alpine:3.13.5 | -
 
 ### Drupal images
 
@@ -52,7 +52,7 @@ Features:
 
 ENV variables:
 
-- `ALPINE_VERSION=3.13.2`
+- `ALPINE_VERSION=3.13.5`
 - `APP_PATH=/app`
 - `DEFAULT_USER=druid`
 - `DEFAULT_USER_UID=1000`
@@ -62,9 +62,9 @@ ENV variables:
 
 ### Base variant
 
-- `druidfi/php:7.3` based on `druidfi/base:alpine3.12.5`
-- `druidfi/php:7.4` based on `druidfi/base:alpine3.13.2`
-- `druidfi/php:8.0` based on `druidfi/base:alpine3.13.2`
+- `druidfi/php:7.3` based on `druidfi/base:alpine3.12.7`
+- `druidfi/php:7.4` based on `druidfi/base:alpine3.13.5`
+- `druidfi/php:8.0` based on `druidfi/base:alpine3.13.5`
 
 Added features:
 

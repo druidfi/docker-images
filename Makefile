@@ -6,7 +6,7 @@ DBC := DOCKER_BUILDKIT=1 docker build --progress=plain
 
 include $(PROJECT_DIR)/make/*.mk
 
-ALPINE_VERSION := 3.13.3
+ALPINE_VERSION := 3.13.5
 BUILD_DATE := $(shell date +%F)
 # see https://www.nginx.com/blog/nginx-1-18-1-19-released/
 NGINX_STABLE_VERSION := 1.18
