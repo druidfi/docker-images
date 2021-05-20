@@ -11,12 +11,12 @@
   ],
   "require": {
     "composer/installers": "^1.2",
-    "johnpbloch/wordpress": "^5.5",
+    "johnpbloch/wordpress": "^5.7",
     "wpackagist-plugin/contact-form-7": "^5.1",
     "wpackagist-plugin/google-sitemap-generator": "^4.1",
     "wpackagist-plugin/lumturio-wp-monitor": "^1.0",
     "wpackagist-plugin/site-health-tool-manager": "^1.1",
-    "wp-cli/wp-cli": "^2.4"
+    "wp-cli/wp-cli": "^2.5"
   },
   "config": {
     "sort-packages": true

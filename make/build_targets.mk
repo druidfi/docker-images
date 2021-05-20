@@ -16,15 +16,15 @@ build-all-php: build-all-php-73 build-all-php-74 build-all-php-80 ## Build all P
 
 PHONY += build-all-php-73
 build-all-php-73: PHP_SHORT_VERSION := 73
-build-all-php-73: build-php-7.3 build-drupal-7.3 ## Build all PHP 7.3 images
+build-all-php-73: build-php-7.3 build-drupal-7.3 build-wp-7.3 ## Build all PHP 7.3 images
 
 PHONY += build-all-php-74
 build-all-php-74: PHP_SHORT_VERSION := 74
-build-all-php-74: build-php-7.4 build-drupal-7.4 ## Build all PHP 7.4 images
+build-all-php-74: build-php-7.4 build-drupal-7.4 build-wp-7.4 ## Build all PHP 7.4 images
 
 PHONY += build-all-php-80
 build-all-php-80: PHP_SHORT_VERSION := 80
-build-all-php-80: build-php-8.0 build-drupal-8.0 ## Build all PHP 8.0 images
+build-all-php-80: build-php-8.0 build-drupal-8.0 build-wp-8.0 ## Build all PHP 8.0 images
 
 PHONY += build-all-test
 build-all-test: build-test-drupal-7.3 build-test-drupal-7.4 build-test-drupal-8.0
@@ -73,13 +73,12 @@ build-drupal-%: ## Build Drupal images
 		--build-arg PHP_VERSION=$* \
 		--build-arg NGINX_VERSION=$(NGINX_STABLE_VERSION)
 
-PHONY += build-wp
-build-wp: ## Build Wordpress images
-	$(call step,Build druidfi/wordpress)
-	$(DBC) wp -t druidfi/wordpress:7.3 --target baseline \
-		--build-arg PHP_VERSION=7.3 \
+PHONY += build-wp-%
+build-wp-%: ## Build Wordpress images
+	$(call step,Build druidfi/wordpress:php-$*)
+	$(DBC) --no-cache --force-rm wp -t druidfi/wordpress:php-$* \
 		--build-arg PHP_SHORT_VERSION=$(PHP_SHORT_VERSION) \
-		--build-arg NGINX_VERSION=$(NGINX_STABLE_VERSION)
+		--build-arg PHP_VERSION=$*
 
 PHONY += build-qa-toolset
 build-qa-toolset: ## Build Drupal QA toolset image

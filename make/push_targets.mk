@@ -113,3 +113,9 @@ push-misc: ## Push all other images to Docker Hub
 	docker push druidfi/saml-idp:$(SIMPLESAMLPHP_VERSION)
 	docker push druidfi/ssh-agent:alpine$(ALPINE_VERSION)
 	docker push druidfi/varnish:6-drupal
+
+PHONY += push-wp
+push-wp: ## Push WordPress images to Docker Hub
+	docker push druidfi/wordpress:php-7.3
+	docker push druidfi/wordpress:php-7.4
+	docker push druidfi/wordpress:php-8.0
