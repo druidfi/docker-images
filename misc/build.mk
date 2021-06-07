@@ -9,35 +9,36 @@ build-all-misc: build-curl build-dnsmasq build-s3-sync build-saml-idp build-ssh-
 
 PHONY += build-curl
 build-curl: ## Build Curl image
-	$(DBC) --no-cache --force-rm misc/curl -t druidfi/curl:alpine$(ALPINE_VERSION) \
+	$(DBX) --target base -t druidfi/curl:alpine$(ALPINE_VERSION) --push misc/curl \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION)
 
 PHONY += build-dnsmasq
 build-dnsmasq: ## Build dnsmasq image
-	$(DBC) --no-cache --force-rm misc/dnsmasq -t druidfi/dnsmasq:alpine$(ALPINE_VERSION) \
+	$(DBX) --target base -t druidfi/dnsmasq:alpine$(ALPINE_VERSION) --push misc/dnsmasq \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION)
 
 PHONY += build-mailhog
 build-mailhog: ## Build mailhog image
-	$(DBC) --no-cache --force-rm misc/mailhog -t druidfi/mailhog:$(MAILHOG_VERSION) \
+	$(DBX) --target base -t druidfi/mailhog:alpine$(ALPINE_VERSION) --push misc/mailhog \
 		--build-arg MAILHOG_VERSION=$(MAILHOG_VERSION)
 
 PHONY += build-s3-sync
 build-s3-sync: ## Build S3 sync image
-	$(DBC) --no-cache --force-rm misc/s3-sync -t druidfi/s3-sync:alpine$(ALPINE_VERSION) \
+	$(DBX) --target base -t druidfi/s3-sync:alpine$(ALPINE_VERSION) --push misc/s3-sync \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION)
 
 PHONY += build-saml-idp
 build-saml-idp: ## Build build-saml-idp image
-	$(DBC) --no-cache --force-rm misc/saml-idp -t druidfi/saml-idp:$(SIMPLESAMLPHP_VERSION) \
+	$(DBX) --target base -t druidfi/saml-idp:$(SIMPLESAMLPHP_VERSION) --push misc/saml-idp \
+		--build-arg ALPINE_VERSION=$(ALPINE_VERSION) \
 		--build-arg SIMPLESAMLPHP_VERSION=$(SIMPLESAMLPHP_VERSION)
 
 PHONY += build-ssh-agent
 build-ssh-agent: ## Build ssh-agent image
-	$(DBC) --no-cache --force-rm misc/ssh-agent -t druidfi/ssh-agent:alpine$(ALPINE_VERSION) \
+	$(DBX) --target base -t druidfi/ssh-agent:alpine$(ALPINE_VERSION) --push misc/ssh-agent \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION)
 
 PHONY += build-varnish
 build-varnish: ## Build Varnish image
 	$(call step,Build druidfi/varnish:6-drupal)
-	$(DBC) --no-cache --force-rm misc/varnish -t druidfi/varnish:6-drupal
+	$(DBX) --target base -t druidfi/varnish:6-drupal --push misc/varnish \

@@ -1,4 +1,4 @@
-FROM php:7.4-apache
+FROM php:7.4-apache as base
 
 ARG SIMPLESAMLPHP_VERSION=1.18.7
 ARG SIMPLESAMLPHP_URL=https://github.com/simplesamlphp/simplesamlphp/releases/download/v${SIMPLESAMLPHP_VERSION}/simplesamlphp-${SIMPLESAMLPHP_VERSION}.tar.gz

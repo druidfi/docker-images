@@ -13,7 +13,7 @@ RUN tar --strip-components=1 -zxf v${MAILHOG_VERSION}.tar.gz -C .
 #   -w  disable DWARF generation
 RUN CGO_ENABLED=0 go install -ldflags='-s -w'
 
-FROM scratch
+FROM scratch as base
 
 LABEL maintainer="druid.fi"
 

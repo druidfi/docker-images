@@ -8,8 +8,8 @@ build-all: $(BUILD_TARGETS) ## Build all images
 PHONY += build-all-base
 build-all-base: build-base-3.12.7 build-base-3.13.5 ## Build all Base images
 
-PHONY += build-all-nginx
-build-all-nginx: build-nginx ## Build all Nginx images
+include $(PROJECT_DIR)/nginx/build.mk
+include $(PROJECT_DIR)/misc/build.mk
 
 PHONY += build-all-php
 build-all-php: build-all-php-73 build-all-php-74 build-all-php-80 ## Build all PHP images (7.3, 7.4, 8.0)
@@ -51,15 +51,6 @@ build-php-%: ## Build PHP and PHP-FPM images
 		--build-arg PHP_VERSION=$* \
 		--build-arg PHP_SHORT_VERSION=$(PHP_SHORT_VERSION) \
 		--build-arg BUILD_DATE=$(BUILD_DATE)
-
-PHONY += build-nginx
-build-nginx: ## Build Nginx images
-	$(call step,Build druidfi/nginx:stable)
-	$(DBC) --no-cache --force-rm nginx/base -t druidfi/nginx:$(NGINX_STABLE_VERSION) \
-		--build-arg NGINX_VERSION=$(NGINX_STABLE_VERSION)
-	$(call step,Build druidfi/nginx-drupal:$(NGINX_STABLE_VERSION))
-	$(DBC) --no-cache --force-rm nginx/drupal -t druidfi/nginx:$(NGINX_STABLE_VERSION)-drupal \
-		--build-arg NGINX_VERSION=$(NGINX_STABLE_VERSION)
 
 PHONY += build-drupal-%
 build-drupal-%: ## Build Drupal images
