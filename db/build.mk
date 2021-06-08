@@ -10,7 +10,7 @@ build-all-db: build-mariadb-10.6 build-mysql-5.7 build-mysql-8.0 ## Build all da
 PHONY += build-mariadb-%
 build-mariadb-%: ## Build MySQL images
 	$(call step,Build druidfi/db:mariadb$*)
-	$(DBX) --target base -t druidfi/db:maria$*-drupal --push db/mariadb \
+	$(DBX) --target base -t druidfi/db:mariadb$*-drupal --push db/mariadb \
 		--build-arg MARIADB_VERSION=$*
 
 #
