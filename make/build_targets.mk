@@ -1,15 +1,15 @@
 BUILD_TARGETS := build-all-base build-all-nginx build-all-php build-qa-toolset
 
-include $(PROJECT_DIR)/make/build/*.mk
-
 PHONY += build-all
 build-all: $(BUILD_TARGETS) ## Build all images
 
 PHONY += build-all-base
 build-all-base: build-base-3.12.7 build-base-3.13.5 ## Build all Base images
 
+include $(PROJECT_DIR)/db/build.mk
 include $(PROJECT_DIR)/nginx/build.mk
 include $(PROJECT_DIR)/misc/build.mk
+include $(PROJECT_DIR)/node/build.mk
 
 PHONY += build-all-php
 build-all-php: build-all-php-73 build-all-php-74 build-all-php-80 ## Build all PHP images (7.3, 7.4, 8.0)

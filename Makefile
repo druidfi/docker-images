@@ -1,9 +1,7 @@
 PHONY :=
 .DEFAULT_GOAL := help
 PROJECT_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
-#DBC := docker buildx build --progress=plain
-DBC := DOCKER_BUILDKIT=1 docker build --progress=plain
-#DBC := DOCKER_BUILDKIT=1 docker build
+DBC := docker build
 PLATFORMS := linux/amd64,linux/arm64
 DBX := docker buildx build --platform $(PLATFORMS)
 

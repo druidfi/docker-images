@@ -1,6 +1,6 @@
 ARG MYSQL_VERSION
 
-FROM mysql:${MYSQL_VERSION}
+FROM mysql:${MYSQL_VERSION} as base
 
 LABEL maintainer="druid.fi"
 

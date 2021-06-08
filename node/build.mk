@@ -10,5 +10,5 @@ build-all-node: build-node-8 build-node-10 build-node-12 build-node-14 ## Build 
 PHONY += build-node-%
 build-node-%: ## Build Node images
 	$(call step,Build druidfi/node:$*)
-	$(DBC) --no-cache --force-rm node -t druidfi/node:$* \
+	$(DBX) --target base -t druidfi/node:$* --push node \
 		--build-arg NODE_VERSION=$*
