@@ -1,3 +1,5 @@
+BUILD_TARGETS += build-all-nginx
+
 PHONY += build-all-nginx
 build-all-nginx: build-nginx ## Build all Nginx images
 

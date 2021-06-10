@@ -1,3 +1,5 @@
+BUILD_TARGETS := build-all-base
+
 PHONY += build-all-base
 build-all-base: build-base-3.12.7 build-base-3.13.5 ## Build all Base images
 

@@ -1,7 +1,3 @@
-#
-# BUILD: Database images
-#
-
 BUILD_TARGETS += build-all-db
 
 PHONY += build-all-db
