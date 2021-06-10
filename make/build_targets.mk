@@ -3,9 +3,7 @@ BUILD_TARGETS := build-all-base build-all-nginx build-all-php build-qa-toolset
 PHONY += build-all
 build-all: $(BUILD_TARGETS) ## Build all images
 
-PHONY += build-all-base
-build-all-base: build-base-3.12.7 build-base-3.13.5 ## Build all Base images
-
+include $(PROJECT_DIR)/base/build.mk
 include $(PROJECT_DIR)/db/build.mk
 include $(PROJECT_DIR)/nginx/build.mk
 include $(PROJECT_DIR)/misc/build.mk
@@ -32,12 +30,6 @@ build-all-test: build-test-drupal-7.3 build-test-drupal-7.4 build-test-drupal-8.
 #
 # BUILD TARGETS
 #
-
-PHONY += build-base-%
-build-base-%: ## Build base images
-	$(call step,Build druidfi/base:alpine$*)
-	$(DBC) --no-cache --force-rm base -t druidfi/base:alpine$* \
-		--build-arg ALPINE_VERSION=$*
 
 PHONY += build-php-%
 build-php-%: ## Build PHP and PHP-FPM images
