@@ -41,7 +41,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Build ${{ matrix.db }} ${{ matrix.version }} image for Drupal
-        run: make build-${{ matrix.db }}-${{ matrix.version }}
+        run: make build-${{ matrix.db }}-${{ matrix.version }} BUILDX_PUSH=
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
