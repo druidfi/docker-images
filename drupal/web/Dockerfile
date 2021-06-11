@@ -1,6 +1,7 @@
+ARG BASE_DRUPAL_IMAGE_NAME
 ARG PHP_VERSION
 
-FROM druidfi/drupal:${PHP_VERSION} AS baseline
+FROM ${BASE_DRUPAL_IMAGE_NAME}:${PHP_VERSION} AS baseline
 
 # Install Nginx
 RUN sudo apk --update --no-cache add nginx

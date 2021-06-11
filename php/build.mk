@@ -2,7 +2,7 @@
 
 PHONY += bake-all-php
 bake-all-php: ## Bake all PHP images (7.3, 7.4, 8.0)
-	@cd php && docker buildx bake --push --progress plain
+	@cd php && docker buildx bake --pull --push --progress plain
 
 PHONY += build-all-php
 build-all-php: build-all-php-73 build-all-php-74 build-all-php-80 ## Build all PHP images (7.3, 7.4, 8.0)

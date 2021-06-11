@@ -15,11 +15,23 @@ variable "PHP80_MINOR" {
 }
 
 group "default" {
-  targets = ["base-7.3", "web-7.3", "base-7.4", "web-7.4", "base-8.0", "web-8.0"]
+  targets = ["base-variants", "web-variants"]
+}
+
+group "base-variants" {
+  targets = ["base-7.3", "base-7.4", "base-8.0"]
+}
+
+group "web-variants" {
+  targets = ["web-7.3", "web-7.4", "web-8.0"]
 }
 
 target "common" {
   platforms = ["linux/amd64", "linux/arm64"]
+  args = {
+    BASE_PHP_IMAGE_NAME = "druidfi/phpx"
+    BASE_DRUPAL_IMAGE_NAME = "druidfi/drupalx"
+  }
 }
 
 target "base" {
@@ -28,9 +40,6 @@ target "base" {
 
 target "web" {
   context = "./web"
-  args = {
-    NGINX_VERSION = "1.20"
-  }
 }
 
 target "base-7.3" {

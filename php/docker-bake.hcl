@@ -28,6 +28,9 @@ target "base" {
 
 target "fpm" {
   context = "./fpm"
+  args = {
+    BASE_IMAGE_NAME = "druidfi/phpx"
+  }
 }
 
 target "base-7.3" {
