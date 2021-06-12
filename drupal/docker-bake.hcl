@@ -52,7 +52,7 @@ target "base-7.3" {
 }
 
 target "web-7.3" {
-  inherits = ["common", "web", "base-7.3"]
+  inherits = ["common", "base-7.3", "web"]
   tags = ["${REPO}:7.3-web", "${REPO}:${PHP73_MINOR}-web", "${REPO}:7.3-web-latest"]
 }
 
@@ -66,7 +66,7 @@ target "base-7.4" {
 }
 
 target "web-7.4" {
-  inherits = ["common", "web", "base-7.4"]
+  inherits = ["common", "base-7.4", "web"]
   tags = ["${REPO}:7.4-web", "${REPO}:${PHP74_MINOR}-web", "${REPO}:7.4-web-latest"]
 }
 
@@ -80,6 +80,6 @@ target "base-8.0" {
 }
 
 target "web-8.0" {
-  inherits = ["common", "web", "base-8.0"]
+  inherits = ["common", "base-8.0", "web"]
   tags = ["${REPO}:8.0-web", "${REPO}:${PHP80_MINOR}-web", "${REPO}:8.0-web-latest"]
 }
