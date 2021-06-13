@@ -1,8 +1,17 @@
 #BUILD_TARGETS += build-all-php build-qa-toolset
 
+ALPINE_PLAIN := https://git.alpinelinux.org/aports/plain/community
+
 PHONY += bake-all-php
+bake-all-php: AP_312_PHP7 := $(ALPINE_PLAIN)/php7/APKBUILD\?h\=3.12-stable
+bake-all-php: AP_313_PHP7 := $(ALPINE_PLAIN)/php7/APKBUILD\?h\=3.13-stable
+bake-all-php: AP_313_PHP8 := $(ALPINE_PLAIN)/php8/APKBUILD\?h\=3.13-stable
 bake-all-php: ## Bake all PHP images (7.3, 7.4, 8.0)
-	@cd php && docker buildx bake --pull --push --progress plain
+	$(eval PHP73_MINOR := $(shell curl -s $(AP_312_PHP7) | cat | grep -i "pkgver=" | cut -d "=" -f2))
+	$(eval PHP74_MINOR := $(shell curl -s $(AP_313_PHP7) | cat | grep -i "pkgver=" | cut -d "=" -f2))
+	$(eval PHP80_MINOR := $(shell curl -s $(AP_313_PHP8) | cat | grep -i "pkgver=" | cut -d "=" -f2))
+	@cd php && PHP73_MINOR=$(PHP73_MINOR) PHP74_MINOR=$(PHP74_MINOR) PHP80_MINOR=$(PHP80_MINOR) \
+		docker buildx bake --print --pull --push --progress plain
 
 PHONY += build-all-php
 build-all-php: build-all-php-73 build-all-php-74 build-all-php-80 ## Build all PHP images (7.3, 7.4, 8.0)
