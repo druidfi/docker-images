@@ -1,7 +1,7 @@
 ARG BASE_DRUPAL_IMAGE_NAME
 ARG PHP_VERSION
 
-FROM ${BASE_DRUPAL_IMAGE_NAME}:${PHP_VERSION} AS baseline
+FROM ${BASE_DRUPAL_IMAGE_NAME}:${PHP_VERSION} AS base
 
 # Install Nginx
 RUN sudo apk --update --no-cache add nginx
@@ -18,3 +18,9 @@ EXPOSE 8080
 
 # Default command: Start up multiple services via entrypoint
 CMD ["entrypoint"]
+
+FROM base as test
+
+RUN echo "let's do tests!" && exit 1
+
+FROM base as final
