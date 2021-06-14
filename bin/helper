@@ -1,0 +1,49 @@
+#!/bin/bash
+
+COMMAND=$1
+
+if [[ $COMMAND == alpineversion ]]
+then
+
+  BRANCH=${2:-3.13}
+  API_URL="https://hub.docker.com/v2/repositories/library/alpine/tags?page_size=100"
+  JQ=bin/jq-osx-amd64
+
+  TAGS=$(curl -L -s "$API_URL" | $JQ --raw-output '."results"[]["name"]')
+
+  for TAG in $TAGS
+  do
+    if [[ $TAG == $BRANCH.* ]]
+    then
+      # First found tag is also the latest
+      echo "$TAG" && exit 0
+    fi
+  done
+
+fi
+
+if [[ $COMMAND == phpminor ]]
+then
+
+  BRANCH=${2:-7.4}
+  ALPINE=3.13
+
+  if [[ $BRANCH == 8.0 ]]
+  then
+    PHP=8
+  else
+    PHP=7
+
+    if [[ $BRANCH == 7.3 ]]
+    then
+      ALPINE=3.12
+    fi
+  fi
+
+  URL="https://git.alpinelinux.org/aports/plain/community/php$PHP/APKBUILD?h=$ALPINE-stable"
+
+  curl -L -s "$URL" | cat | grep -i "pkgver=" | cut -d "=" -f2  && exit 0
+
+fi
+
+echo "No valid arguments given" && exit 1
