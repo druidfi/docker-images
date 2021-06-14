@@ -1,10 +1,6 @@
-BUILD_TARGETS := build-all-base
+BUILD_TARGETS := bake-all-base
 
-PHONY += build-all-base
-build-all-base: build-base-3.12.7 build-base-3.13.5 ## Build all Base images
-
-PHONY += build-base-%
-build-base-%: ## Build base images
-	$(call step,Build druidfi/base:alpine$*)
-	$(DBX) --target base -t druidfi/base:alpine$* --push base \
-		--build-arg ALPINE_VERSION=$*
+PHONY += bake-all-base
+bake-all-base: ## Bake all Base images
+	@cd base && ALPINE_VERSION=$(call get_alpine_version) ALPINE_VERSION_PREVIOUS=$(call get_alpine_version,3.12) \
+		docker buildx bake --pull --push
