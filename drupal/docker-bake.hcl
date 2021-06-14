@@ -2,17 +2,9 @@ variable "REPO" {
   default = "druidfi/drupalx"
 }
 
-variable "PHP73_MINOR" {
-  default = "7.3.27"
-}
-
-variable "PHP74_MINOR" {
-  default = "7.4.19"
-}
-
-variable "PHP80_MINOR" {
-  default = "8.0.6"
-}
+variable "PHP73_MINOR" {}
+variable "PHP74_MINOR" {}
+variable "PHP80_MINOR" {}
 
 group "default" {
   targets = ["base-variants", "web-variants"]
@@ -30,7 +22,7 @@ target "common" {
   platforms = ["linux/amd64", "linux/arm64"]
   args = {
     BASE_PHP_IMAGE_NAME = "druidfi/phpx"
-    BASE_DRUPAL_IMAGE_NAME = "druidfi/drupalx"
+    BASE_DRUPAL_IMAGE_NAME = "${REPO}"
   }
 }
 

@@ -22,11 +22,19 @@ SIMPLESAMLPHP_VERSION := 1.18.8
 
 PHONY += help
 help: ## List all make commands
-	$(call step,Available make commands: $(CURRENT_ARCH))
+	$(call step,Available make commands:)
 	@cat $(MAKEFILE_LIST) | grep -e "^[a-zA-Z_\-]*: *.*## *" | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' | sort
 
 define step
 	@printf "\n\e[0;33m${1}\e[0m\n\n"
+endef
+
+define get_alpine_version
+$(shell bin/helper alpineversion $1)
+endef
+
+define get_php_minor
+$(shell bin/helper phpminor $1)
 endef
 
 .PHONY: $(PHONY)
