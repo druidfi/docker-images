@@ -8,9 +8,9 @@ ALL_IMAGES := $(DRUPAL_IMAGES)
 PHONY += scan-drupal
 scan-drupal: ## Scan all Drupal images with Trivy
 	$(call step,Scan all Drupal images with Trivy)
-	@$(foreach img,$(DRUPAL_IMAGES),trivy druidfi/$(img);)
+	@$(foreach IMG,$(DRUPAL_IMAGES),trivy druidfi/$(IMG);)
 
 PHONY += scan-ci
 scan-ci: ## Scan all images with Trivy in CI
 	$(call step,Scan all images with Trivy in CI)
-	$(foreach img,$(ALL_IMAGES),trivy --exit-code 1 --severity CRITICAL druidfi/$(img);)
+	$(foreach IMG,$(ALL_IMAGES),trivy --exit-code 1 --severity CRITICAL druidfi/$(IMG);)

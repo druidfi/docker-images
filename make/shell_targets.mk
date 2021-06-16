@@ -10,13 +10,13 @@ shell-base: ## Login to base container
 
 PHONY += shell-php
 shell-php: IMG := php
-shell-php: TAG := 7.3
+shell-php: TAG := 7.4
 shell-php: ## Login to PHP-FPM container
 	docker run --rm -it --user=druid --hostname $(HOST) druidfi/$(IMG):$(TAG) bash
 
 PHONY += shell-php-fpm
 shell-php-fpm: IMG := php
-shell-php-fpm: TAG := 7.3-fpm
+shell-php-fpm: TAG := 7.4-fpm
 shell-php-fpm: ## Login to PHP-FPM container
 	docker run --rm -it --user=druid --hostname $(HOST) druidfi/$(IMG):$(TAG) bash
 
