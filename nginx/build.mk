@@ -1,11 +1,5 @@
-BUILD_TARGETS += build-all-nginx
+BUILD_TARGETS += bake-all-nginx
 
-PHONY += build-all-nginx
-build-all-nginx: build-nginx ## Build all Nginx images
-
-PHONY += build-nginx
-build-nginx: ## Build Nginx images
-	$(call step,Build druidfi/nginx:$(NGINX_STABLE_VERSION))
-	$(DBX) --target base -t druidfi/nginx:$(NGINX_STABLE_VERSION) --push nginx
-	$(call step,Build druidfi/nginx:1.20-drupal)
-	$(DBX) --target drupal -t druidfi/nginx:$(NGINX_STABLE_VERSION)-drupal --push nginx
+PHONY += bake-all-nginx
+bake-all-nginx: ## Bake all Nginx images
+	@cd nginx && docker buildx bake --pull --push
