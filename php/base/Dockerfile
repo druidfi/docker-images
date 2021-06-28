@@ -1,6 +1,12 @@
+ARG ALPINE_VERSION
 ARG PHP_SHORT_VERSION
 
-FROM druidfi/base:alpine3.12.7 as build-php-73
+FROM alpine:3.13 as libiconv
+
+RUN apk --update --no-cache add gnu-libiconv && \
+    test -f /usr/lib/preloadable_libiconv.so || echo "preloadable_libiconv.so not found"
+
+FROM druidfi/base:alpine${ALPINE_VERSION} as build-php-73
 
 ENV PHP_MAJOR_VERSION=7
 ENV PHP_SHORT_VERSION=73
@@ -10,7 +16,7 @@ RUN sudo apk --update --no-cache add \
     php7-session php7-zip \
     php7-pecl-apcu php7-pecl-redis php7-pecl-uploadprogress php7-pecl-xdebug
 
-FROM druidfi/base:alpine3.13.5 as build-php-74
+FROM druidfi/base:alpine${ALPINE_VERSION} as build-php-74
 
 ENV PHP_MAJOR_VERSION=7
 ENV PHP_SHORT_VERSION=74
@@ -20,7 +26,7 @@ RUN sudo apk --update --no-cache add \
     php7-session php7-zip \
     php7-pecl-apcu php7-pecl-redis php7-pecl-uploadprogress php7-pecl-xdebug
 
-FROM druidfi/base:alpine3.13.5 as build-php-80
+FROM druidfi/base:alpine${ALPINE_VERSION} as build-php-80
 
 ENV PHP_MAJOR_VERSION=8
 ENV PHP_SHORT_VERSION=80
@@ -41,9 +47,7 @@ ENV APP_ENV=prod \
     PATH="${PATH}:/home/${DEFAULT_USER}/.composer/vendor/bin:${APP_PATH}/vendor/bin"
 
 # Install software
-# Fix iconv library with Alpine by gnu-libiconv
-RUN sudo apk --update --no-cache add gnu-libiconv patch unzip && \
-    test -f /usr/lib/preloadable_libiconv.so && \
+RUN sudo apk --update --no-cache add patch unzip && \
     sudo php -r "readfile('http://getcomposer.org/installer');" | sudo php -- --install-dir=/usr/local/bin/ --filename=composer && \
     #
     # Set permissions on Composer home directory
@@ -59,6 +63,9 @@ RUN sudo apk --update --no-cache add gnu-libiconv patch unzip && \
     sudo tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire && \
     sudo mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so && \
     sudo rm -rf /tmp/blackfire
+
+# Fix iconv library with Alpine by gnu-libiconv
+COPY --from=libiconv /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
 
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 

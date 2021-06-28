@@ -2,7 +2,8 @@
 
 PHONY += bake-all-php
 bake-all-php: ## Bake all PHP images (7.3, 7.4, 8.0)
-	@cd php && PHP73_MINOR=$(call get_php_minor,7.3) PHP74_MINOR=$(call get_php_minor,7.4) PHP80_MINOR=$(call get_php_minor,8.0) \
+	@cd php && ALPINE_VERSION=$(call get_alpine_version) ALPINE_VERSION_PREVIOUS=$(call get_alpine_version,3.12) \
+	PHP73_MINOR=$(call get_php_minor,7.3) PHP74_MINOR=$(call get_php_minor,7.4) PHP80_MINOR=$(call get_php_minor,8.0) \
 		docker buildx bake --pull --push
 
 PHONY += build-all-wp
