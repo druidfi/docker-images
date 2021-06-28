@@ -1,11 +1,12 @@
 #!/bin/bash
 
 COMMAND=$1
+LATEST_ALPINE_VERSION=3.14
 
 if [[ $COMMAND == alpineversion ]]
 then
 
-  BRANCH=${2:-3.13}
+  BRANCH=${2:-${LATEST_ALPINE_VERSION}}
   API_URL="https://hub.docker.com/v2/repositories/library/alpine/tags?page_size=100"
   JQ=bin/jq-osx-amd64
 
@@ -26,7 +27,7 @@ if [[ $COMMAND == phpminor ]]
 then
 
   BRANCH=${2:-7.4}
-  ALPINE=3.13
+  ALPINE=${LATEST_ALPINE_VERSION}
 
   if [[ $BRANCH == 8.0 ]]
   then
