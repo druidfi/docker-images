@@ -7,7 +7,7 @@ variable "PHP74_MINOR" {}
 variable "PHP80_MINOR" {}
 
 group "default" {
-  targets = ["base-variants", "web-variants"]
+  targets = ["base-variants", "web-variants", "test-variants"]
 }
 
 group "base-variants" {
@@ -16,6 +16,10 @@ group "base-variants" {
 
 group "web-variants" {
   targets = ["web-7.3", "web-7.4", "web-8.0"]
+}
+
+group "test-variants" {
+  targets = ["test-7.3", "test-7.4", "test-8.0"]
 }
 
 target "common" {
@@ -74,4 +78,23 @@ target "base-8.0" {
 target "web-8.0" {
   inherits = ["common", "base-8.0", "web"]
   tags = ["${REPO}:8.0-web", "${REPO}:${PHP80_MINOR}-web", "${REPO}:8.0-web-latest"]
+}
+
+target "test" {
+  context = "./test"
+}
+
+target "test-7.3" {
+  inherits = ["common", "base-7.3", "test"]
+  tags = ["${REPO}:7.3-test"]
+}
+
+target "test-7.4" {
+  inherits = ["common", "base-7.4", "test"]
+  tags = ["${REPO}:7.4-test"]
+}
+
+target "test-8.0" {
+  inherits = ["common", "base-8.0", "test"]
+  tags = ["${REPO}:8.0-test"]
 }
