@@ -13,3 +13,6 @@ fi
 
 # Aliases
 alias ll="ls -lah"
+
+# Run neofetch on login
+neofetch

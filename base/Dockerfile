@@ -1,6 +1,6 @@
 ARG ALPINE_VERSION
 
-FROM golang:alpine3.13 AS ep-builder
+FROM golang:alpine3.14 AS ep-builder
 
 RUN GIT_TAG=github.com/smlx/go-crond@custom-workdir-mod-update GIT_COMMIT=1b81c05ef34903427ed06a56c26cc268a0377b83; \
     GO111MODULE=on CGO_ENABLED=0 go get -ldflags "-X main.gitTag=$GIT_TAG -X main.gitCommit=$GIT_COMMIT" \
@@ -40,11 +40,11 @@ RUN apk update && apk upgrade && \
     #
     # Install needed packages
     #
-    apk --update --no-cache add bash curl git make nano sudo tini && \
+    apk --update --no-cache add bash curl git make nano neofetch sudo tini && \
     #
     # Ensure www-data user exists
     #
-    addgroup -g 82 -S www-data && \
+    addgroup -g 82 -S www-data || echo "www-data group already exists" && \
     adduser -u 82 -D -S -G www-data www-data && \
     #
     # Create user group
