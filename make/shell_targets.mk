@@ -6,7 +6,7 @@ HOST := test.druid.fi
 
 PHONY += shell-base
 shell-base: ## Login to base container
-	docker run --rm -it --user=druid --hostname $(HOST) druidfi/base:alpine$(ALPINE_VERSION) bash
+	docker run --rm -it --user=druid --hostname $(HOST) druidfi/base:alpine$(call get_alpine_version) bash
 
 PHONY += shell-php
 shell-php: IMG := php
@@ -22,7 +22,7 @@ shell-php-fpm: ## Login to PHP-FPM container
 
 PHONY += shell-drupal
 shell-drupal: IMG := drupal
-shell-drupal: TAG := 7.3
+shell-drupal: TAG := 7.4
 shell-drupal: ## Login to Drupal container
 	docker run --rm -it --user=druid --hostname $(HOST) druidfi/$(IMG):$(TAG) bash
 
