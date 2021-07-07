@@ -6,7 +6,7 @@ FROM alpine:3.13 as libiconv
 RUN apk --update --no-cache add gnu-libiconv && \
     test -f /usr/lib/preloadable_libiconv.so || echo "preloadable_libiconv.so not found"
 
-FROM druidfi/base:alpine${ALPINE_VERSION} as build-php-73
+FROM druidfi/base:alpine-${ALPINE_VERSION} as build-php-73
 
 ENV PHP_MAJOR_VERSION=7
 ENV PHP_SHORT_VERSION=73
@@ -16,7 +16,7 @@ RUN sudo apk --update --no-cache add \
     php7-session php7-zip \
     php7-pecl-apcu php7-pecl-redis php7-pecl-uploadprogress php7-pecl-xdebug
 
-FROM druidfi/base:alpine${ALPINE_VERSION} as build-php-74
+FROM druidfi/base:alpine-${ALPINE_VERSION} as build-php-74
 
 ENV PHP_MAJOR_VERSION=7
 ENV PHP_SHORT_VERSION=74
@@ -26,7 +26,7 @@ RUN sudo apk --update --no-cache add \
     php7-session php7-zip \
     php7-pecl-apcu php7-pecl-redis php7-pecl-uploadprogress php7-pecl-xdebug
 
-FROM druidfi/base:alpine${ALPINE_VERSION} as build-php-80
+FROM druidfi/base:alpine-${ALPINE_VERSION} as build-php-80
 
 ENV PHP_MAJOR_VERSION=8
 ENV PHP_SHORT_VERSION=80

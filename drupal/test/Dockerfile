@@ -1,6 +1,6 @@
 ARG PHP_VERSION
 
-FROM druidfi/drupal:${PHP_VERSION}-web AS baseline
+FROM druidfi/drupal-web:${PHP_VERSION} AS baseline
 
 ARG BUILD_DATE=${BUILD_DATE}
 ARG BRANCH=main
