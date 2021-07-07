@@ -1,5 +1,5 @@
 variable "REPO_BASE" {
-  default = "druidfi/phpx"
+  default = "druidfi/php"
 }
 
 variable "REPO_FPM" {
@@ -70,16 +70,16 @@ target "fpm" {
 }
 
 target "fpm-73" {
-  inherits = ["common", "fpm", "base-73"]
+  inherits = ["common", "base-73", "fpm"]
   tags = ["${REPO_FPM}:7.3", "${REPO_FPM}:${PHP73_MINOR}"]
 }
 
 target "fpm-74" {
-  inherits = ["common", "fpm", "base-74"]
+  inherits = ["common", "base-74", "fpm"]
   tags = ["${REPO_FPM}:7", "${REPO_FPM}:7.4", "${REPO_FPM}:${PHP74_MINOR}", "${REPO_FPM}:latest"]
 }
 
 target "fpm-80" {
-  inherits = ["common", "fpm", "base-80"]
+  inherits = ["common", "base-80", "fpm"]
   tags = ["${REPO_FPM}:8", "${REPO_FPM}:8.0", "${REPO_FPM}:${PHP80_MINOR}"]
 }
