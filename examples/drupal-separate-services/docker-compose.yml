@@ -5,7 +5,7 @@ services:
   nginx:
     hostname: "${DRUPAL_HOSTNAME}"
     container_name: "${COMPOSE_PROJECT_NAME}-nginx"
-    image: druidfi/nginx:1.18-drupal
+    image: druidfi/nginx:1.20-drupal
     volumes:
       - .:/app:delegated
     labels:
@@ -22,11 +22,10 @@ services:
       - app
 
   app:
-    container_name: "${COMPOSE_PROJECT_NAME}-php"
-    image: druidfi/drupal:7.4
+    container_name: "${COMPOSE_PROJECT_NAME}-app"
+    image: druidfi/drupal:php-7.4
     volumes:
       - .:/app:delegated
-    #  - ssh:/tmp/amazeeio_ssh-agent:ro
     environment:
       DRUSH_OPTIONS_URI: "https://${DRUPAL_HOSTNAME}"
     networks:
@@ -36,9 +35,7 @@ services:
 
   db:
     container_name: "${COMPOSE_PROJECT_NAME}-db"
-    image: druidfi/db:mysql8.0-drupal
-    #volumes:
-    #  - db_data:/var/lib/mysql
+    image: druidfi/mariadb:10.5-drupal
     ports:
       - 3306
     networks:
@@ -49,9 +46,3 @@ networks:
     external: false
   stonehenge-network:
     external: true
-
-#volumes:
-#  db_data:
-#  ssh:
-#    name: stonehenge-ssh
-#    external: true

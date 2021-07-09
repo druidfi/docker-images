@@ -1,18 +1,16 @@
 ARG PHP_VERSION
 
-FROM druidfi/drupal:${PHP_VERSION}-web AS baseline
+FROM composer AS builder
 
-ARG BUILD_DATE=${BUILD_DATE}
-ARG BRANCH=master
+ARG BRANCH=main
 
-ENV COMPOSER_MEMORY_LIMIT=-1
+WORKDIR /app
 
 # Install make and create Drupal project
-RUN composer create-project --no-progress druidfi/spell:dev-${BRANCH} ${APP_PATH} --no-interaction
-    #
-    # Install some modules for testing
-    #
-RUN composer req --no-progress \
+RUN composer create-project --ignore-platform-reqs --no-dev --no-progress --no-interaction druidfi/spell:dev-${BRANCH} .
+
+# Install some modules for testing
+RUN composer req --ignore-platform-reqs --no-progress --no-interaction \
         drupal/admin_toolbar \
         drupal/gin \
         drupal/gin_login \
@@ -21,14 +19,16 @@ RUN composer req --no-progress \
         drupal/paragraphs \
         drupal/pathauto \
         drupal/simplei \
-        drupal/pwa && \
-    #
-    # Set up file folders
-    #
-    mkdir ${APP_PATH}/public/sites/default/files && \
-    sudo chown -R www-data:www-data ${APP_PATH}/public/sites/default/files && \
-    #
-    # Cleanup
-    #
-    composer clear-cache && \
-    rm -rf ${APP_PATH}/.git
+        drupal/pwa
+
+FROM druidfi/drupal-web:php-${PHP_VERSION} AS baseline
+
+COPY --from=builder ${APP_PATH}/composer.* ${APP_PATH}/
+COPY --from=builder ${APP_PATH}/conf/ ${APP_PATH}/conf/
+COPY --from=builder ${APP_PATH}/drush/ ${APP_PATH}/drush/
+COPY --from=builder ${APP_PATH}/public/ ${APP_PATH}/public/
+COPY --from=builder ${APP_PATH}/vendor/ ${APP_PATH}/vendor/
+
+# Set up file folders
+RUN sudo mkdir ${APP_PATH}/public/sites/default/files && \
+    sudo chown -R www-data:www-data ${APP_PATH}/public/sites/default/files

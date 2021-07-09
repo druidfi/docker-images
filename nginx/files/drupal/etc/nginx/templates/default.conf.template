@@ -1,6 +1,6 @@
 server {
-  listen [::]:8080 default_server;
-  listen 8080 default_server;
+  listen [::]:${NGINX_PORT} default_server;
+  listen ${NGINX_PORT} default_server;
   server_name _;
 
   root /app/public;
@@ -87,7 +87,7 @@ server {
         fastcgi_param PATH_INFO $fastcgi_path_info;
         fastcgi_param QUERY_STRING $query_string;
         fastcgi_intercept_errors on;
-        fastcgi_pass app:9000;
+        fastcgi_pass ${BACKEND_SERVICE}:${BACKEND_SERVICE_PORT};
 	    fastcgi_read_timeout 300;
     }
 

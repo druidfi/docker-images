@@ -1,5 +1,5 @@
 # See https://github.com/wodby/varnish
-FROM wodby/varnish:6
+FROM wodby/varnish:6 as base
 
 LABEL maintainer="druid.fi"
 

@@ -1,6 +1,6 @@
 ARG ALPINE_VERSION
 
-FROM alpine:${ALPINE_VERSION}
+FROM alpine:${ALPINE_VERSION} as base
 
 LABEL maintainer="druid.fi"
 

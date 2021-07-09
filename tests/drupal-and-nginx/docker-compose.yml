@@ -3,42 +3,39 @@ version: '3.7'
 services:
 
   nginx:
-    #hostname: "${DRUPAL_HOSTNAME}"
-    #container_name: "${COMPOSE_PROJECT_NAME}-nginx"
-    image: druidfi/nginx-drupal:1.18
-    tty: true
+    hostname: "${DRUPAL_HOSTNAME}"
+    container_name: "${COMPOSE_PROJECT_NAME}-nginx"
+    image: druidfi/nginx:1.20-drupal
     volumes:
       - .:/app:delegated
     labels:
-      traefik.enable: true
-      traefik.port: 8080
-      traefik.frontend.rule: "Host:test-drupal.docker.sh"
-      traefik.frontend.redirect.entryPoint: https
+      - "traefik.enable=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-nginx.entrypoints=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-nginx.rule=Host(`${DRUPAL_HOSTNAME}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-nginx.tls=true"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-nginx.loadbalancer.server.port=8080"
+      - "traefik.docker.network=stonehenge-network"
     networks:
       - internal
-      - dev-network
+      - stonehenge-network
     depends_on:
       - app
 
   app:
-    #container_name: "${COMPOSE_PROJECT_NAME}-php"
-    image: druidfi/drupal:7.3
-    tty: true
+    container_name: "${COMPOSE_PROJECT_NAME}-app"
+    image: druidfi/drupal:php-7.4
     volumes:
       - .:/app:delegated
-    #  - ssh:/tmp/amazeeio_ssh-agent:ro
     environment:
-      DRUSH_OPTIONS_URI: "https://test-drupal.docker.sh"
+      DRUSH_OPTIONS_URI: "https://${DRUPAL_HOSTNAME}"
     networks:
       - internal
     depends_on:
       - db
 
   db:
-    #container_name: "${COMPOSE_PROJECT_NAME}-db"
-    image: druidfi/db:mysql5.7-drupal
-    #volumes:
-    #  - db_data:/var/lib/mysql
+    container_name: "${COMPOSE_PROJECT_NAME}-db"
+    image: druidfi/mariadb:10.5-drupal
     ports:
       - 3306
     networks:
@@ -47,12 +44,5 @@ services:
 networks:
   internal:
     external: false
-  dev-network:
-    name: stonehenge-network
+  stonehenge-network:
     external: true
-
-#volumes:
-#  db_data:
-#  ssh:
-#    name: stonehenge-ssh
-#    external: true

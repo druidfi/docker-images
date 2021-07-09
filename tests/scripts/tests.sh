@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+neofetch
+
 . "$(dirname "$0")/utils.sh"
 . "$(dirname "$0")/perms.sh"
 . "$(dirname "$0")/php.sh"

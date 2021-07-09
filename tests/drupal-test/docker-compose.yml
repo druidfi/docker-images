@@ -6,8 +6,6 @@ services:
     container_name: "${COMPOSE_PROJECT_NAME}-app"
     hostname: "${DRUPAL_HOSTNAME}"
     image: "${DRUPAL_IMAGE}"
-#    volumes:
-#      - ssh:/tmp/amazeeio_ssh-agent:ro
     environment:
       DRUSH_OPTIONS_URI: "https://${DRUPAL_HOSTNAME}"
     labels:
@@ -25,11 +23,7 @@ services:
 
   db:
     container_name: "${COMPOSE_PROJECT_NAME}-db"
-    image: druidfi/db:mysql5.7-drupal
-#    volumes:
-#      - db_data:/var/lib/mysql
-    ports:
-      - 3306
+    image: druidfi/mariadb:10.5-drupal
     networks:
       - internal
 
@@ -38,9 +32,3 @@ networks:
     external: false
   stonehenge-network:
     external: true
-
-#volumes:
-#  db_data:
-#  ssh:
-#    name: stonehenge-ssh
-#    external: true

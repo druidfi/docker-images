@@ -1,21 +1,20 @@
-FROM php:7.4-apache
+FROM alpine as base
 
-ARG SIMPLESAMLPHP_VERSION=1.18.7
+ARG SIMPLESAMLPHP_VERSION=1.19.1
 ARG SIMPLESAMLPHP_URL=https://github.com/simplesamlphp/simplesamlphp/releases/download/v${SIMPLESAMLPHP_VERSION}/simplesamlphp-${SIMPLESAMLPHP_VERSION}.tar.gz
+
+RUN apk add curl
+RUN curl -s -L -o /tmp/simplesamlphp.tar.gz ${SIMPLESAMLPHP_URL}
+RUN tar xzf /tmp/simplesamlphp.tar.gz -C /tmp
+RUN mv /tmp/simplesamlphp-* /home/simplesamlphp
+RUN touch /home/simplesamlphp/modules/exampleauth/enable
+
+FROM php:7.4-apache as final
 
 LABEL maintainer="druid.fi"
 
-# Utilities
-RUN apt-get update && \
-    apt-get -y install apt-transport-https git curl vim --no-install-recommends && \
-    rm -r /var/lib/apt/lists/*
-
-# SimpleSAMLphp
-RUN curl -s -L -o /tmp/simplesamlphp.tar.gz ${SIMPLESAMLPHP_URL} && \
-    tar xzf /tmp/simplesamlphp.tar.gz -C /tmp && \
-    rm -f /tmp/simplesamlphp.tar.gz  && \
-    mv /tmp/simplesamlphp-* /var/www/simplesamlphp && \
-    touch /var/www/simplesamlphp/modules/exampleauth/enable
+# Copy SimpleSAMLphp
+COPY --from=base /home/simplesamlphp /var/www/simplesamlphp
 
 # Copy configuration files and scripts
 COPY files/ /
