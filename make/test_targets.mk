@@ -5,18 +5,11 @@
 PHONY += test-all-php-base
 test-all-php-base: test-php-base-7.3 test-php-base-7.4 test-php-base-8.0 ## Build all PHP base images
 
-PHONY += test-all-phpx-base
-test-all-phpx-base: test-phpx-base-7.3 test-phpx-base-7.4 test-phpx-base-8.0 ## Build all PHP base images
-
 PHONY += test-php-base-%
 test-php-base-%:
 	$(call step,Run tests in druidfi/php:$*)
+	@docker pull --quiet druidfi/php:$*
 	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/php:$* /app/scripts/tests.sh
-
-PHONY += test-phpx-base-%
-test-phpx-base-%:
-	$(call step,Run tests in druidfi/php:$*)
-	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/phpx:$* /app/scripts/tests.sh
 
 PHONY += test-php-fpm
 test-php-fpm: TAG := 7.3-fpm
