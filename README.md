@@ -14,8 +14,8 @@ See https://hub.docker.com/u/druidfi for all the images.
 Name | Tags | Baseimage
 --- | ------ | -----------
 druidfi/php | 7.3, 7.3.x | druidfi/alpine-3.12.7
-druidfi/php | 7, 7.4, 7.4.x, latest | druidfi/alpine-3.14.0
-druidfi/php | 8, 8.0, 8.0.x | druidfi/alpine-3.14.0
+druidfi/php | 7, 7.4, 7.4.x, latest | druidfi/alpine-3.14.2
+druidfi/php | 8, 8.0, 8.0.x | druidfi/alpine-3.14.2
 
 ### PHP FPM images
 
@@ -58,7 +58,7 @@ Features:
 
 ENV variables:
 
-- `ALPINE_VERSION=3.14.0`
+- `ALPINE_VERSION=3.14.2`
 - `APP_PATH=/app`
 - `DEFAULT_USER=druid`
 - `DEFAULT_USER_UID=1000`
@@ -69,8 +69,8 @@ ENV variables:
 ### Base variant
 
 - `druidfi/php:7.3` based on `druidfi/base:alpine3.12.7`
-- `druidfi/php:7.4` based on `druidfi/base:alpine3.14.0`
-- `druidfi/php:8.0` based on `druidfi/base:alpine3.14.0`
+- `druidfi/php:7.4` based on `druidfi/base:alpine3.14.2`
+- `druidfi/php:8.0` based on `druidfi/base:alpine3.14.2`
 
 Added features:
 
