@@ -2,6 +2,9 @@
 
 COMMAND=$1
 LATEST_ALPINE_VERSION=3.14
+FALLBACK_VERSION_73="7.3.30"
+FALLBACK_VERSION_74="7.4.23"
+FALLBACK_VERSION_80="8.0.10"
 
 if [[ $COMMAND == alpineversion ]]
 then
@@ -42,8 +45,18 @@ then
   fi
 
   URL="https://git.alpinelinux.org/aports/plain/community/php$PHP/APKBUILD?h=$ALPINE-stable"
+  RESPONSE=$(curl -s -w "%{http_code}" "$URL")
+  CODE=$(tail -n1 <<< "$RESPONSE")
+  RESPONSE=$(sed '$ d' <<< "$RESPONSE")
 
-  curl -L -s "$URL" | cat | grep -i "pkgver=" | cut -d "=" -f2  && exit 0
+  if [[ "$CODE" =~ ^2 ]]; then
+      echo "$RESPONSE" | cat | grep -i "pkgver=" | cut -d "=" -f2 && exit 0
+  else
+      if [[ "$BRANCH" == "7.3" ]]; then echo "$FALLBACK_VERSION_73"; fi
+      if [[ "$BRANCH" == "7.4" ]]; then echo "$FALLBACK_VERSION_74"; fi
+      if [[ "$BRANCH" == "8.0" ]]; then echo "$FALLBACK_VERSION_80"; fi
+      exit 0
+  fi
 
 fi
 
