@@ -50,6 +50,7 @@ RUN sudo apk --update --no-cache add \
 FROM build-php-${PHP_SHORT_VERSION} as final
 
 # Copy configuration files and scripts
-COPY files/ /
+COPY --chown=${DEFAULT_USER}:${DEFAULT_USER} files/home/druid/.ssh/config /home/druid/.ssh/config
+COPY files/entrypoints /entrypoints
 
 USER ${DEFAULT_USER}
