@@ -42,6 +42,9 @@ RUN apk update && apk upgrade && \
     #
     apk --update --no-cache add bash curl git make nano neofetch sudo tini && \
     #
+    # Run neofetch to create conf
+    #
+    neofetch && \
     # Ensure www-data user exists
     #
     addgroup -g 82 -S www-data || echo "www-data group already exists" && \

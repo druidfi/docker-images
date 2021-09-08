@@ -15,4 +15,4 @@ fi
 alias ll="ls -lah"
 
 # Run neofetch on login
-neofetch
+neofetch --ascii_colors 1 --ascii /home/druid/ascii
