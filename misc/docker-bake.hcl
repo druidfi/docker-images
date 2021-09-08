@@ -7,7 +7,7 @@ variable SIMPLESAMLPHP_VERSION {
 }
 
 group "default" {
-  targets = ["curl", "mailhog", "saml-idp", "s3-sync", "ssh-agent", "varnish"]
+  targets = ["curl", "mailhog", "s3-sync", "saml-idp", "ssh-agent", "varnish"]
 }
 
 target "common" {
