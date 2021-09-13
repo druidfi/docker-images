@@ -1,10 +1,14 @@
+# syntax=docker/dockerfile:1.3-labs
+
 ARG BASE_DRUPAL_IMAGE_NAME
 ARG PHP_VERSION
 
 FROM ${BASE_DRUPAL_IMAGE_NAME}:php-${PHP_VERSION} AS base
 
 # Install Nginx
-RUN sudo apk --update --no-cache add nginx
+RUN sudo -s <<EOF
+apk --update --no-cache add nginx
+EOF
 
 # Copy configuration files and scripts
 COPY files/entrypoints/* /entrypoints
