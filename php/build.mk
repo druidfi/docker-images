@@ -41,3 +41,12 @@ build-test-drupal-%: ## Build Drupal test images
 	$(DBC) --no-cache --force-rm drupal/test -t druidfi/drupal:$*-test \
 		--build-arg PHP_VERSION=$* \
 		--build-arg BUILD_DATE=$(BUILD_DATE)
+
+PHONY += test-all-php-base
+test-all-php-base: test-php-base-7.3 test-php-base-7.4 test-php-base-8.0 ## Build all PHP base images
+
+PHONY += test-php-base-%
+test-php-base-%:
+	$(call step,Run tests in druidfi/php:$*)
+	@docker pull --quiet druidfi/php:$*
+	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/php:$* /app/scripts/tests.sh
