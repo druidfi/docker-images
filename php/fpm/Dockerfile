@@ -12,7 +12,7 @@ COPY files/etc/php${PHP_MAJOR_VERSION}/php-fpm.d/www.conf /etc/php${PHP_MAJOR_VE
 FROM fpm as build-php-fpm-7
 
 # Default command
-CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "/usr/sbin/php-fpm7", "-F", "-R"]
+CMD ["/usr/sbin/php-fpm7", "-F", "-R"]
 
 FROM build-php-fpm-7 as build-php-fpm-73
 FROM build-php-fpm-7 as build-php-fpm-74
@@ -20,6 +20,6 @@ FROM build-php-fpm-7 as build-php-fpm-74
 FROM fpm as build-php-fpm-80
 
 # Default command
-CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "/usr/sbin/php-fpm8", "-F", "-R"]
+CMD ["/usr/sbin/php-fpm8", "-F", "-R"]
 
 FROM build-php-fpm-${PHP_SHORT_VERSION} as final
