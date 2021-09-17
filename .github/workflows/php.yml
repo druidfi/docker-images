@@ -42,7 +42,9 @@ jobs:
 
       - name: Build PHP images
         run: |
-          make bake-php-local
+          ALPINE_VERSION=3.14.2 ALPINE_VERSION_PREVIOUS=3.12.8 \
+          PHP73_MINOR=7.3.30 PHP74_MINOR=7.4.23 PHP80_MINOR=8.0.10 \
+          docker buildx bake -f php/docker-bake.hcl --pull --progress plain --no-cache --load --set *.platform=linux/amd64
 
 #      - name: Run tests
 #        run: make test-php-base-${{ matrix.php }}
