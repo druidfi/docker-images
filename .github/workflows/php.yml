@@ -19,16 +19,6 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-20.04
 
-#    strategy:
-#      matrix:
-#        include:
-#          - php: '7.3'
-#            php_short: '73'
-#          - php: '7.4'
-#            php_short: '74'
-#          - php: '8.0'
-#            php_short: '80'
-
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -36,24 +26,16 @@ jobs:
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
+        with:
+          image: tonistiigi/binfmt:latest
+          platforms: amd64,arm64
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
       - name: Build PHP images
         run: |
-          ALPINE_VERSION=3.14.2 ALPINE_VERSION_PREVIOUS=3.12.8 \
-          PHP73_MINOR=7.3.30 PHP74_MINOR=7.4.23 PHP80_MINOR=8.0.10 \
-          docker buildx bake -f php/docker-bake.hcl --pull --progress plain --no-cache --load --set *.platform=linux/amd64
+          make bake-php-local
 
 #      - name: Run tests
 #        run: make test-php-base-${{ matrix.php }}
-
-#      - name: Run Trivy vulnerability scanner
-#        uses: aquasecurity/trivy-action@master
-#        with:
-#          image-ref: 'druidfi/drupal:${{ matrix.php }}-web'
-#          format: 'table'
-#          exit-code: '1'
-#          ignore-unfixed: true
-#          severity: 'CRITICAL,HIGH'

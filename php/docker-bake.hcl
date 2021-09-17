@@ -14,8 +14,13 @@ variable "REPO_DRUPAL_WEB" {
   default = "druidfi/drupal-web"
 }
 
-variable "ALPINE_VERSION" {}
-variable "ALPINE_VERSION_PREVIOUS" {}
+variable "ALPINE_VERSION" {
+  default = "3.14.2"
+}
+variable "ALPINE_VERSION_PREVIOUS" {
+  default = "3.12.8"
+}
+
 variable "PHP73_MINOR" {}
 variable "PHP74_MINOR" {}
 variable "PHP80_MINOR" {}
