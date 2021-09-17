@@ -11,9 +11,17 @@ FROM alpine:3.13 as libiconv
 RUN apk --update --no-cache add gnu-libiconv && test -f /usr/lib/preloadable_libiconv.so
 
 #
+# Base
+#
+FROM alpine:${ALPINE_VERSION} as base
+
+LABEL org.opencontainers.image.authors="Druid".fi maintainer="Druid.fi"
+LABEL org.opencontainers.image.source="https://github.com/druidfi/docker-images" repository="https://github.com/druidfi/docker-images"
+
+#
 # PHP 7
 #
-FROM alpine:${ALPINE_VERSION} as build-php-7
+FROM base as build-php-7
 
 ENV PHP_MAJOR_VERSION=7
 
@@ -34,7 +42,7 @@ ENV PHP_SHORT_VERSION=74
 #
 # PHP 8
 #
-FROM alpine:${ALPINE_VERSION} as build-php-80
+FROM base as build-php-80
 
 ENV PHP_MAJOR_VERSION=8
 ENV PHP_SHORT_VERSION=80
@@ -74,7 +82,11 @@ FROM base-php as final-php
 #
 FROM base-php as final-php-fpm
 
-RUN apk --update --no-cache add php${PHP_MAJOR_VERSION}-fpm
+RUN <<EOF
+addgroup -g 82 -S www-data || echo "www-data group already exists"
+adduser -u 82 -D -S -G www-data www-data
+apk --update --no-cache add php${PHP_MAJOR_VERSION}-fpm
+EOF
 
 COPY files/etc/php${PHP_MAJOR_VERSION}/php-fpm.d/www.conf /etc/php${PHP_MAJOR_VERSION}/php-fpm.d/www.conf
 
