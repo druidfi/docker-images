@@ -40,10 +40,12 @@ ADD https://www.digicert.com/CACerts/BaltimoreCyberTrustRoot.crt.pem /opt/ssl/
 
 RUN <<EOF
 apk update && apk upgrade
-apk --update --no-cache add bash bind-tools curl git make nano neofetch tini
+apk --update --no-cache add bash curl git make nano neofetch sudo tini
 neofetch
 addgroup -S ${DEFAULT_USER} -g ${DEFAULT_USER_UID}
 adduser -D -S -G ${DEFAULT_USER} -u ${DEFAULT_USER_UID} -s /bin/bash ${DEFAULT_USER}
+echo "${DEFAULT_USER} ALL=(ALL) NOPASSWD:SETENV:ALL" > /etc/sudoers.d/${DEFAULT_USER}
+chmod 0440 /etc/sudoers.d/${DEFAULT_USER}
 chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER}
 mkdir -p ${APP_PATH}
 chown ${DEFAULT_USER}:${DEFAULT_USER} ${APP_PATH}
@@ -55,6 +57,8 @@ COPY files/usr/local/bin/ /usr/local/bin/
 COPY --from=envplate /go/bin/ep /bin/ep
 COPY files/entrypoints/00-umask.sh /entrypoints/
 
+USER ${DEFAULT_USER}
+
 WORKDIR ${APP_PATH}
 ENTRYPOINT ["/sbin/tini", "--", "entrypoint"]
 
@@ -65,7 +69,7 @@ FROM base as build-php-7
 
 ENV PHP_MAJOR_VERSION=7
 
-RUN <<EOF
+RUN sudo -s <<EOF
 apk --update --no-cache add \
   php7 php7-curl php7-fileinfo php7-iconv php7-json php7-mbstring php7-opcache php7-openssl php7-phar php7-session php7-zip \
   php7-pecl-apcu php7-pecl-redis php7-pecl-uploadprogress php7-pecl-xdebug
@@ -87,7 +91,7 @@ FROM base as build-php-80
 ENV PHP_MAJOR_VERSION=8
 ENV PHP_SHORT_VERSION=80
 
-RUN <<EOF
+RUN sudo -s <<EOF
 apk --update --no-cache add libzip \
   php8 php8-curl php8-fileinfo php8-iconv php8-mbstring php8-opcache php8-openssl php8-phar php8-session php8-zip \
   php8-pecl-apcu php8-pecl-redis php8-pecl-uploadprogress php8-pecl-xdebug
@@ -99,7 +103,7 @@ EOF
 #
 FROM build-php-${PHP_SHORT_VERSION} AS blackfire
 
-RUN <<EOF
+RUN sudo -s <<EOF
 curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/alpine/$(uname -m)/${PHP_SHORT_VERSION}
 mkdir -p /tmp/blackfire
 tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire
@@ -133,7 +137,7 @@ ENV APP_ENV=prod \
     # Add /app/vendor/bin to PATH
     PATH="${PATH}:/home/${DEFAULT_USER}/.composer/vendor/bin:${APP_PATH}/vendor/bin"
 
-RUN <<EOF
+RUN sudo -s <<EOF
 apk --update --no-cache add patch unzip
 php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/local/bin/ --filename=composer
 mkdir -p ${COMPOSER_HOME}
@@ -150,7 +154,7 @@ FROM base-php as final-php
 #
 FROM base-php as final-php-fpm
 
-RUN <<EOF
+RUN sudo -s <<EOF
 addgroup -g 82 -S www-data || echo "www-data group already exists"
 adduser -u 82 -D -S -G www-data www-data
 adduser ${DEFAULT_USER} www-data
@@ -174,7 +178,7 @@ ENV DRUPAL_DB_NAME=drupal \
 
 # openssh and rsync are needed for using Drush aliases and connecting to them
 # Create some folders for Drush
-RUN <<EOF
+RUN sudo -s <<EOF
 apk --update --no-cache add imagemagick mysql-client openssh rsync
 mkdir -p /home/${DEFAULT_USER}/.drush /home/${DEFAULT_USER}/drush-backups/drupal
 EOF
@@ -183,7 +187,7 @@ COPY files/entrypoints/10-ssh-agent.sh /entrypoints/
 
 FROM base-drupal as drupal-7
 
-RUN <<EOF
+RUN sudo -s <<EOF
 apk --update --no-cache add \
   php7-bcmath php7-ctype php7-dom php7-exif php7-gd php7-intl php7-pdo php7-pdo_mysql php7-simplexml php7-sockets \
   php7-tokenizer php7-xml php7-xmlreader php7-xmlwriter php7-zlib
@@ -204,7 +208,7 @@ FROM drupal-7 as drupal-74
 #
 FROM base-drupal as drupal-80
 
-RUN <<EOF
+RUN sudo -s <<EOF
 apk --update --no-cache add \
   php8-bcmath php8-ctype php8-dom php8-exif php8-gd php8-intl php8-pdo php8-pdo_mysql php8-simplexml php8-sockets \
   php8-tokenizer php8-xml php8-xmlreader php8-xmlwriter
@@ -218,7 +222,9 @@ FROM drupal-${PHP_SHORT_VERSION} as drupal-final
 
 FROM drupal-final as drupal-web
 
-RUN apk --update --no-cache add nginx
+RUN sudo -s <<EOF
+apk --update --no-cache add nginx
+EOF
 
 COPY files/entrypoints/30-nginx.sh /entrypoints/
 COPY files/etc/nginx/nginx.conf /etc/nginx/nginx.conf

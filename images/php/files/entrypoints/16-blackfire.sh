@@ -7,12 +7,12 @@ if [ "$BLACKFIRE_ENABLE" = "true" ]; then
   if [ -f "$BLACKFIRE_INI" ]; then
     echo "Already enabled..."
   else
-    mv "$BLACKFIRE_INI".disabled "$BLACKFIRE_INI"
+    sudo mv "$BLACKFIRE_INI".disabled "$BLACKFIRE_INI"
   fi
 else
   echo "Start with Blackfire probe disabled. Add BLACKFIRE_ENABLE=true ENV variable to enable it."
   if [ -f "$BLACKFIRE_INI" ]; then
-    mv "$BLACKFIRE_INI" "$BLACKFIRE_INI".disabled
+    sudo mv "$BLACKFIRE_INI" "$BLACKFIRE_INI".disabled
   else
     echo "Already disabled..."
   fi
