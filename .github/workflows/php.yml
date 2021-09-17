@@ -24,32 +24,34 @@ jobs:
         include:
           - php: '7.3'
             php_short: '73'
-            alpine: '3.12.7'
           - php: '7.4'
             php_short: '74'
-            alpine: '3.13.5'
           - php: '8.0'
             php_short: '80'
-            alpine: '3.13.5'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Build PHP and Drupal images using PHP ${{ matrix.php }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build PHP images
         run: |
-          make build-base-${{ matrix.alpine }}
-          make build-all-php-${{ matrix.php_short }}
+          docker buildx bake -f php/docker-bake.hcl --pull --progress plain --no-cache --load
 
-      - name: Run tests
-        run: make test-php-base-${{ matrix.php }}
+#      - name: Run tests
+#        run: make test-php-base-${{ matrix.php }}
 
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: 'druidfi/drupal:${{ matrix.php }}-web'
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          severity: 'CRITICAL,HIGH'
+#      - name: Run Trivy vulnerability scanner
+#        uses: aquasecurity/trivy-action@master
+#        with:
+#          image-ref: 'druidfi/drupal:${{ matrix.php }}-web'
+#          format: 'table'
+#          exit-code: '1'
+#          ignore-unfixed: true
+#          severity: 'CRITICAL,HIGH'
