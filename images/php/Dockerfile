@@ -89,6 +89,12 @@ COPY --from=libiconv /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libic
 
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
+ENV APP_ENV=prod \
+    #COMPOSER_HOME=/home/${DEFAULT_USER}/.composer \
+    # Add /app/vendor/bin to PATH
+    #PATH="${PATH}:/home/${DEFAULT_USER}/.composer/vendor/bin:${APP_PATH}/vendor/bin"
+    PATH="${PATH}:${APP_PATH}/vendor/bin"
+
 # Install software
 RUN <<EOF
 apk --update --no-cache add patch unzip
