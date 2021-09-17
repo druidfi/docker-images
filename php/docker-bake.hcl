@@ -1,13 +1,13 @@
 variable "REPO_BASE" {
-  default = "druidfi__x/php"
+  default = "druidfi/php"
 }
 
 variable "REPO_FPM" {
-  default = "druidfi__x/php-fpm"
+  default = "druidfi/php-fpm"
 }
 
 variable "REPO_DRUPAL_FPM" {
-  default = "druidfi__x/drupal"
+  default = "druidfi/drupal"
 }
 
 variable "ALPINE_VERSION" {}
@@ -45,7 +45,7 @@ target "common" {
 #
 
 target "php" {
-  context = "./images/php"
+  context = "./php"
   target = "final-php"
 }
 
@@ -84,7 +84,7 @@ target "php-80" {
 #
 
 target "php-fpm" {
-  context = "./images/php"
+  context = "./php"
   target = "final-php-fpm"
 }
 
@@ -116,7 +116,7 @@ target "drupal-fpm-73" {
 target "drupal-fpm-74" {
   inherits = ["common", "php-74", "php-fpm"]
   target = "drupal-74"
-  tags = ["${REPO_DRUPAL_FPM}:php-7.4", "${REPO_DRUPAL_FPM}:php-${PHP74_MINOR}"]
+  tags = ["${REPO_DRUPAL_FPM}:php-7.4", "${REPO_DRUPAL_FPM}:php-${PHP74_MINOR}", "${REPO_DRUPAL_FPM}:latest"]
 }
 
 target "drupal-fpm-80" {
@@ -138,7 +138,7 @@ target "drupal-web-73" {
 target "drupal-web-74" {
   inherits = ["common", "php-74", "php-fpm"]
   target = "drupal-web"
-  tags = ["${REPO_DRUPAL_FPM}-web:php-7.4", "${REPO_DRUPAL_FPM}-web:php-${PHP74_MINOR}"]
+  tags = ["${REPO_DRUPAL_FPM}-web:php-7.4", "${REPO_DRUPAL_FPM}-web:php-${PHP74_MINOR}", "${REPO_DRUPAL_FPM}-web:latest"]
 }
 
 target "drupal-web-80" {
