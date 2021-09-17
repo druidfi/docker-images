@@ -30,5 +30,5 @@ COPY --from=builder ${APP_PATH}/public/ ${APP_PATH}/public/
 COPY --from=builder ${APP_PATH}/vendor/ ${APP_PATH}/vendor/
 
 # Set up file folders
-RUN sudo mkdir ${APP_PATH}/public/sites/default/files && \
-    sudo chown -R www-data:www-data ${APP_PATH}/public/sites/default/files
+RUN mkdir ${APP_PATH}/public/sites/default/files && \
+    chown -R www-data:www-data ${APP_PATH}/public/sites/default/files
