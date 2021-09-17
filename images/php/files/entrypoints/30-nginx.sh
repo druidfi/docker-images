@@ -2,8 +2,8 @@
 
 echo "Prepare Nginx conf..."
 
-sudo --preserve-env ep -v /etc/nginx/conf.d/default.conf
+ep -v /etc/nginx/conf.d/default.conf
 
 echo "Start up Nginx..."
 
-nginx -g 'daemon off;'
+exec nginx -g 'daemon off;'

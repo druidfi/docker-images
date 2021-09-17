@@ -3,6 +3,16 @@
 ARG ALPINE_VERSION
 ARG PHP_SHORT_VERSION
 
+FROM golang:alpine3.14 AS envplate
+
+RUN <<EOF
+GIT_TAG=github.com/kreuzwerker/envplate@1.0.0-RC1 GIT_COMMIT=977cb694fd31dd89e9326fe4c85572a147011c8f;
+go get -ldflags "-X=main.build=$GIT_COMMIT -X=main.version=$GIT_TAG" github.com/kreuzwerker/envplate@$GIT_COMMIT
+cd /go/pkg/mod/github.com/kreuzwerker/envplate*
+go mod init github.com/kreuzwerker/envplate
+go install -mod=mod ./bin/ep.go
+EOF
+
 #
 # libiconv
 #
@@ -27,18 +37,23 @@ ENV KIND=druid-docker-image \
 
 RUN <<EOF
 apk update && apk upgrade
-apk --update --no-cache add bash curl git make nano neofetch sudo tini
+apk --update --no-cache add bash bind-tools curl git make nano neofetch tini
+neofetch
 EOF
 
-# Copy configuration files and scripts
+RUN <<EOF
+addgroup -S ${DEFAULT_USER} -g ${DEFAULT_USER_UID}
+adduser -D -S -G ${DEFAULT_USER} -u ${DEFAULT_USER_UID} -s /bin/bash ${DEFAULT_USER}
+chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER}
+EOF
+
+COPY --chown=${DEFAULT_USER}:${DEFAULT_USER} files/home/druid/ /home/druid
 COPY files/usr/local/bin/ /usr/local/bin/
+COPY --from=envplate /go/bin/ep /bin/ep
+COPY files/entrypoints/00-umask.sh /entrypoints/
 
 WORKDIR ${APP_PATH}
-
-ENTRYPOINT ["/sbin/tini", "--"]
-
-# Default command: Start up multiple services via entrypoint
-CMD ["entrypoint"]
+ENTRYPOINT ["/sbin/tini", "--", "entrypoint"]
 
 #
 # PHP 7
@@ -90,10 +105,9 @@ COPY --from=libiconv /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libic
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 ENV APP_ENV=prod \
-    #COMPOSER_HOME=/home/${DEFAULT_USER}/.composer \
+    COMPOSER_HOME=/home/${DEFAULT_USER}/.composer \
     # Add /app/vendor/bin to PATH
-    #PATH="${PATH}:/home/${DEFAULT_USER}/.composer/vendor/bin:${APP_PATH}/vendor/bin"
-    PATH="${PATH}:${APP_PATH}/vendor/bin"
+    PATH="${PATH}:/home/${DEFAULT_USER}/.composer/vendor/bin:${APP_PATH}/vendor/bin"
 
 # Install software
 RUN <<EOF
@@ -137,8 +151,10 @@ ENV DRUPAL_DB_NAME=drupal \
 # Create some folders for Drush
 RUN <<EOF
 apk --update --no-cache add imagemagick mysql-client openssh rsync
-#mkdir -p /home/${DEFAULT_USER}/.drush /home/${DEFAULT_USER}/drush-backups/drupal
+mkdir -p /home/${DEFAULT_USER}/.drush /home/${DEFAULT_USER}/drush-backups/drupal
 EOF
+
+COPY files/entrypoints/10-ssh-agent.sh /entrypoints/
 
 FROM base-drupal as drupal-7
 
@@ -172,15 +188,15 @@ EOF
 FROM drupal-${PHP_SHORT_VERSION} as drupal-final
 
 #
-# Drupal - PHP-FPM + Nginx
+# Drupal Web - PHP-FPM + Nginx
 #
 
 FROM drupal-final as drupal-web
 
-# Install Nginx
 RUN apk --update --no-cache add nginx
 
 COPY files/entrypoints/30-nginx.sh /entrypoints/
+COPY files/etc/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY files/etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 
-# Expose port 8080 for Nginx
 EXPOSE 8080
