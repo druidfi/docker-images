@@ -94,6 +94,9 @@ apk --update --no-cache add libzip \
 ln -sfn /usr/bin/php8 /usr/bin/php
 EOF
 
+#
+# Blackfire
+#
 FROM build-php-${PHP_SHORT_VERSION} AS blackfire
 
 RUN <<EOF
@@ -115,22 +118,21 @@ FROM build-php-${PHP_SHORT_VERSION} as base-php
 COPY files/etc/php/conf.d/* /etc/php${PHP_MAJOR_VERSION}/conf.d/
 COPY files/entrypoints/15-xdebug.sh /entrypoints/
 COPY files/entrypoints/16-blackfire.sh /entrypoints/
+COPY files/entrypoints/19-php_ini.sh /entrypoints/
 
 # Fix iconv library with Alpine by gnu-libiconv
 COPY --from=libiconv /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
+ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 # Copy Blackfire
 COPY --from=blackfire /usr/lib/php${PHP_MAJOR_VERSION}/modules/blackfire.so /usr/lib/php${PHP_MAJOR_VERSION}/modules/blackfire.so
 COPY --from=blackfire /etc/php${PHP_MAJOR_VERSION}/conf.d/blackfire.ini /etc/php${PHP_MAJOR_VERSION}/conf.d/blackfire.ini
-
-ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 ENV APP_ENV=prod \
     COMPOSER_HOME=/home/${DEFAULT_USER}/.composer \
     # Add /app/vendor/bin to PATH
     PATH="${PATH}:/home/${DEFAULT_USER}/.composer/vendor/bin:${APP_PATH}/vendor/bin"
 
-# Install software
 RUN <<EOF
 apk --update --no-cache add patch unzip
 php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/local/bin/ --filename=composer
@@ -161,7 +163,6 @@ COPY files/entrypoints/20-php-fpm.sh /entrypoints/
 #
 # Drupal base
 #
-
 FROM final-php-fpm as base-drupal
 
 ENV DRUPAL_DB_NAME=drupal \

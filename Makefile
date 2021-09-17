@@ -25,7 +25,7 @@ buildx-create: .buildx-builder-created ## Create Buildx Builder
 	docker buildx create --use --platform linux/amd64,linux/arm64
 	touch .buildx-builder-created
 
-BAKE_FLAGS := --pull --progress plain --no-cache
+BAKE_FLAGS := --pull --no-cache
 
 PHONY += bake-php
 bake-php:
