@@ -19,15 +19,15 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-20.04
 
-    strategy:
-      matrix:
-        include:
-          - php: '7.3'
-            php_short: '73'
-          - php: '7.4'
-            php_short: '74'
-          - php: '8.0'
-            php_short: '80'
+#    strategy:
+#      matrix:
+#        include:
+#          - php: '7.3'
+#            php_short: '73'
+#          - php: '7.4'
+#            php_short: '74'
+#          - php: '8.0'
+#            php_short: '80'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -42,7 +42,7 @@ jobs:
 
       - name: Build PHP images
         run: |
-          docker buildx bake -f php/docker-bake.hcl --pull --progress plain --no-cache --load
+          make bake-php-local
 
 #      - name: Run tests
 #        run: make test-php-base-${{ matrix.php }}
