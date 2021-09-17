@@ -1,15 +1,5 @@
 #BUILD_TARGETS += build-all-php build-qa-toolset
 
-PHONY += bake-all-php
-bake-all-php: bake-all-php-base bake-all-php-fpm ## Bake all PHP images (7.3, 7.4, 8.0)
-
-PHONY += bake-all-php-%
-bake-all-php-%: FLAGS := --pull --push
-bake-all-php-%:
-	@cd php && ALPINE_VERSION=$(call get_alpine_version) ALPINE_VERSION_PREVIOUS=$(call get_alpine_version,3.12) \
-	PHP73_MINOR=$(call get_php_minor,7.3) PHP74_MINOR=$(call get_php_minor,7.4) PHP80_MINOR=$(call get_php_minor,8.0) \
-		docker buildx bake $(FLAGS) $*-variants
-
 PHONY += build-all-wp
 build-all-wp: build-wp-7.3 build-wp-7.4 build-wp-8.0 ## Build all WordPress images
 

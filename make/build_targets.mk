@@ -1,9 +1,7 @@
 BUILD_TARGETS :=
 
-include $(PROJECT_DIR)/base/build.mk
 include $(PROJECT_DIR)/nginx/build.mk
 include $(PROJECT_DIR)/php/build.mk
-include $(PROJECT_DIR)/drupal/build.mk
 
 include $(PROJECT_DIR)/db/build.mk
 include $(PROJECT_DIR)/misc/build.mk

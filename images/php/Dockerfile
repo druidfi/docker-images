@@ -35,16 +35,19 @@ ENV KIND=druid-docker-image \
     DEFAULT_USER=druid \
     DEFAULT_USER_UID=1000
 
+# See https://docs.microsoft.com/en-us/azure/mysql/howto-configure-ssl
+ADD https://www.digicert.com/CACerts/BaltimoreCyberTrustRoot.crt.pem /opt/ssl/
+
 RUN <<EOF
 apk update && apk upgrade
 apk --update --no-cache add bash bind-tools curl git make nano neofetch tini
 neofetch
-EOF
-
-RUN <<EOF
 addgroup -S ${DEFAULT_USER} -g ${DEFAULT_USER_UID}
 adduser -D -S -G ${DEFAULT_USER} -u ${DEFAULT_USER_UID} -s /bin/bash ${DEFAULT_USER}
 chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER}
+mkdir -p ${APP_PATH}
+chown ${DEFAULT_USER}:${DEFAULT_USER} ${APP_PATH}
+chmod 0644 /opt/ssl/BaltimoreCyberTrustRoot.crt.pem
 EOF
 
 COPY --chown=${DEFAULT_USER}:${DEFAULT_USER} files/home/druid/ /home/druid
@@ -91,6 +94,19 @@ apk --update --no-cache add libzip \
 ln -sfn /usr/bin/php8 /usr/bin/php
 EOF
 
+FROM build-php-${PHP_SHORT_VERSION} AS blackfire
+
+RUN <<EOF
+curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/alpine/$(uname -m)/${PHP_SHORT_VERSION}
+mkdir -p /tmp/blackfire
+tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire
+mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so
+printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8307\n" > /etc/php${PHP_MAJOR_VERSION}/conf.d/blackfire.ini
+rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
+test -f $(php -r "echo ini_get ('extension_dir');")/blackfire.so
+test -f /etc/php${PHP_MAJOR_VERSION}/conf.d/blackfire.ini
+EOF
+
 #
 # PHP base
 #
@@ -98,9 +114,14 @@ FROM build-php-${PHP_SHORT_VERSION} as base-php
 
 COPY files/etc/php/conf.d/* /etc/php${PHP_MAJOR_VERSION}/conf.d/
 COPY files/entrypoints/15-xdebug.sh /entrypoints/
+COPY files/entrypoints/16-blackfire.sh /entrypoints/
 
 # Fix iconv library with Alpine by gnu-libiconv
 COPY --from=libiconv /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
+
+# Copy Blackfire
+COPY --from=blackfire /usr/lib/php${PHP_MAJOR_VERSION}/modules/blackfire.so /usr/lib/php${PHP_MAJOR_VERSION}/modules/blackfire.so
+COPY --from=blackfire /etc/php${PHP_MAJOR_VERSION}/conf.d/blackfire.ini /etc/php${PHP_MAJOR_VERSION}/conf.d/blackfire.ini
 
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
@@ -113,6 +134,8 @@ ENV APP_ENV=prod \
 RUN <<EOF
 apk --update --no-cache add patch unzip
 php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/local/bin/ --filename=composer
+mkdir -p ${COMPOSER_HOME}
+chown -R ${DEFAULT_USER}:${DEFAULT_USER} ${COMPOSER_HOME}
 EOF
 
 #
@@ -128,6 +151,7 @@ FROM base-php as final-php-fpm
 RUN <<EOF
 addgroup -g 82 -S www-data || echo "www-data group already exists"
 adduser -u 82 -D -S -G www-data www-data
+adduser ${DEFAULT_USER} www-data
 apk --update --no-cache add php${PHP_MAJOR_VERSION}-fpm
 EOF
 
