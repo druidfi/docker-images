@@ -18,6 +18,15 @@ FROM alpine:${ALPINE_VERSION} as base
 LABEL org.opencontainers.image.authors="Druid".fi maintainer="Druid.fi"
 LABEL org.opencontainers.image.source="https://github.com/druidfi/docker-images" repository="https://github.com/druidfi/docker-images"
 
+# All images based on this one will have these ENV vars
+ENV KIND=druid-docker-image \
+    ALPINE_VERSION=${ALPINE_VERSION} \
+    APP_PATH=/app \
+    DEFAULT_USER=druid \
+    DEFAULT_USER_UID=1000
+
+WORKDIR ${APP_PATH}
+
 #
 # PHP 7
 #
@@ -104,6 +113,13 @@ ENV DRUPAL_DB_NAME=drupal \
     DRUPAL_DB_HOST=db \
     DRUPAL_DB_PORT=3306 \
     SSH_AUTH_SOCK=/tmp/ssh-agent
+
+# openssh and rsync are needed for using Drush aliases and connecting to them
+# Create some folders for Drush
+RUN <<EOF
+apk --update --no-cache add imagemagick mysql-client openssh rsync
+#mkdir -p /home/${DEFAULT_USER}/.drush /home/${DEFAULT_USER}/drush-backups/drupal
+EOF
 
 FROM base-drupal as drupal-7
 
