@@ -25,7 +25,20 @@ ENV KIND=druid-docker-image \
     DEFAULT_USER=druid \
     DEFAULT_USER_UID=1000
 
+RUN <<EOF
+apk update && apk upgrade
+apk --update --no-cache add bash curl git make nano neofetch sudo tini
+EOF
+
+# Copy configuration files and scripts
+COPY files/usr/local/bin/ /usr/local/bin/
+
 WORKDIR ${APP_PATH}
+
+ENTRYPOINT ["/sbin/tini", "--"]
+
+# Default command: Start up multiple services via entrypoint
+CMD ["entrypoint"]
 
 #
 # PHP 7
@@ -69,6 +82,7 @@ EOF
 FROM build-php-${PHP_SHORT_VERSION} as base-php
 
 COPY files/etc/php/conf.d/* /etc/php${PHP_MAJOR_VERSION}/conf.d/
+COPY files/entrypoints/15-xdebug.sh /entrypoints/
 
 # Fix iconv library with Alpine by gnu-libiconv
 COPY --from=libiconv /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
@@ -98,8 +112,7 @@ apk --update --no-cache add php${PHP_MAJOR_VERSION}-fpm
 EOF
 
 COPY files/etc/php${PHP_MAJOR_VERSION}/php-fpm.d/www.conf /etc/php${PHP_MAJOR_VERSION}/php-fpm.d/www.conf
-
-CMD ["/usr/sbin/php-fpm7", "-F", "-R"]
+COPY files/entrypoints/20-php-fpm.sh /entrypoints/
 
 #
 # Drupal base
@@ -160,6 +173,8 @@ FROM drupal-final as drupal-web
 
 # Install Nginx
 RUN apk --update --no-cache add nginx
+
+COPY files/entrypoints/30-nginx.sh /entrypoints/
 
 # Expose port 8080 for Nginx
 EXPOSE 8080
