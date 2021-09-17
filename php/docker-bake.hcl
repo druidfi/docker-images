@@ -10,6 +10,10 @@ variable "REPO_DRUPAL_FPM" {
   default = "druidfi/drupal"
 }
 
+variable "REPO_DRUPAL_WEB" {
+  default = "druidfi/drupal-web"
+}
+
 variable "ALPINE_VERSION" {}
 variable "ALPINE_VERSION_PREVIOUS" {}
 variable "PHP73_MINOR" {}
@@ -132,17 +136,17 @@ target "drupal-fpm-80" {
 target "drupal-web-73" {
   inherits = ["common", "php-73", "php-fpm"]
   target = "drupal-web"
-  tags = ["${REPO_DRUPAL_FPM}-web:php-7.3", "${REPO_DRUPAL_FPM}-web:php-${PHP73_MINOR}"]
+  tags = ["${REPO_DRUPAL_WEB}:php-7.3", "${REPO_DRUPAL_WEB}:php-${PHP73_MINOR}"]
 }
 
 target "drupal-web-74" {
   inherits = ["common", "php-74", "php-fpm"]
   target = "drupal-web"
-  tags = ["${REPO_DRUPAL_FPM}-web:php-7.4", "${REPO_DRUPAL_FPM}-web:php-${PHP74_MINOR}", "${REPO_DRUPAL_FPM}-web:latest"]
+  tags = ["${REPO_DRUPAL_WEB}:php-7.4", "${REPO_DRUPAL_WEB}:php-${PHP74_MINOR}", "${REPO_DRUPAL_WEB}:latest"]
 }
 
 target "drupal-web-80" {
   inherits = ["common", "php-80", "php-fpm"]
   target = "drupal-web"
-  tags = ["${REPO_DRUPAL_FPM}-web:php-8.0", "${REPO_DRUPAL_FPM}-web:php-${PHP80_MINOR}"]
+  tags = ["${REPO_DRUPAL_WEB}:php-8.0", "${REPO_DRUPAL_WEB}:php-${PHP80_MINOR}"]
 }
