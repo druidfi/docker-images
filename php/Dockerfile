@@ -3,6 +3,9 @@
 ARG ALPINE_VERSION
 ARG PHP_SHORT_VERSION
 
+#
+# Envplate
+#
 FROM golang:alpine3.14 AS envplate
 
 RUN <<EOF
@@ -50,6 +53,7 @@ chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER}
 mkdir -p ${APP_PATH}
 chown ${DEFAULT_USER}:${DEFAULT_USER} ${APP_PATH}
 chmod 0644 /opt/ssl/BaltimoreCyberTrustRoot.crt.pem
+echo "Set disable_coredump false" > /etc/sudo.conf
 EOF
 
 COPY --chown=${DEFAULT_USER}:${DEFAULT_USER} files/home/druid/ /home/druid
@@ -115,9 +119,9 @@ test -f /etc/php${PHP_MAJOR_VERSION}/conf.d/blackfire.ini
 EOF
 
 #
-# PHP base
+# PHP
 #
-FROM build-php-${PHP_SHORT_VERSION} as base-php
+FROM build-php-${PHP_SHORT_VERSION} as final-php
 
 COPY files/etc/php/conf.d/* /etc/php${PHP_MAJOR_VERSION}/conf.d/
 COPY files/entrypoints/15-xdebug.sh /entrypoints/
@@ -145,14 +149,9 @@ chown -R ${DEFAULT_USER}:${DEFAULT_USER} ${COMPOSER_HOME}
 EOF
 
 #
-# PHP
-#
-FROM base-php as final-php
-
-#
 # PHP-FPM
 #
-FROM base-php as final-php-fpm
+FROM final-php as final-php-fpm
 
 RUN sudo -s <<EOF
 addgroup -g 82 -S www-data || echo "www-data group already exists"
