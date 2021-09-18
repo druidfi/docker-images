@@ -125,9 +125,7 @@ EOF
 FROM build-php-${PHP_SHORT_VERSION} as final-php
 
 COPY files/etc/php/conf.d/* /etc/php${PHP_MAJOR_VERSION}/conf.d/
-COPY files/entrypoints/15-xdebug.sh /entrypoints/
-COPY files/entrypoints/16-blackfire.sh /entrypoints/
-COPY files/entrypoints/19-php_ini.sh /entrypoints/
+COPY files/entrypoints/15-xdebug.sh files/entrypoints/16-blackfire.sh files/entrypoints/19-php_ini.sh /entrypoints/
 
 # Fix iconv library with Alpine by gnu-libiconv
 COPY --from=libiconv /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
@@ -139,7 +137,6 @@ COPY --from=blackfire /etc/php${PHP_MAJOR_VERSION}/conf.d/blackfire.ini /etc/php
 
 ENV APP_ENV=prod \
     COMPOSER_HOME=/home/${DEFAULT_USER}/.composer \
-    # Add /app/vendor/bin to PATH
     PATH="${PATH}:/home/${DEFAULT_USER}/.composer/vendor/bin:${APP_PATH}/vendor/bin"
 
 RUN sudo -s <<EOF
@@ -187,17 +184,13 @@ COPY files/entrypoints/10-ssh-agent.sh /entrypoints/
 
 FROM base-drupal as drupal-7
 
-RUN sudo -s <<EOF
-apk --no-cache add php7-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,tokenizer,xml,xmlreader,xmlwriter,zlib}
-EOF
+RUN sudo apk --no-cache add php7-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,tokenizer,xml,xmlreader,xmlwriter,zlib}
 
 FROM drupal-7 as drupal-73
 FROM drupal-7 as drupal-74
 FROM base-drupal as drupal-80
 
-RUN sudo -s <<EOF
-apk --no-cache add php8-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,tokenizer,xml,xmlreader,xmlwriter}
-EOF
+RUN sudo apk --no-cache add php8-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,tokenizer,xml,xmlreader,xmlwriter}
 
 FROM drupal-${PHP_SHORT_VERSION} as drupal-final
 
@@ -206,9 +199,7 @@ FROM drupal-${PHP_SHORT_VERSION} as drupal-final
 #
 FROM drupal-final as drupal-web
 
-RUN sudo -s <<EOF
-apk --no-cache add nginx
-EOF
+RUN sudo apk --no-cache add nginx
 
 COPY files/entrypoints/30-nginx.sh /entrypoints/
 COPY files/etc/nginx/nginx.conf /etc/nginx/nginx.conf
