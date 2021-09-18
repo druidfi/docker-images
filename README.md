@@ -11,35 +11,35 @@ See https://hub.docker.com/u/druidfi for all the images.
 
 ### PHP base images
 
-Name | Tags | Baseimage
+Name | Tags | -
 --- | ------ | -----------
-druidfi/php | 7.3, 7.3.x | druidfi/alpine-3.12.7
-druidfi/php | 7, 7.4, 7.4.x, latest | druidfi/alpine-3.14.2
-druidfi/php | 8, 8.0, 8.0.x | druidfi/alpine-3.14.2
+druidfi/php | 7.3, 7.3.x | -
+druidfi/php | 7, 7.4, 7.4.x, latest | -
+druidfi/php | 8, 8.0, 8.0.x | -
 
 ### PHP FPM images
 
-Name | Tags | Baseimage
+Name | Tags | -
 --- | ------ | -----------
-druidfi/php-fpm | 7.3, 7.3.x | druidfi/php:7.3
-druidfi/php-fpm | 7, 7.4, 7.4.x, latest | druidfi/php:7.4
-druidfi/php-fpm | 8, 8.0, 8.0.x | druidfi/php:8.0
+druidfi/php-fpm | 7.3, 7.3.x | -
+druidfi/php-fpm | 7, 7.4, 7.4.x, latest | -
+druidfi/php-fpm | 8, 8.0, 8.0.x | -
 
 ### Drupal images
 
-Name | Tags | Baseimage
+Name | Tags | -
 --- | ------ | -----------
-druidfi/drupal | php-7.3, php-7.3.x | druidfi/php-fpm:7.3
-druidfi/drupal | php-7, php-7.4, php-7.4.x, latest | druidfi/php-fpm:7.4
-druidfi/drupal | php-8, php-8.0, php-8.0.x | druidfi/php-fpm:8.0
+druidfi/drupal | php-7.3, php-7.3.x | -
+druidfi/drupal | php-7, php-7.4, php-7.4.x, latest | -
+druidfi/drupal | php-8, php-8.0, php-8.0.x | -
 
 ### Drupal web images (incl. Nginx)
 
-Name | Tags | Baseimage
+Name | Tags | -
 --- | ------ | -----------
-druidfi/drupal-web | php-7.3, php-7.3.x | druidfi/drupal:php-7.3
-druidfi/drupal-web | php-7, php-7.4, php-7.4.x, latest | druidfi/drupal:php-7.4
-druidfi/drupal-web | php-8, php-8.0, php-8.0.x | druidfi/drupal:php-8.0
+druidfi/drupal-web | php-7.3, php-7.3.x | -
+druidfi/drupal-web | php-7, php-7.4, php-7.4.x, latest | -
+druidfi/drupal-web | php-8, php-8.0, php-8.0.x | -
 
 ### Nginx images
 
@@ -68,9 +68,9 @@ ENV variables:
 
 ### Base variant
 
-- `druidfi/php:7.3` based on `druidfi/base:alpine3.12.7`
-- `druidfi/php:7.4` based on `druidfi/base:alpine3.14.2`
-- `druidfi/php:8.0` based on `druidfi/base:alpine3.14.2`
+- `druidfi/php:7.3`
+- `druidfi/php:7.4`
+- `druidfi/php:8.0`
 
 Added features:
 
@@ -80,9 +80,9 @@ Added features:
 
 ### FPM variant
 
-- `druidfi/php-fpm:7.3` based on `druidfi/php:7.3`
-- `druidfi/php-fpm:7.4` based on `druidfi/php:7.4`
-- `druidfi/php-fpm:8.0` based on `druidfi/php:8.0`
+- `druidfi/php-fpm:7.3`
+- `druidfi/php-fpm:7.4`
+- `druidfi/php-fpm:8.0`
 
 Added features:
 
@@ -92,9 +92,9 @@ Added features:
 
 ### Base variant
 
-- `druidfi/drupal:7.3` based on `druidfi/php-fpm:7.3`
-- `druidfi/drupal:7.4` based on `druidfi/php-fpm:7.4`
-- `druidfi/drupal:8.0` based on `druidfi/php-fpm:8.0`
+- `druidfi/drupal:7.3`
+- `druidfi/drupal:7.4`
+- `druidfi/drupal:8.0`
 
 Added features:
 
@@ -115,9 +115,9 @@ ENV variables:
 
 ### Web variant
 
-- `druidfi/drupal-web:7.3` based on `druidfi/drupal:7.3`
-- `druidfi/drupal-web:7.4` based on `druidfi/drupal:7.4`
-- `druidfi/drupal-web:8.0` based on `druidfi/drupal:8.0`
+- `druidfi/drupal-web:7.3`
+- `druidfi/drupal-web:7.4`
+- `druidfi/drupal-web:8.0`
 
 Added features:
 
