@@ -11,34 +11,34 @@ See https://hub.docker.com/u/druidfi for all the images.
 
 ### PHP base images
 
-Name | Tags | -
+Name | Tags | Latest
 --- | ------ | -----------
 druidfi/php | 7.3, 7.3.x | -
-druidfi/php | 7, 7.4, 7.4.x, latest | -
+druidfi/php | 7, 7.4, 7.4.x | x
 druidfi/php | 8, 8.0, 8.0.x | -
 
 ### PHP FPM images
 
-Name | Tags | -
+Name | Tags | Latest
 --- | ------ | -----------
 druidfi/php-fpm | 7.3, 7.3.x | -
-druidfi/php-fpm | 7, 7.4, 7.4.x, latest | -
+druidfi/php-fpm | 7, 7.4, 7.4.x | x
 druidfi/php-fpm | 8, 8.0, 8.0.x | -
 
 ### Drupal images
 
-Name | Tags | -
+Name | Tags | Latest
 --- | ------ | -----------
 druidfi/drupal | php-7.3, php-7.3.x | -
-druidfi/drupal | php-7, php-7.4, php-7.4.x, latest | -
+druidfi/drupal | php-7, php-7.4, php-7.4.x | x
 druidfi/drupal | php-8, php-8.0, php-8.0.x | -
 
 ### Drupal web images (incl. Nginx)
 
-Name | Tags | -
+Name | Tags | Latest
 --- | ------ | -----------
 druidfi/drupal-web | php-7.3, php-7.3.x | -
-druidfi/drupal-web | php-7, php-7.4, php-7.4.x, latest | -
+druidfi/drupal-web | php-7, php-7.4, php-7.4.x | x
 druidfi/drupal-web | php-8, php-8.0, php-8.0.x | -
 
 ### Nginx images
