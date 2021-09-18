@@ -61,6 +61,7 @@ COPY files/usr/local/bin/ /usr/local/bin/
 COPY --from=envplate /go/bin/ep /bin/ep
 COPY files/entrypoints/00-umask.sh /entrypoints/
 
+SHELL ["/bin/bash", "-c"]
 USER ${DEFAULT_USER}
 
 WORKDIR ${APP_PATH}
@@ -75,8 +76,8 @@ ENV PHP_MAJOR_VERSION=7
 
 RUN sudo -s <<EOF
 apk --no-cache add \
-  php7 php7-curl php7-fileinfo php7-iconv php7-json php7-mbstring php7-opcache php7-openssl php7-phar php7-session php7-zip \
-  php7-pecl-apcu php7-pecl-redis php7-pecl-uploadprogress php7-pecl-xdebug
+  php7 php7-{curl,fileinfo,iconv,json,mbstring,opcache,openssl,phar,session,zip} \
+  php7-pecl-{apcu,redis,uploadprogress,xdebug}
 EOF
 
 FROM build-php-7 as build-php-73
@@ -97,8 +98,8 @@ ENV PHP_SHORT_VERSION=80
 
 RUN sudo -s <<EOF
 apk --no-cache add libzip \
-  php8 php8-curl php8-fileinfo php8-iconv php8-mbstring php8-opcache php8-openssl php8-phar php8-session php8-zip \
-  php8-pecl-apcu php8-pecl-redis php8-pecl-uploadprogress php8-pecl-xdebug
+  php8 php8-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
+  php8-pecl-{apcu,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php8 /usr/bin/php
 EOF
 
@@ -187,38 +188,22 @@ COPY files/entrypoints/10-ssh-agent.sh /entrypoints/
 FROM base-drupal as drupal-7
 
 RUN sudo -s <<EOF
-apk --no-cache add \
-  php7-bcmath php7-ctype php7-dom php7-exif php7-gd php7-intl php7-pdo php7-pdo_mysql php7-simplexml php7-sockets \
-  php7-tokenizer php7-xml php7-xmlreader php7-xmlwriter php7-zlib
+apk --no-cache add php7-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,tokenizer,xml,xmlreader,xmlwriter,zlib}
 EOF
 
-#
-# Drupal - PHP 7.3
-#
 FROM drupal-7 as drupal-73
-
-#
-# Drupal - PHP 7.4
-#
 FROM drupal-7 as drupal-74
-
-#
-# Drupal - PHP 8.0
-#
 FROM base-drupal as drupal-80
 
 RUN sudo -s <<EOF
-apk --no-cache add \
-  php8-bcmath php8-ctype php8-dom php8-exif php8-gd php8-intl php8-pdo php8-pdo_mysql php8-simplexml php8-sockets \
-  php8-tokenizer php8-xml php8-xmlreader php8-xmlwriter
+apk --no-cache add php8-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
 FROM drupal-${PHP_SHORT_VERSION} as drupal-final
 
 #
-# Drupal Web - PHP-FPM + Nginx
+# Drupal Web
 #
-
 FROM drupal-final as drupal-web
 
 RUN sudo -s <<EOF
