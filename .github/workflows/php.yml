@@ -36,6 +36,3 @@ jobs:
       - name: Build PHP images
         run: |
           make bake-php-local
-
-#      - name: Run tests
-#        run: make test-php-base-${{ matrix.php }}
