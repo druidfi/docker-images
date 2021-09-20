@@ -11,7 +11,7 @@ bake-php-print: BAKE_FLAGS := --print
 bake-php-print: bake-all-php
 
 PHONY += bake-php-local
-bake-php-local: BAKE_FLAGS := --pull --progress plain --load --set *.platform=linux/$(CURRENT_ARCH)
+bake-php-local: BAKE_FLAGS := --pull --progress plain --no-cache --load --set *.platform=linux/$(CURRENT_ARCH)
 bake-php-local: bake-all-php run-php-tests
 
 PHONY += bake-php-test

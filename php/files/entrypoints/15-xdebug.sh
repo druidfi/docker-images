@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 XDEBUG_INI=/etc/php$PHP_MAJOR_VERSION/conf.d/xdebug.ini
 

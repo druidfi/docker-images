@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 BLACKFIRE_INI=/etc/php$PHP_MAJOR_VERSION/conf.d/blackfire.ini
 

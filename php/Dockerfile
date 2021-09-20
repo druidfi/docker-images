@@ -67,6 +67,9 @@ USER ${DEFAULT_USER}
 WORKDIR ${APP_PATH}
 ENTRYPOINT ["/sbin/tini", "--", "entrypoint"]
 
+CMD ["tail", "-f", "/dev/null"]
+#CMD ["sleep", "infinity"]
+
 #
 # PHP 7
 #
@@ -158,7 +161,7 @@ adduser ${DEFAULT_USER} www-data
 apk --no-cache add php${PHP_MAJOR_VERSION}-fpm
 EOF
 
-COPY files/etc/php${PHP_MAJOR_VERSION}/php-fpm.d/www.conf /etc/php${PHP_MAJOR_VERSION}/php-fpm.d/www.conf
+COPY files/etc/php/php-fpm.d/www.conf /etc/php${PHP_MAJOR_VERSION}/php-fpm.d/www.conf
 COPY files/entrypoints/20-php-fpm.sh /entrypoints/
 
 #
@@ -176,7 +179,8 @@ ENV DRUPAL_DB_NAME=drupal \
 # openssh and rsync are needed for using Drush aliases and connecting to them
 # Create some folders for Drush
 RUN sudo -s <<EOF
-apk --no-cache add imagemagick mysql-client openssh rsync
+apk --no-cache add imagemagick mysql-client openssh rsync \
+    php${PHP_MAJOR_VERSION}-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,tokenizer,xml,xmlreader,xmlwriter}
 mkdir -p /home/${DEFAULT_USER}/.drush /home/${DEFAULT_USER}/drush-backups/drupal
 EOF
 
@@ -184,14 +188,11 @@ COPY files/entrypoints/10-ssh-agent.sh /entrypoints/
 
 FROM base-drupal as drupal-7
 
-RUN sudo apk --no-cache add php7-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,tokenizer,xml,xmlreader,xmlwriter,zlib}
+RUN sudo apk --no-cache add php7-zlib
 
 FROM drupal-7 as drupal-73
 FROM drupal-7 as drupal-74
 FROM base-drupal as drupal-80
-
-RUN sudo apk --no-cache add php8-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,tokenizer,xml,xmlreader,xmlwriter}
-
 FROM drupal-${PHP_SHORT_VERSION} as drupal-final
 
 #
@@ -206,3 +207,5 @@ COPY files/etc/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY files/etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 8080
+
+#HEALTHCHECK --interval=35s --timeout=4s CMD curl -f http://localhost:8080/ || exit 1

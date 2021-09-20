@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 TEMPLATE=/etc/php$PHP_MAJOR_VERSION/conf.d/99_dynamic.ini.ep
 TARGET=/etc/php$PHP_MAJOR_VERSION/conf.d/99_dynamic.ini
