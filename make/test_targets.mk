@@ -8,14 +8,6 @@ test-php-fpm: ## Test PHP-FPM images
 	$(call step,PHP -v FROM druidfi/php:$(TAG))
 	docker run --rm -it --user=druid druidfi/php:$(TAG) php -v
 
-PHONY += test-images
-test-images: PHP := 7.3
-test-images: ## Test images
-	$(call step,PHP -v FROM druidfi/drupal:$(PHP))
-	docker run --rm -it --user=root druidfi/drupal:$(PHP) php -v
-	$(call step,Nginx default.conf content FROM druidfi/drupal:$(PHP)-web)
-	docker run --rm -it --user=root druidfi/drupal:$(PHP)-web cat /etc/nginx/conf.d/default.conf
-
 PHONY += test-drupal-running
 test-drupal-running:
 	$(call step,Run drupal-test container)
@@ -30,7 +22,7 @@ test-wp-running:
 
 PHONY += example-drupal
 example-drupal:
-	$(call step,Setup example Drupal setup with Nginx and PHP containers)
+	$(call step,Raise up example Drupal setup with Nginx and PHP containers)
 	@(cd examples/drupal-separate-services && docker-compose down -v && docker-compose up -d --remove-orphans)
 	$(call step,See the example site: https://example-drupal.docker.so)
 

@@ -11,8 +11,7 @@ then
 
   BRANCH=${2:-${LATEST_ALPINE_VERSION}}
   API_URL="https://hub.docker.com/v2/repositories/library/alpine/tags?page_size=100"
-  JQ=bin/jq-osx-amd64
-
+  JQ=$(which jq) || bin/jq-osx-amd64
   TAGS=$(curl -L -s "$API_URL" | $JQ --raw-output '."results"[]["name"]')
 
   for TAG in $TAGS
