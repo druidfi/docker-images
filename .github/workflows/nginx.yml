@@ -5,9 +5,11 @@ on:
     branches: [ main ]
     paths:
       - 'nginx/**'
+      - '.github/workflows/nginx.yml'
   pull_request:
     paths:
       - 'nginx/**'
+      - '.github/workflows/nginx.yml'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -19,6 +21,7 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
+
       - uses: actions/checkout@v2
 
       - name: Build Nginx images
