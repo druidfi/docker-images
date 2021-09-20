@@ -1,0 +1,27 @@
+name: Nginx images
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'nginx/**'
+  pull_request:
+    paths:
+      - 'nginx/**'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build Nginx images
+        run: |
+          cd nginx
+          docker buildx bake --pull
