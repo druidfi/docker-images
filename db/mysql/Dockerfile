@@ -4,7 +4,8 @@ ARG MYSQL_VERSION
 
 FROM mysql:${MYSQL_VERSION} as base
 
-LABEL maintainer="druid.fi"
+LABEL org.opencontainers.image.authors="Druid".fi maintainer="Druid.fi"
+LABEL org.opencontainers.image.source="https://github.com/druidfi/docker-images" repository="https://github.com/druidfi/docker-images"
 
 ARG DRUPAL_CONF="/etc/mysql/conf.d/drupal.cnf"
 
