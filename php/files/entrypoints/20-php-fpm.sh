@@ -2,7 +2,7 @@
 
 echo "Start up PHP-FPM..."
 
-php-fpm"$PHP_MAJOR_VERSION" -D -R
+php-fpm -D -R
 
 # Usage: php [-n] [-e] [-h] [-i] [-m] [-v] [-t] [-p <prefix>] [-g <pid>] [-c <file>] [-d foo[=bar]] [-y <file>] [-D] [-F [-O]]
 #  -c <path>|<file> Look for php.ini file in this directory

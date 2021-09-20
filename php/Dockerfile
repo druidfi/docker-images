@@ -159,10 +159,12 @@ addgroup -g 82 -S www-data || echo "www-data group already exists"
 adduser -u 82 -D -S -G www-data www-data
 adduser ${DEFAULT_USER} www-data
 apk --no-cache add php${PHP_MAJOR_VERSION}-fpm
+ln -sfn /usr/sbin/php-fpm${PHP_MAJOR_VERSION} /usr/sbin/php-fpm
 EOF
 
 COPY files/etc/php/php-fpm.d/www.conf /etc/php${PHP_MAJOR_VERSION}/php-fpm.d/www.conf
-COPY files/entrypoints/20-php-fpm.sh /entrypoints/
+
+CMD ["php-fpm", "-F", "-R"]
 
 #
 # Drupal base
@@ -179,7 +181,7 @@ ENV DRUPAL_DB_NAME=drupal \
 # openssh and rsync are needed for using Drush aliases and connecting to them
 # Create some folders for Drush
 RUN sudo -s <<EOF
-apk --no-cache add imagemagick mysql-client openssh rsync \
+apk --no-cache add mysql-client openssh rsync \
     php${PHP_MAJOR_VERSION}-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,tokenizer,xml,xmlreader,xmlwriter}
 mkdir -p /home/${DEFAULT_USER}/.drush /home/${DEFAULT_USER}/drush-backups/drupal
 EOF
@@ -201,10 +203,12 @@ FROM drupal-${PHP_SHORT_VERSION} as drupal-web
 
 RUN sudo apk --no-cache add nginx
 
-COPY files/entrypoints/30-nginx.sh /entrypoints/
+COPY files/entrypoints/20-php-fpm.sh files/entrypoints/30-nginx.sh /entrypoints/
 COPY files/etc/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY files/etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 8080
+
+CMD ["sudo", "nginx", "-g", "daemon off;"]
 
 #HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost:8080/ping || exit 1
