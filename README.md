@@ -13,33 +13,33 @@ See https://hub.docker.com/u/druidfi for all the images.
 
 Name | Tags | Latest
 --- | ------ | -----------
-druidfi/php | 7.3, 7.3.x | -
+druidfi/php | 7.3, 7.3.x | 
 druidfi/php | 7, 7.4, 7.4.x | x
-druidfi/php | 8, 8.0, 8.0.x | -
+druidfi/php | 8, 8.0, 8.0.x | 
 
 ### PHP FPM images
 
 Name | Tags | Latest
 --- | ------ | -----------
-druidfi/php-fpm | 7.3, 7.3.x | -
+druidfi/php-fpm | 7.3, 7.3.x | 
 druidfi/php-fpm | 7, 7.4, 7.4.x | x
-druidfi/php-fpm | 8, 8.0, 8.0.x | -
+druidfi/php-fpm | 8, 8.0, 8.0.x | 
 
 ### Drupal images
 
 Name | Tags | Latest
 --- | ------ | -----------
-druidfi/drupal | php-7.3, php-7.3.x | -
+druidfi/drupal | php-7.3, php-7.3.x | 
 druidfi/drupal | php-7, php-7.4, php-7.4.x | x
-druidfi/drupal | php-8, php-8.0, php-8.0.x | -
+druidfi/drupal | php-8, php-8.0, php-8.0.x | 
 
 ### Drupal web images (incl. Nginx)
 
 Name | Tags | Latest
 --- | ------ | -----------
-druidfi/drupal-web | php-7.3, php-7.3.x | -
+druidfi/drupal-web | php-7.3, php-7.3.x | 
 druidfi/drupal-web | php-7, php-7.4, php-7.4.x | x
-druidfi/drupal-web | php-8, php-8.0, php-8.0.x | -
+druidfi/drupal-web | php-8, php-8.0, php-8.0.x | 
 
 ### Nginx images
 
@@ -48,25 +48,25 @@ Name | Tags | Baseimage
 druidfi/nginx | 1.20, 1.21 | nginx:1.xx-alpine
 druidfi/nginx | 1.20-drupal, 1.21-drupal | nginx:1.xx-alpine
 
-## druidfi/base
+## Shared for all PHP images
 
 Features:
 
 - Workdir: `/app`
 - User: `druid (1000)` and added to sudoers
 - Packages installed: `bash`, `curl`, `git`, `make`, `nano`, `neofetch` and `tini`
+- SHELL: bash
+- Entrypoint with tini
 
 ENV variables:
 
-- `ALPINE_VERSION=3.14.2`
+- `ALPINE_VERSION`
 - `APP_PATH=/app`
 - `DEFAULT_USER=druid`
 - `DEFAULT_USER_UID=1000`
 - `KIND=druid-docker-image`
 
-## druidfi/php
-
-### Base variant
+## druidfi/php variant
 
 - `druidfi/php:7.3`
 - `druidfi/php:7.4`
@@ -78,7 +78,7 @@ Added features:
 - Composer 2.x.x
 - `/app/vendor/bin` added  to `$PATH`
 
-### FPM variant
+## druidfi/php-fpm variant
 
 - `druidfi/php-fpm:7.3`
 - `druidfi/php-fpm:7.4`
@@ -88,9 +88,7 @@ Added features:
 
 - PHP-FPM running and configured
 
-## druidfi/drupal
-
-### Base variant
+## druidfi/drupal variant
 
 - `druidfi/drupal:7.3`
 - `druidfi/drupal:7.4`
@@ -113,7 +111,7 @@ ENV variables:
 - `DRUPAL_DB_HOST=db`
 - `DRUPAL_DB_PORT=3306`
 
-### Web variant
+## druidfi/drupal-web variant
 
 - `druidfi/drupal-web:7.3`
 - `druidfi/drupal-web:7.4`
