@@ -1,8 +1,6 @@
 name: Database images
 
-# Controls when the action will run.
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
     paths:
@@ -14,12 +12,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
 
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
+
     runs-on: ubuntu-20.04
 
     strategy:
@@ -34,9 +30,7 @@ jobs:
           - db: 'mysql'
             version: '8.0'
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
       - name: Set up QEMU
@@ -50,4 +44,6 @@ jobs:
 
       - name: Build ${{ matrix.db }} ${{ matrix.version }} image for Drupal
         run: |
-          cd db && docker buildx bake --pull --load ${{ matrix.db }}-${{ matrix.version }}
+          cd db
+          docker buildx bake --pull --progress plain --no-cache --load --set *.platform=linux/amd64 \
+            ${{ matrix.db }}-${{ matrix.version }}
