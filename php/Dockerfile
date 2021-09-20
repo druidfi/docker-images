@@ -193,12 +193,11 @@ RUN sudo apk --no-cache add php7-zlib
 FROM drupal-7 as drupal-73
 FROM drupal-7 as drupal-74
 FROM base-drupal as drupal-80
-FROM drupal-${PHP_SHORT_VERSION} as drupal-final
 
 #
 # Drupal Web
 #
-FROM drupal-final as drupal-web
+FROM drupal-${PHP_SHORT_VERSION} as drupal-web
 
 RUN sudo apk --no-cache add nginx
 
@@ -208,4 +207,4 @@ COPY files/etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 8080
 
-#HEALTHCHECK --interval=35s --timeout=4s CMD curl -f http://localhost:8080/ || exit 1
+#HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost:8080/ping || exit 1
