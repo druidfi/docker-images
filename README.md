@@ -7,47 +7,6 @@
 
 See https://hub.docker.com/u/druidfi for all the images.
 
-## Essential images
-
-### PHP base images
-
-Name | Tags | Latest
---- | ------ | -----------
-druidfi/php | 7.3, 7.3.x | 
-druidfi/php | 7, 7.4, 7.4.x | x
-druidfi/php | 8, 8.0, 8.0.x | 
-
-### PHP FPM images
-
-Name | Tags | Latest
---- | ------ | -----------
-druidfi/php-fpm | 7.3, 7.3.x | 
-druidfi/php-fpm | 7, 7.4, 7.4.x | x
-druidfi/php-fpm | 8, 8.0, 8.0.x | 
-
-### Drupal images
-
-Name | Tags | Latest
---- | ------ | -----------
-druidfi/drupal | php-7.3, php-7.3.x | 
-druidfi/drupal | php-7, php-7.4, php-7.4.x | x
-druidfi/drupal | php-8, php-8.0, php-8.0.x | 
-
-### Drupal web images (incl. Nginx)
-
-Name | Tags | Latest
---- | ------ | -----------
-druidfi/drupal-web | php-7.3, php-7.3.x | 
-druidfi/drupal-web | php-7, php-7.4, php-7.4.x | x
-druidfi/drupal-web | php-8, php-8.0, php-8.0.x | 
-
-### Nginx images
-
-Name | Tags | Baseimage
---- | ------ | -----------
-druidfi/nginx | 1.20, 1.21 | nginx:1.xx-alpine
-druidfi/nginx | 1.20-drupal, 1.21-drupal | nginx:1.xx-alpine
-
 ## Shared for all PHP images
 
 Features:
@@ -66,11 +25,13 @@ ENV variables:
 - `DEFAULT_USER_UID=1000`
 - `KIND=druid-docker-image`
 
-## druidfi/php variant
+### druidfi/php variant
 
-- `druidfi/php:7.3`
-- `druidfi/php:7.4`
-- `druidfi/php:8.0`
+Tags:
+
+- `druidfi/php:7.3` and `druidfi/php:7.3.x`
+- `druidfi/php:7`, `druidfi/php:7.4`, `druidfi/php:7.4.x` and `druidfi/php:latest`
+- `druidfi/php:8`, `druidfi/php:8.0` and `druidfi/php:8.0.x`
 
 Added features:
 
@@ -78,21 +39,25 @@ Added features:
 - Composer 2.x.x
 - `/app/vendor/bin` added  to `$PATH`
 
-## druidfi/php-fpm variant
+### druidfi/php-fpm variant
 
-- `druidfi/php-fpm:7.3`
-- `druidfi/php-fpm:7.4`
-- `druidfi/php-fpm:8.0`
+Tags:
+
+- `druidfi/php-fpm:7.3` and `druidfi/php-fpm:7.3.x`
+- `druidfi/php-fpm:7`, `druidfi/php-fpm:7.4`, `druidfi/php-fpm:7.4.x` and `druidfi/php-fpm:latest`
+- `druidfi/php-fpm:8`, `druidfi/php-fpm:8.0` and `druidfi/php-fpm:8.0.x`
 
 Added features:
 
 - PHP-FPM running and configured
 
-## druidfi/drupal variant
+### druidfi/drupal variant
 
-- `druidfi/drupal:7.3`
-- `druidfi/drupal:7.4`
-- `druidfi/drupal:8.0`
+Tags:
+
+- `druidfi/drupal:7.3` and `druidfi/drupal:7.3.x`
+- `druidfi/drupal:7`, `druidfi/drupal:7.4`, `druidfi/drupal:7.4.x` and `druidfi/drupal:latest`
+- `druidfi/drupal:8`, `druidfi/drupal:8.0` and `druidfi/drupal:8.0.x`
 
 Added features:
 
@@ -111,11 +76,11 @@ ENV variables:
 - `DRUPAL_DB_HOST=db`
 - `DRUPAL_DB_PORT=3306`
 
-## druidfi/drupal-web variant
+### druidfi/drupal-web variant
 
-- `druidfi/drupal-web:7.3`
-- `druidfi/drupal-web:7.4`
-- `druidfi/drupal-web:8.0`
+- `druidfi/drupal-web:7.3` and `druidfi/drupal-web:7.3.x`
+- `druidfi/drupal-web:7`, `druidfi/drupal-web:7.4`, `druidfi/drupal-web:7.4.x` and `druidfi/drupal-web:latest`
+- `druidfi/drupal-web:8`, `druidfi/drupal-web:8.0` and `druidfi/drupal-web:8.0.x`
 
 Added features:
 
