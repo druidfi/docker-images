@@ -35,5 +35,4 @@ jobs:
 
       - name: Build misc images
         run: |
-          cd misc
-          docker buildx bake --pull --progress plain --no-cache --load --set *.platform=linux/amd64
+          make bake-misc-local
