@@ -90,7 +90,7 @@ Needs:
 
 - Database (`druidfi/mariadb:10.5-drupal`)
 
-### Test variant
+### druidfi/drupal-test variant
 
 - `druidfi/drupal-test:7.3` based on `druidfi/drupal-web:7.3`
 - `druidfi/drupal-test:7.4` based on `druidfi/drupal-web:7.4`
