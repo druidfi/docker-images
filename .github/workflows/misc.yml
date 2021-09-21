@@ -1,15 +1,15 @@
-name: PHP images
+name: Misc images
 
 on:
   push:
     branches: [ main ]
     paths:
-      - 'php/**'
-      - '.github/workflows/php.yml'
+      - 'misc/**'
+      - '.github/workflows/misc.yml'
   pull_request:
     paths:
-      - 'php/**'
-      - '.github/workflows/php.yml'
+      - 'misc/**'
+      - '.github/workflows/misc.yml'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -33,6 +33,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Build PHP images
+      - name: Build misc images
         run: |
-          make bake-php-local
+          cd db
+          docker buildx bake --pull --progress plain --no-cache --load --set *.platform=linux/amd64

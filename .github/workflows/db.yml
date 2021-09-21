@@ -5,9 +5,11 @@ on:
     branches: [ main ]
     paths:
       - 'db/**'
+      - '.github/workflows/db.yml'
   pull_request:
     paths:
       - 'db/**'
+      - '.github/workflows/db.yml'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
