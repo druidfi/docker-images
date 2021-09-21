@@ -7,7 +7,15 @@ variable NGINX_MAINLINE_VERSION {
 }
 
 group "default" {
-  targets = ["base-stable", "drupal-stable", "base-mainline", "drupal-mainline"]
+  targets = ["stable", "mainline"]
+}
+
+group "stable" {
+  targets = ["base-stable", "drupal-stable"]
+}
+
+group "mainline" {
+  targets = ["base-mainline", "drupal-mainline"]
 }
 
 target "common" {

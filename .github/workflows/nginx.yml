@@ -20,6 +20,12 @@ jobs:
 
     runs-on: ubuntu-20.04
 
+    strategy:
+      matrix:
+        include:
+          - version: 'stable'
+          - version: 'mainline'
+
     steps:
 
       - uses: actions/checkout@v2
@@ -36,4 +42,4 @@ jobs:
       - name: Build Nginx images
         run: |
           cd nginx
-          docker buildx bake --pull
+          docker buildx bake --pull ${{ matrix.version }}
