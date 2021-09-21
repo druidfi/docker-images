@@ -1,7 +1,8 @@
 # See https://github.com/wodby/varnish
 FROM wodby/varnish:6 as base
 
-LABEL maintainer="druid.fi"
+LABEL org.opencontainers.image.authors="Druid".fi maintainer="Druid.fi"
+LABEL org.opencontainers.image.source="https://github.com/druidfi/docker-images" repository="https://github.com/druidfi/docker-images"
 
 ENV VARNISH_SECRET=secret \
     VARNISH_BACKEND_HOST=app \

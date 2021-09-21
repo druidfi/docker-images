@@ -4,7 +4,8 @@ FROM alpine:${ALPINE_VERSION} as base
 
 ARG ALPINE_VERSION
 
-LABEL maintainer="druid.fi"
+LABEL org.opencontainers.image.authors="Druid".fi maintainer="Druid.fi"
+LABEL org.opencontainers.image.source="https://github.com/druidfi/docker-images" repository="https://github.com/druidfi/docker-images"
 
 # All images based on this one will have these ENV vars
 ENV KIND=druid-docker-image \

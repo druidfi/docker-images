@@ -16,7 +16,8 @@ RUN GO111MODULE=off CGO_ENABLED=0 go install -ldflags='-s -w'
 
 FROM scratch as base
 
-LABEL maintainer="druid.fi"
+LABEL org.opencontainers.image.authors="Druid".fi maintainer="Druid.fi"
+LABEL org.opencontainers.image.source="https://github.com/druidfi/docker-images" repository="https://github.com/druidfi/docker-images"
 
 # ca-certificates are required for the "release message" feature:
 COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/

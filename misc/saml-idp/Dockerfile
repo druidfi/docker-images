@@ -11,7 +11,8 @@ RUN touch /home/simplesamlphp/modules/exampleauth/enable
 
 FROM php:7.4-apache as final
 
-LABEL maintainer="druid.fi"
+LABEL org.opencontainers.image.authors="Druid".fi maintainer="Druid.fi"
+LABEL org.opencontainers.image.source="https://github.com/druidfi/docker-images" repository="https://github.com/druidfi/docker-images"
 
 # Copy SimpleSAMLphp
 COPY --from=base /home/simplesamlphp /var/www/simplesamlphp
