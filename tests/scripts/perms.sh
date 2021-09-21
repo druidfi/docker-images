@@ -18,6 +18,19 @@ if [[ "$result" != "$expected" ]]; then
   error "Error! user should be $expected instead of $result"
 fi
 
+folders=( "/home/druid" "/home/druid/.composer" )
+for folder in "${folders[@]}"
+do
+  title "Test that druid owns $folder"
+
+  result=$(stat -c '%U' "$folder")
+  expected=$DEFAULT_USER
+
+  if [[ "$result" != "$expected" ]]; then
+    error "Error! Owner fo $folder should be $expected instead of $result"
+  fi
+done
+
 title "Test that user can create a folder under $APP_PATH"
 
 mkdir somefolder || error "Cannot create a folder"

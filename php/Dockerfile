@@ -50,8 +50,7 @@ adduser -D -S -G ${DEFAULT_USER} -u ${DEFAULT_USER_UID} -s /bin/bash ${DEFAULT_U
 echo "${DEFAULT_USER} ALL=(ALL) NOPASSWD:SETENV:ALL" > /etc/sudoers.d/${DEFAULT_USER}
 chmod 0440 /etc/sudoers.d/${DEFAULT_USER}
 chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER}
-mkdir -p ${APP_PATH}
-chown ${DEFAULT_USER}:${DEFAULT_USER} ${APP_PATH}
+install -o ${DEFAULT_USER} -g ${DEFAULT_USER} ${APP_PATH}
 chmod 0644 /opt/ssl/BaltimoreCyberTrustRoot.crt.pem
 echo "Set disable_coredump false" > /etc/sudo.conf
 EOF
@@ -145,8 +144,7 @@ ENV APP_ENV=prod \
 RUN sudo -s <<EOF
 apk --no-cache add patch unzip
 php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/local/bin/ --filename=composer
-mkdir -p ${COMPOSER_HOME}
-chown -R ${DEFAULT_USER}:${DEFAULT_USER} ${COMPOSER_HOME}
+install -o ${DEFAULT_USER} -g ${DEFAULT_USER} -d ${COMPOSER_HOME}
 EOF
 
 #
@@ -158,13 +156,12 @@ RUN sudo -s <<EOF
 addgroup -g 82 -S www-data || echo "www-data group already exists"
 adduser -u 82 -D -S -G www-data www-data
 adduser ${DEFAULT_USER} www-data
-apk --no-cache add php${PHP_MAJOR_VERSION}-fpm
-ln -sfn /usr/sbin/php-fpm${PHP_MAJOR_VERSION} /usr/sbin/php-fpm
+apk --no-cache add php${PHP_MAJOR_VERSION}-fpm && ln -sfn /usr/sbin/php-fpm${PHP_MAJOR_VERSION} /usr/sbin/php-fpm
 EOF
 
 COPY files/etc/php/php-fpm.d/www.conf /etc/php${PHP_MAJOR_VERSION}/php-fpm.d/www.conf
 
-CMD ["php-fpm", "-F", "-R"]
+CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm", "-F", "-R"]
 
 #
 # Drupal base
@@ -183,7 +180,7 @@ ENV DRUPAL_DB_NAME=drupal \
 RUN sudo -s <<EOF
 apk --no-cache add mysql-client openssh rsync \
     php${PHP_MAJOR_VERSION}-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,tokenizer,xml,xmlreader,xmlwriter}
-mkdir -p /home/${DEFAULT_USER}/.drush /home/${DEFAULT_USER}/drush-backups/drupal
+install -o ${DEFAULT_USER} -g ${DEFAULT_USER} -d /home/${DEFAULT_USER}/.drush /home/${DEFAULT_USER}/drush-backups/drupal
 EOF
 
 COPY files/entrypoints/10-ssh-agent.sh /entrypoints/
