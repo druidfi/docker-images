@@ -198,7 +198,9 @@ FROM base-drupal as drupal-80
 #
 FROM drupal-${PHP_SHORT_VERSION} as drupal-web
 
-RUN sudo apk --no-cache add nginx
+RUN sudo -s <<EOF
+apk --no-cache add nginx || echo "nginx group already exists"
+EOF
 
 COPY files/entrypoints/20-php-fpm.sh files/entrypoints/30-nginx.sh /entrypoints/
 COPY files/etc/nginx/nginx.conf /etc/nginx/nginx.conf
@@ -206,6 +208,6 @@ COPY files/etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 8080
 
-CMD ["sudo", "nginx", "-g", "daemon off;"]
+CMD ["sudo", "nginx"]
 
 #HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost:8080/ping || exit 1
