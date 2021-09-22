@@ -50,6 +50,7 @@ Tags:
 Added features:
 
 - PHP-FPM running and configured
+- PHP-FPM runs with `www-data:www-data`
 
 ### druidfi/drupal variant
 
@@ -85,6 +86,7 @@ ENV variables:
 Added features:
 
 - Nginx with Drupal specific configuration
+- Nginx runs with user `nginx`
 
 Needs:
 
