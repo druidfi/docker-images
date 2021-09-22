@@ -17,5 +17,5 @@ if [ -d /entrypoints ]; then
   unset i
 fi
 
-echo "Exec: $@"
+echo "# Exec CMD: $@"
 exec "$@"
