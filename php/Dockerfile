@@ -199,7 +199,7 @@ FROM base-drupal as drupal-80
 FROM drupal-${PHP_SHORT_VERSION} as drupal-web
 
 RUN sudo -s <<EOF
-apk --no-cache add nginx || echo "nginx group already exists"
+apk --no-cache add nginx
 EOF
 
 COPY files/entrypoints/20-php-fpm.sh files/entrypoints/30-nginx.sh /entrypoints/
