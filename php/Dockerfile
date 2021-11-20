@@ -28,6 +28,8 @@ RUN apk --no-cache add gnu-libiconv && test -f /usr/lib/preloadable_libiconv.so
 #
 FROM alpine:${ALPINE_VERSION} as base
 
+ARG ALPINE_VERSION
+
 LABEL org.opencontainers.image.authors="Druid".fi maintainer="Druid.fi"
 LABEL org.opencontainers.image.source="https://github.com/druidfi/docker-images" repository="https://github.com/druidfi/docker-images"
 

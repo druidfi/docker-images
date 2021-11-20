@@ -1,4 +1,4 @@
-BAKE_FLAGS := --pull --no-cache
+BAKE_FLAGS := --pull --no-cache --push
 
 PHONY += bake-all-php
 bake-all-php: ## Bake all PHP images (incl. Drupal)
