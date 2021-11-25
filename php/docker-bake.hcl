@@ -15,7 +15,7 @@ variable "REPO_DRUPAL_WEB" {
 }
 
 variable "ALPINE_VERSION" {
-  default = "3.14.3"
+  default = "3.15.0"
 }
 variable "ALPINE_VERSION_PREVIOUS" {
   default = "3.12.9"
