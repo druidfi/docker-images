@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BLACKFIRE_INI=/etc/php$PHP_MAJOR_VERSION/conf.d/blackfire.ini
+BLACKFIRE_INI=/etc/php$PHP_INSTALL_VERSION/conf.d/blackfire.ini
 
 if [ "$BLACKFIRE_ENABLE" = "true" ]; then
   echo "Start with Blackfire probe enabled. Remove BLACKFIRE_ENABLE=true ENV variable to disable it."

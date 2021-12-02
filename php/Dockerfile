@@ -6,14 +6,18 @@ ARG PHP_SHORT_VERSION
 #
 # Envplate
 #
-FROM golang:alpine3.14 AS envplate
+FROM alpine:${ALPINE_VERSION} AS envplate
+
+ARG REPO=https://github.com/kreuzwerker/envplate
+ARG VERSION=1.0.2
+
+WORKDIR /tmp
+RUN apk add curl
 
 RUN <<EOF
-GIT_TAG=github.com/kreuzwerker/envplate@1.0.0-RC1 GIT_COMMIT=977cb694fd31dd89e9326fe4c85572a147011c8f;
-go get -ldflags "-X=main.build=$GIT_COMMIT -X=main.version=$GIT_TAG" github.com/kreuzwerker/envplate@$GIT_COMMIT
-cd /go/pkg/mod/github.com/kreuzwerker/envplate*
-go mod init github.com/kreuzwerker/envplate
-go install -mod=mod ./bin/ep.go
+curl -LJO ${REPO}/releases/download/v${VERSION}/envplate_${VERSION}_Linux_$(uname -m).tar.gz
+tar -xf envplate_${VERSION}_Linux_$(uname -m).tar.gz
+chmod +x envplate
 EOF
 
 #
@@ -59,8 +63,8 @@ EOF
 
 COPY --chown=${DEFAULT_USER}:${DEFAULT_USER} files/home/druid/ /home/druid
 COPY files/usr/local/bin/ /usr/local/bin/
-COPY --from=envplate /go/bin/ep /bin/ep
-COPY files/entrypoints/00-umask.sh /entrypoints/
+COPY --from=envplate /tmp/envplate /bin/ep
+COPY files/entrypoints/00-umask.sh files/entrypoints/15-xdebug.sh files/entrypoints/19-php_ini.sh /entrypoints/
 
 SHELL ["/bin/bash", "-c"]
 USER ${DEFAULT_USER}
@@ -77,12 +81,16 @@ CMD ["tail", "-f", "/dev/null"]
 FROM base as build-php-7
 
 ENV PHP_MAJOR_VERSION=7
+ENV PHP_INSTALL_VERSION=7
 
 RUN sudo -s <<EOF
 apk --no-cache add \
   php7 php7-{curl,fileinfo,iconv,json,mbstring,opcache,openssl,phar,session,zip} \
   php7-pecl-{apcu,redis,uploadprogress,xdebug}
 EOF
+
+COPY files/etc/php/conf.d/* /etc/php7/conf.d/
+COPY files/entrypoints/16-blackfire.sh /entrypoints/
 
 FROM build-php-7 as build-php-73
 
@@ -93,12 +101,13 @@ FROM build-php-7 as build-php-74
 ENV PHP_SHORT_VERSION=74
 
 #
-# PHP 8
+# PHP 8.0
 #
 FROM base as build-php-80
 
 ENV PHP_MAJOR_VERSION=8
 ENV PHP_SHORT_VERSION=80
+ENV PHP_INSTALL_VERSION=8
 
 RUN sudo -s <<EOF
 apk --no-cache add libzip \
@@ -107,37 +116,70 @@ apk --no-cache add libzip \
 ln -sfn /usr/bin/php8 /usr/bin/php
 EOF
 
+COPY files/etc/php/conf.d/* /etc/php8/conf.d/
+COPY files/entrypoints/16-blackfire.sh /entrypoints/
+
+#
+# PHP 8.1
+#
+FROM base as build-php-81
+
+ENV PHP_MAJOR_VERSION=8
+ENV PHP_SHORT_VERSION=81
+ENV PHP_INSTALL_VERSION=81
+
+RUN sudo -s <<EOF
+apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing add libzip \
+  php81 php81-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
+  php81-pecl-{apcu,redis,uploadprogress,xdebug}
+ln -sfn /usr/bin/php81 /usr/bin/php
+EOF
+
+COPY files/etc/php/conf.d/* /etc/php81/conf.d/
+
+# TODO temporary dummy files until PHP 8.1 has working Blackfire extension
+RUN sudo rm /etc/php81/conf.d/blackfire.ini
+
 #
 # Blackfire
 #
-FROM build-php-${PHP_SHORT_VERSION} AS blackfire
+FROM build-php-${PHP_SHORT_VERSION} AS blackfire-base
+
+ARG URL=https://blackfire.io/api/v1/releases/probe/php/alpine
+ARG SO_PATH=/usr/lib/php${PHP_INSTALL_VERSION}/modules/blackfire.so
 
 RUN sudo -s <<EOF
-curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/alpine/$(uname -m)/${PHP_SHORT_VERSION}
+curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s ${URL}/$(uname -m)/${PHP_SHORT_VERSION}
 mkdir -p /tmp/blackfire
 tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire
-mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so
-printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8307\n" > /etc/php${PHP_MAJOR_VERSION}/conf.d/blackfire.ini
+mv /tmp/blackfire/blackfire-*.so ${SO_PATH}
 rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
-test -f $(php -r "echo ini_get ('extension_dir');")/blackfire.so
-test -f /etc/php${PHP_MAJOR_VERSION}/conf.d/blackfire.ini
 EOF
+
+RUN test -f ${SO_PATH}
+
+FROM blackfire-base as blackfire-73
+FROM blackfire-base as blackfire-74
+FROM blackfire-base as blackfire-80
+
+FROM build-php-${PHP_SHORT_VERSION} as blackfire-81
+
+# TODO temporary dummy files until PHP 8.1 has working Blackfire extension
+RUN sudo touch /usr/lib/php${PHP_INSTALL_VERSION}/modules/blackfire.so
+
+FROM blackfire-${PHP_SHORT_VERSION} as blackfire
 
 #
 # PHP
 #
 FROM build-php-${PHP_SHORT_VERSION} as final-php
 
-COPY files/etc/php/conf.d/* /etc/php${PHP_MAJOR_VERSION}/conf.d/
-COPY files/entrypoints/15-xdebug.sh files/entrypoints/16-blackfire.sh files/entrypoints/19-php_ini.sh /entrypoints/
-
 # Fix iconv library with Alpine by gnu-libiconv
 COPY --from=libiconv /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 # Copy Blackfire
-COPY --from=blackfire /usr/lib/php${PHP_MAJOR_VERSION}/modules/blackfire.so /usr/lib/php${PHP_MAJOR_VERSION}/modules/blackfire.so
-COPY --from=blackfire /etc/php${PHP_MAJOR_VERSION}/conf.d/blackfire.ini /etc/php${PHP_MAJOR_VERSION}/conf.d/blackfire.ini
+COPY --from=blackfire /usr/lib/php${PHP_INSTALL_VERSION}/modules/blackfire.so /usr/lib/php${PHP_INSTALL_VERSION}/modules/blackfire.so
 
 ENV APP_ENV=prod \
     COMPOSER_HOME=/home/${DEFAULT_USER}/.composer \
@@ -152,23 +194,72 @@ EOF
 #
 # PHP-FPM
 #
-FROM final-php as final-php-fpm
+
+FROM final-php as build-php-fpm-73
+FROM final-php as build-php-fpm-74
+
+RUN sudo -s <<EOF
+apk --no-cache add php7-fpm && ln -sfn /usr/sbin/php-fpm7 /usr/sbin/php-fpm
+EOF
+
+COPY files/etc/php/php-fpm.d/www.conf /etc/php7/php-fpm.d/www.conf
+
+FROM final-php as build-php-fpm-80
+
+RUN sudo -s <<EOF
+apk --no-cache add php8-fpm && ln -sfn /usr/sbin/php-fpm8 /usr/sbin/php-fpm
+EOF
+
+COPY files/etc/php/php-fpm.d/www.conf /etc/php8/php-fpm.d/www.conf
+
+FROM final-php as build-php-fpm-81
+
+RUN sudo -s <<EOF
+apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing add php81-fpm
+ln -sfn /usr/sbin/php-fpm81 /usr/sbin/php-fpm
+EOF
+
+COPY files/etc/php/php-fpm.d/www.conf /etc/php81/php-fpm.d/www.conf
+
+FROM build-php-fpm-${PHP_SHORT_VERSION} as final-php-fpm
 
 RUN sudo -s <<EOF
 addgroup -g 82 -S www-data || echo "www-data group already exists"
 adduser -u 82 -D -S -G www-data www-data
 adduser ${DEFAULT_USER} www-data
-apk --no-cache add php${PHP_MAJOR_VERSION}-fpm && ln -sfn /usr/sbin/php-fpm${PHP_MAJOR_VERSION} /usr/sbin/php-fpm
 EOF
-
-COPY files/etc/php/php-fpm.d/www.conf /etc/php${PHP_MAJOR_VERSION}/php-fpm.d/www.conf
 
 CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm", "-F", "-R"]
 
 #
 # Drupal base
 #
-FROM final-php-fpm as base-drupal
+
+FROM final-php-fpm as drupal-php-7
+
+RUN sudo -s <<EOF
+apk --no-cache add mysql-client openssh rsync \
+    php7-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,tokenizer,xml,xmlreader,xmlwriter,zlib}
+EOF
+
+FROM drupal-php-7 as drupal-php-73
+FROM drupal-php-7 as drupal-php-74
+
+FROM final-php-fpm as drupal-php-80
+
+RUN sudo -s <<EOF
+apk --no-cache add mysql-client openssh rsync \
+    php8-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,tokenizer,xml,xmlreader,xmlwriter}
+EOF
+
+FROM final-php-fpm as drupal-php-81
+
+RUN sudo -s <<EOF
+apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing add mysql-client openssh rsync \
+    php81-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,tokenizer,xml,xmlreader,xmlwriter}
+EOF
+
+FROM drupal-php-${PHP_SHORT_VERSION} as drupal-base
 
 ENV DRUPAL_DB_NAME=drupal \
     DRUPAL_DB_USER=drupal \
@@ -177,28 +268,16 @@ ENV DRUPAL_DB_NAME=drupal \
     DRUPAL_DB_PORT=3306 \
     SSH_AUTH_SOCK=/tmp/ssh-agent
 
-# openssh and rsync are needed for using Drush aliases and connecting to them
-# Create some folders for Drush
 RUN sudo -s <<EOF
-apk --no-cache add mysql-client openssh rsync \
-    php${PHP_MAJOR_VERSION}-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,tokenizer,xml,xmlreader,xmlwriter}
 install -o ${DEFAULT_USER} -g ${DEFAULT_USER} -d /home/${DEFAULT_USER}/.drush /home/${DEFAULT_USER}/drush-backups/drupal
 EOF
 
 COPY files/entrypoints/10-ssh-agent.sh /entrypoints/
 
-FROM base-drupal as drupal-7
-
-RUN sudo apk --no-cache add php7-zlib
-
-FROM drupal-7 as drupal-73
-FROM drupal-7 as drupal-74
-FROM base-drupal as drupal-80
-
 #
 # Drupal Web
 #
-FROM drupal-${PHP_SHORT_VERSION} as drupal-web
+FROM drupal-base as drupal-web
 
 RUN sudo -s <<EOF
 apk --no-cache add nginx
