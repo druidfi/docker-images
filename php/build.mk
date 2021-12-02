@@ -20,8 +20,6 @@ bake-php-test: bake-all-php
 
 PHONY += run-php-tests
 run-php-tests:
-#	$(call step,Run tests in druidfi/php:7.3)
-#	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/php:7.3 /app/scripts/tests.sh
 	$(call step,Run tests in druidfi/php:7.4)
 	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/php:7.4 /app/scripts/tests.sh
 	$(call step,Run tests in druidfi/php:8.0)

@@ -8,15 +8,16 @@ ARG PHP_SHORT_VERSION
 #
 FROM alpine:${ALPINE_VERSION} AS envplate
 
-ARG REPO=https://github.com/kreuzwerker/envplate
+ARG REPO=https://github.com/kreuzwerker/envplate/releases/download
 ARG VERSION=1.0.2
 
 WORKDIR /tmp
 RUN apk add curl
 
 RUN <<EOF
-curl -LJO ${REPO}/releases/download/v${VERSION}/envplate_${VERSION}_Linux_$(uname -m).tar.gz
-tar -xf envplate_${VERSION}_Linux_$(uname -m).tar.gz
+curl -LJ --silent ${REPO}/v${VERSION}/envplate_${VERSION}_Linux_arm64.tar.gz -o envplate_aarch64.tar.gz
+curl -LJ --silent ${REPO}/v${VERSION}/envplate_${VERSION}_Linux_x86_64.tar.gz -o envplate_x86_64.tar.gz
+tar -xf envplate_$(uname -m).tar.gz
 chmod +x envplate
 EOF
 
