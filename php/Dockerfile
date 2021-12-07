@@ -138,13 +138,10 @@ EOF
 
 COPY files/etc/php/conf.d/* /etc/php81/conf.d/
 
-# TODO temporary dummy files until PHP 8.1 has working Blackfire extension
-RUN sudo rm /etc/php81/conf.d/blackfire.ini
-
 #
 # Blackfire
 #
-FROM build-php-${PHP_SHORT_VERSION} AS blackfire-base
+FROM build-php-${PHP_SHORT_VERSION} AS blackfire
 
 ARG URL=https://blackfire.io/api/v1/releases/probe/php/alpine
 ARG SO_PATH=/usr/lib/php${PHP_INSTALL_VERSION}/modules/blackfire.so
@@ -158,17 +155,6 @@ rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
 EOF
 
 RUN test -f ${SO_PATH}
-
-FROM blackfire-base as blackfire-73
-FROM blackfire-base as blackfire-74
-FROM blackfire-base as blackfire-80
-
-FROM build-php-${PHP_SHORT_VERSION} as blackfire-81
-
-# TODO temporary dummy files until PHP 8.1 has working Blackfire extension
-RUN sudo touch /usr/lib/php${PHP_INSTALL_VERSION}/modules/blackfire.so
-
-FROM blackfire-${PHP_SHORT_VERSION} as blackfire
 
 #
 # PHP
