@@ -29,9 +29,9 @@ ENV variables:
 
 Tags:
 
-- `druidfi/php:7.3` and `druidfi/php:7.3.x`
 - `druidfi/php:7`, `druidfi/php:7.4`, `druidfi/php:7.4.x` and `druidfi/php:latest`
 - `druidfi/php:8`, `druidfi/php:8.0` and `druidfi/php:8.0.x`
+- `druidfi/php:8.1` and `druidfi/php:8.1.x`
 
 Added features:
 
@@ -43,9 +43,9 @@ Added features:
 
 Tags:
 
-- `druidfi/php-fpm:7.3` and `druidfi/php-fpm:7.3.x`
-- `druidfi/php-fpm:7`, `druidfi/php-fpm:7.4`, `druidfi/php-fpm:7.4.x` and `druidfi/php-fpm:latest`
-- `druidfi/php-fpm:8`, `druidfi/php-fpm:8.0` and `druidfi/php-fpm:8.0.x`
+- `druidfi/php-fpm:7`, `druidfi/php-fpm:7.4`, `druidfi/php-fpm:7.4.x`
+- `druidfi/php-fpm:8`, `druidfi/php-fpm:8.0` and `druidfi/php-fpm:8.0.x` and `druidfi/php-fpm:latest`
+- `druidfi/php-fpm:8.1` and `druidfi/php-fpm:8.1.x`
 
 Added features:
 
@@ -56,9 +56,9 @@ Added features:
 
 Tags:
 
-- `druidfi/drupal:7.3` and `druidfi/drupal:7.3.x`
-- `druidfi/drupal:7`, `druidfi/drupal:7.4`, `druidfi/drupal:7.4.x` and `druidfi/drupal:latest`
-- `druidfi/drupal:8`, `druidfi/drupal:8.0` and `druidfi/drupal:8.0.x`
+- `druidfi/drupal:7`, `druidfi/drupal:7.4`, `druidfi/drupal:7.4.x`
+- `druidfi/drupal:8`, `druidfi/drupal:8.0` and `druidfi/drupal:8.0.x` and `druidfi/drupal:latest`
+- `druidfi/drupal:8.1` and `druidfi/drupal:8.1.x`
 
 Added features:
 
@@ -79,9 +79,9 @@ ENV variables:
 
 ### druidfi/drupal-web variant
 
-- `druidfi/drupal-web:7.3` and `druidfi/drupal-web:7.3.x`
-- `druidfi/drupal-web:7`, `druidfi/drupal-web:7.4`, `druidfi/drupal-web:7.4.x` and `druidfi/drupal-web:latest`
-- `druidfi/drupal-web:8`, `druidfi/drupal-web:8.0` and `druidfi/drupal-web:8.0.x`
+- `druidfi/drupal-web:7`, `druidfi/drupal-web:7.4`, `druidfi/drupal-web:7.4.x`
+- `druidfi/drupal-web:8`, `druidfi/drupal-web:8.0` and `druidfi/drupal-web:8.0.x` and `druidfi/drupal-web:latest`
+- `druidfi/drupal-web:8.1` and `druidfi/drupal-web:8.1.x`
 
 Added features:
 
@@ -94,7 +94,6 @@ Needs:
 
 ### druidfi/drupal-test variant
 
-- `druidfi/drupal-test:7.3` based on `druidfi/drupal-web:7.3`
 - `druidfi/drupal-test:7.4` based on `druidfi/drupal-web:7.4`
 - `druidfi/drupal-test:8.0` based on `druidfi/drupal-web:8.0`
 
