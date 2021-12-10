@@ -29,8 +29,8 @@ ENV variables:
 
 Tags:
 
-- `druidfi/php:7`, `druidfi/php:7.4`, `druidfi/php:7.4.x` and `druidfi/php:latest`
-- `druidfi/php:8`, `druidfi/php:8.0` and `druidfi/php:8.0.x`
+- `druidfi/php:7`, `druidfi/php:7.4`, `druidfi/php:7.4.x`
+- `druidfi/php:8`, `druidfi/php:8.0` and `druidfi/php:8.0.x` and `druidfi/php:latest`
 - `druidfi/php:8.1` and `druidfi/php:8.1.x`
 
 Added features:
