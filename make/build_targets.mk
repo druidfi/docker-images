@@ -4,7 +4,6 @@ include $(PROJECT_DIR)/php/build.mk
 include $(PROJECT_DIR)/nginx/build.mk
 include $(PROJECT_DIR)/db/build.mk
 include $(PROJECT_DIR)/misc/build.mk
-include $(PROJECT_DIR)/node/build.mk
 
 PHONY += build-all
 build-all: $(BUILD_TARGETS) ## Build all images
