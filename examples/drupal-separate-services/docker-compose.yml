@@ -23,7 +23,7 @@ services:
 
   app:
     container_name: "${COMPOSE_PROJECT_NAME}-app"
-    image: druidfi/drupal:php-7.4
+    image: druidfi/drupal:php-8.0
     volumes:
       - .:/app:delegated
     environment:
