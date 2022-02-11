@@ -12,7 +12,7 @@ bake-php-print: bake-all-php
 
 PHONY += bake-php-local
 bake-php-local: BAKE_FLAGS := --pull --progress plain --no-cache --load --set *.platform=linux/$(CURRENT_ARCH)
-bake-php-local: bake-all-php run-php-tests
+bake-php-local: bake-all-php run-php-tests ## Bake all PHP images locally
 
 PHONY += bake-php-test
 bake-php-test: BAKE_FLAGS := --pull --progress plain --no-cache --load --set *.platform=linux/$(CURRENT_ARCH) --set *.target=test
