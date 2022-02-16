@@ -226,7 +226,7 @@ FROM final-php-fpm as drupal-php-7
 
 RUN sudo -s <<EOF
 apk --no-cache add mysql-client openssh rsync \
-    php7-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,tokenizer,xml,xmlreader,xmlwriter,zlib}
+    php7-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter,zlib}
 EOF
 
 FROM drupal-php-7 as drupal-php-73
@@ -236,15 +236,16 @@ FROM final-php-fpm as drupal-php-80
 
 RUN sudo -s <<EOF
 apk --no-cache add mysql-client openssh rsync \
-    php8-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,tokenizer,xml,xmlreader,xmlwriter}
+    php8-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
 FROM final-php-fpm as drupal-php-81
 
 RUN sudo -s <<EOF
+apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/main add icu-libs
 apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/community add libavif
 apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing add mysql-client openssh rsync \
-    php81-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,tokenizer,xml,xmlreader,xmlwriter}
+    php81-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
 FROM drupal-php-${PHP_SHORT_VERSION} as drupal-base
