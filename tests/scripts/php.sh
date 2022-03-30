@@ -16,3 +16,7 @@ result=$(php -d error_reporting=22527 -d display_errors=1 -r 'echo iconv("UTF-8"
 if [[ "$result" != "$expected" ]]; then
   error "Error! iconv result should be '$expected' instead of '$result'"
 fi
+
+title "Test Composer require"
+
+(composer req -W drupal/coder --ignore-platform-reqs -n) || error "Composer require failed"
