@@ -50,7 +50,7 @@ ADD https://www.digicert.com/CACerts/BaltimoreCyberTrustRoot.crt.pem /opt/ssl/
 
 RUN <<EOF
 apk update && apk upgrade
-apk --no-cache add bash curl git make nano neofetch sudo tini
+apk --no-cache add bash curl git make nano neofetch sudo tar tini
 neofetch
 addgroup -S ${DEFAULT_USER} -g ${DEFAULT_USER_UID}
 adduser -D -S -G ${DEFAULT_USER} -u ${DEFAULT_USER_UID} -s /bin/bash ${DEFAULT_USER}
