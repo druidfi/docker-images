@@ -19,19 +19,13 @@ target "common" {
 
 target "curl" {
   inherits = ["common"]
-  context = "./curl"
+  context = "./misc/curl"
   tags = ["druidfi/curl:alpine", "druidfi/curl:alpine-${ALPINE_VERSION}", "druidfi/curl:alpine${ALPINE_VERSION}"]
-}
-
-target "dnsmasq" {
-  inherits = ["common"]
-  context = "./dnsmasq"
-  tags = ["druidfi/dnsmasq:alpine", "druidfi/dnsmasq:alpine-${ALPINE_VERSION}", "druidfi/dnsmasq:alpine${ALPINE_VERSION}"]
 }
 
 target "mailhog" {
   inherits = ["common"]
-  context = "./mailhog"
+  context = "./misc/mailhog"
   args = {
     MAILHOG_VERSION = "${MAILHOG_VERSION}"
   }
@@ -44,7 +38,7 @@ target "mailhog" {
 
 target "saml-idp" {
   inherits = ["common"]
-  context = "./saml-idp"
+  context = "./misc/saml-idp"
   args = {
     SIMPLESAMLPHP_VERSION = "${SIMPLESAMLPHP_VERSION}"
   }
@@ -53,18 +47,18 @@ target "saml-idp" {
 
 target "s3-sync" {
   inherits = ["common"]
-  context = "./s3-sync"
+  context = "./misc/s3-sync"
   tags = ["druidfi/s3-sync:alpine", "druidfi/s3-sync:alpine-${ALPINE_VERSION}", "druidfi/s3-sync:alpine${ALPINE_VERSION}"]
 }
 
 target "ssh-agent" {
   inherits = ["common"]
-  context = "./ssh-agent"
+  context = "./misc/ssh-agent"
   tags = ["druidfi/ssh-agent:alpine", "druidfi/ssh-agent:alpine-${ALPINE_VERSION}", "druidfi/ssh-agent:alpine${ALPINE_VERSION}"]
 }
 
 target "varnish" {
-  platforms = ["linux/amd64", "linux/arm64"]
-  context = "./varnish"
+  inherits = ["common"]
+  context = "./misc/varnish"
   tags = ["druidfi/varnish:6-drupal"]
 }
