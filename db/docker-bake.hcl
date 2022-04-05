@@ -35,16 +35,21 @@ target "mysql" {
 
 target "mysql-57" {
   inherits = ["mysql"]
+  target = "mysql-base"
   args = {
     MYSQL_VERSION = "5.7"
+    MYSQL_SHORT_VERSION = "57"
   }
   tags = ["druidfi/mysql:5.7-drupal"]
 }
 
 target "mysql-80" {
   inherits = ["mysql"]
+  target = "mysql-base"
   args = {
     MYSQL_VERSION = "8.0"
+    MYSQL_SHORT_VERSION = "80"
   }
+  platforms = ["linux/amd64", "linux/arm64"]
   tags = ["druidfi/mysql:8.0-drupal", "druidfi/mysql:latest"]
 }

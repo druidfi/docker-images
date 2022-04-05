@@ -1,8 +1,11 @@
 # syntax=docker/dockerfile:1.3-labs
 
-ARG MYSQL_VERSION
+ARG MYSQL_SHORT_VERSION
 
-FROM mysql:${MYSQL_VERSION} as base
+FROM mysql:5.7 as mysql-57
+FROM mysql:8-oracle as mysql-80
+
+FROM mysql-${MYSQL_SHORT_VERSION} as mysql-base
 
 LABEL org.opencontainers.image.authors="Druid".fi maintainer="Druid.fi"
 LABEL org.opencontainers.image.source="https://github.com/druidfi/docker-images" repository="https://github.com/druidfi/docker-images"
