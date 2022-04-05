@@ -15,7 +15,7 @@ variable "REPO_DRUPAL_WEB" {
 }
 
 variable "ALPINE_VERSION" {
-  default = "3.15.3"
+  default = "3.15.4"
 }
 
 variable "PHP74_MINOR" {}
