@@ -36,7 +36,7 @@ Tags:
 Added features:
 
 - Minimal set of PHP extensions
-- Composer 2.2.x LTS
+- Composer 2.3.x
 - `/app/vendor/bin` added  to `$PATH`
 
 ### druidfi/php-fpm variant

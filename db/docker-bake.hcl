@@ -3,14 +3,14 @@ group "default" {
 }
 
 group "mariadb-variants" {
-  targets = ["mariadb-10.5", "mariadb-10.6"]
+  targets = ["mariadb-105", "mariadb-106"]
 }
 
 group "mysql-variants" {
-  targets = ["mysql-5.7", "mysql-8.0"]
+  targets = ["mysql-57", "mysql-80"]
 }
 
-target "mariadb-10.5" {
+target "mariadb-105" {
   context = "./mariadb"
   args = {
     MARIADB_VERSION = "10.5"
@@ -19,7 +19,7 @@ target "mariadb-10.5" {
   tags = ["druidfi/mariadb:10.5-drupal", "druidfi/mariadb:latest"]
 }
 
-target "mariadb-10.6" {
+target "mariadb-106" {
   context = "./mariadb"
   args = {
     MARIADB_VERSION = "10.6"
@@ -33,7 +33,7 @@ target "mysql" {
   platforms = ["linux/amd64"]
 }
 
-target "mysql-5.7" {
+target "mysql-57" {
   inherits = ["mysql"]
   args = {
     MYSQL_VERSION = "5.7"
@@ -41,7 +41,7 @@ target "mysql-5.7" {
   tags = ["druidfi/mysql:5.7-drupal"]
 }
 
-target "mysql-8.0" {
+target "mysql-80" {
   inherits = ["mysql"]
   args = {
     MYSQL_VERSION = "8.0"
