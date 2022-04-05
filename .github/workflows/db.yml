@@ -24,13 +24,13 @@ jobs:
       matrix:
         include:
           - db: 'mariadb'
-            version: '10.5'
+            version: '105'
           - db: 'mariadb'
-            version: '10.6'
+            version: '106'
           - db: 'mysql'
-            version: '5.7'
+            version: '57'
           - db: 'mysql'
-            version: '8.0'
+            version: '80'
 
     steps:
 
