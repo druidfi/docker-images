@@ -23,14 +23,11 @@ jobs:
     strategy:
       matrix:
         include:
-          - db: 'mariadb'
-            version: '105'
-          - db: 'mariadb'
-            version: '106'
-          - db: 'mysql'
-            version: '57'
-          - db: 'mysql'
-            version: '80'
+          - bake_target: 'mariadb-105'
+          - bake_target: 'mariadb-106'
+          - bake_target: 'mariadb-107'
+          - bake_target: 'mysql-57'
+          - bake_target: 'mysql-80'
 
     steps:
 
@@ -49,4 +46,4 @@ jobs:
         run: |
           cd db
           docker buildx bake --pull --progress plain --no-cache --load --set *.platform=linux/amd64 \
-            ${{ matrix.db }}-${{ matrix.version }}
+            ${{ matrix.bake_target }}

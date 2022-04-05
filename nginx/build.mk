@@ -1,14 +1,14 @@
-BUILD_TARGETS += bake-all-nginx
+BUILD_TARGETS += nginx-bake-all
 NGINX_BAKE_FLAGS := --pull --push
 
-PHONY += bake-all-nginx
-bake-all-nginx: ## Bake all Nginx images
-	@cd nginx && docker buildx bake $(NGINX_BAKE_FLAGS)
+PHONY += nginx-bake-all
+nginx-bake-all: ## Bake all Nginx images
+	@docker buildx bake -f nginx/docker-bake.hcl $(NGINX_BAKE_FLAGS)
 
-PHONY += bake-nginx-print
-bake-nginx-print: NGINX_BAKE_FLAGS := --print
-bake-nginx-print: bake-all-nginx
+PHONY += nginx-bake-print
+nginx-bake-print: NGINX_BAKE_FLAGS := --print
+nginx-bake-print: nginx-bake-all ## Print bake plan for Nginx images
 
-PHONY += bake-nginx-local
-bake-nginx-local: NGINX_BAKE_FLAGS := --pull --progress plain --no-cache --load --set *.platform=linux/$(CURRENT_ARCH)
-bake-nginx-local: bake-all-nginx
+PHONY += nginx-bake-local
+nginx-bake-local: NGINX_BAKE_FLAGS := --pull --progress plain --no-cache --load --set *.platform=linux/$(CURRENT_ARCH)
+nginx-bake-local: nginx-bake-all ## Bake all Nginx images locally
