@@ -11,3 +11,7 @@ symfony-bake-print: symfony-bake-all
 PHONY += symfony-bake-local
 symfony-bake-local: BAKE_FLAGS := --pull --progress plain --no-cache --load --set *.platform=linux/$(CURRENT_ARCH)
 symfony-bake-local: symfony-bake-all ## Bake all Symfony images locally
+
+PHONY += symfony-bake-web
+symfony-bake-web: BAKE_FLAGS := symfony-web-variants --pull --progress plain --no-cache --load --set *.platform=linux/$(CURRENT_ARCH)
+symfony-bake-web: symfony-bake-all

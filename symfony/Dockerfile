@@ -2,6 +2,7 @@
 
 ARG PHP_VERSION=8.1
 ARG CADDY_VERSION=2
+ARG PHP_SHORT_VERSION=81
 
 FROM php:${PHP_VERSION}-fpm-alpine as symfony-fpm-81
 
@@ -66,3 +67,17 @@ WORKDIR /srv/app
 COPY --from=dunglas/mercure:v0.11 /srv/public /srv/mercure-assets/
 COPY --from=symfony-caddy-builder /usr/bin/caddy /usr/bin/caddy
 COPY files/Caddyfile /etc/caddy/Caddyfile
+
+FROM symfony-fpm-${PHP_SHORT_VERSION} as symfony-web-81
+
+COPY --from=symfony-caddy-builder /usr/bin/caddy /usr/bin/caddy
+COPY files/Caddyfile /etc/caddy/Caddyfile
+
+EXPOSE 80
+EXPOSE 443
+EXPOSE 2019
+
+COPY files/docker-entrypoint-web.sh /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
+
+CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
