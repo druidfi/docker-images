@@ -17,6 +17,10 @@ PHONY += misc-bake-local
 misc-bake-local: MISC_BAKE_FLAGS := --pull --progress plain --no-cache --load --set *.platform=linux/$(CURRENT_ARCH)
 misc-bake-local: misc-bake-all ## Bake all Misc images locally
 
+PHONY += misc-bake-test
+misc-bake-test: MISC_BAKE_FLAGS := --pull --progress plain --no-cache
+misc-bake-test: misc-bake-all ## CI test for Misc images
+
 PHONY += misc-bake-localsolr
 misc-bake-localsolr: MISC_BAKE_FLAGS := solr --pull --progress plain --no-cache --push
 misc-bake-localsolr: misc-bake-all ## Bake all Misc images locally
