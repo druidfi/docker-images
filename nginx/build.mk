@@ -14,5 +14,5 @@ nginx-bake-local: NGINX_BAKE_FLAGS := --pull --progress plain --no-cache --load 
 nginx-bake-local: nginx-bake-all ## Bake all Nginx images locally
 
 PHONY += nginx-bake-test
-nginx-bake-test: MISC_BAKE_FLAGS := --pull --progress plain --no-cache
+nginx-bake-test: NGINX_BAKE_FLAGS := --pull --progress plain --no-cache
 nginx-bake-test: nginx-bake-all ## CI test for Nginx images
