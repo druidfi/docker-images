@@ -7,7 +7,7 @@ variable SIMPLESAMLPHP_VERSION {
 }
 
 group "default" {
-  targets = ["curl", "mailhog", "s3-sync", "saml-idp", "ssh-agent", "varnish"]
+  targets = ["curl", "mailhog", "s3-sync", "saml-idp", "solr", "ssh-agent", "varnish"]
 }
 
 target "common" {
@@ -49,6 +49,13 @@ target "s3-sync" {
   inherits = ["common"]
   context = "./misc/s3-sync"
   tags = ["druidfi/s3-sync:alpine", "druidfi/s3-sync:alpine-${ALPINE_VERSION}", "druidfi/s3-sync:alpine${ALPINE_VERSION}"]
+}
+
+target "solr" {
+  inherits = ["common"]
+  context = "./misc/solr"
+  target = "solr"
+  tags = ["druidfi/solr:8-drupal","druidfi/solr:8.11-drupal"]
 }
 
 target "ssh-agent" {
