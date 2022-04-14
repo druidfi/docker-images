@@ -20,15 +20,6 @@ jobs:
 
     runs-on: ubuntu-20.04
 
-    strategy:
-      matrix:
-        include:
-          - bake_target: 'mariadb-105'
-          - bake_target: 'mariadb-106'
-          - bake_target: 'mariadb-107'
-          - bake_target: 'mysql-57'
-          - bake_target: 'mysql-80'
-
     steps:
 
       - uses: actions/checkout@v3
@@ -42,8 +33,5 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Build ${{ matrix.db }} ${{ matrix.version }} image for Drupal
-        run: |
-          cd db
-          docker buildx bake --pull --progress plain --no-cache --load --set *.platform=linux/amd64 \
-            ${{ matrix.bake_target }}
+      - name: Build database images
+        run: make db-bake-test

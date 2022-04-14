@@ -12,3 +12,7 @@ db-bake-print: db-bake-all ## Print bake plan for Database images
 PHONY += db-bake-local
 db-bake-local: DB_BAKE_FLAGS := --pull --progress plain --no-cache --load --set *.platform=linux/$(CURRENT_ARCH)
 db-bake-local: db-bake-all ## Bake all Database images locally
+
+PHONY += db-bake-test
+db-bake-test: DB_BAKE_FLAGS := --pull --progress plain --no-cache
+db-bake-test: db-bake-all ## CI test for Database images
