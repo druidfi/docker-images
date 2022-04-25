@@ -35,4 +35,4 @@ jobs:
 
       - name: Build PHP images
         run: |
-          make bake-php-local
+          make php-bake-test
