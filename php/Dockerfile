@@ -130,7 +130,7 @@ ENV PHP_SHORT_VERSION=81
 ENV PHP_INSTALL_VERSION=81
 
 RUN sudo -s <<EOF
-apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing add libzip \
+apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/community add libzip \
   php81 php81-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
   php81-pecl-{apcu,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php81 /usr/bin/php
@@ -202,7 +202,7 @@ COPY files/etc/php/php-fpm.d/www.conf /etc/php8/php-fpm.d/www.conf
 FROM final-php as build-php-fpm-81
 
 RUN sudo -s <<EOF
-apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing add php81-fpm
+apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/community add php81-fpm
 ln -sfn /usr/sbin/php-fpm81 /usr/sbin/php-fpm
 EOF
 
@@ -244,7 +244,7 @@ FROM final-php-fpm as drupal-php-81
 RUN sudo -s <<EOF
 apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/main add icu-libs
 apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/community add libavif
-apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing add mysql-client openssh rsync \
+apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/community add mysql-client openssh rsync \
     php81-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
