@@ -85,9 +85,10 @@ ENV PHP_MAJOR_VERSION=7
 ENV PHP_INSTALL_VERSION=7
 
 RUN sudo -s <<EOF
-apk --no-cache add \
+apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing add \
   php7 php7-{curl,fileinfo,iconv,json,mbstring,opcache,openssl,phar,session,zip} \
   php7-pecl-{apcu,redis,uploadprogress,xdebug}
+ln -sfn /usr/bin/php7 /usr/bin/php
 EOF
 
 COPY files/etc/php/conf.d/* /etc/php7/conf.d/
@@ -181,7 +182,7 @@ EOF
 FROM final-php as build-php-fpm-74
 
 RUN sudo -s <<EOF
-apk --no-cache add php7-fpm && ln -sfn /usr/sbin/php-fpm7 /usr/sbin/php-fpm
+apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing add php7-fpm && ln -sfn /usr/sbin/php-fpm7 /usr/sbin/php-fpm
 EOF
 
 COPY files/etc/php/php-fpm.d/www.conf /etc/php7/php-fpm.d/www.conf
@@ -212,7 +213,8 @@ CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm", "-F
 FROM final-php-fpm as drupal-php-74
 
 RUN sudo -s <<EOF
-apk --no-cache add mysql-client openssh rsync \
+apk --no-cache add mysql-client openssh rsync
+apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing add \
     php7-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter,zlib}
 EOF
 

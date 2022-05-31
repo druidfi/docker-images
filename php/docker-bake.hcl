@@ -18,10 +18,6 @@ variable "ALPINE_VERSION" {
   default = "3.16.0"
 }
 
-variable "ALPINE_VERSION_PREVIOUS" {
-  default = "3.15.4"
-}
-
 variable "PHP74_MINOR" {}
 variable "PHP80_MINOR" {}
 variable "PHP81_MINOR" {}
@@ -62,7 +58,7 @@ target "php" {
 target "php-74" {
   inherits = ["common", "php"]
   args = {
-    ALPINE_VERSION = "${ALPINE_VERSION_PREVIOUS}"
+    ALPINE_VERSION = "${ALPINE_VERSION}"
     PHP_VERSION = "7.4"
     PHP_SHORT_VERSION = "74"
   }
