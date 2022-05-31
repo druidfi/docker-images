@@ -21,8 +21,8 @@ php-bake-test: php-bake-all run-php-tests ## CI test for PHP images
 PHONY += run-php-tests
 run-php-tests:
 	$(call step,Run tests in druidfi/php:7.4)
-	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/php:7.4 /app/scripts/tests.sh
+	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/drupal-web:php-7.4 /app/scripts/tests.sh
 	$(call step,Run tests in druidfi/php:8.0)
-	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/php:8.0 /app/scripts/tests.sh
+	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/drupal-web:php-8.0 /app/scripts/tests.sh
 	$(call step,Run tests in druidfi/php:8.1)
-	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/php:8.1 /app/scripts/tests.sh
+	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/drupal-web:php-8.1 /app/scripts/tests.sh

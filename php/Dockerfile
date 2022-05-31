@@ -93,10 +93,6 @@ EOF
 COPY files/etc/php/conf.d/* /etc/php7/conf.d/
 COPY files/entrypoints/16-blackfire.sh /entrypoints/
 
-FROM build-php-7 as build-php-73
-
-ENV PHP_SHORT_VERSION=73
-
 FROM build-php-7 as build-php-74
 
 ENV PHP_SHORT_VERSION=74
@@ -130,7 +126,7 @@ ENV PHP_SHORT_VERSION=81
 ENV PHP_INSTALL_VERSION=81
 
 RUN sudo -s <<EOF
-apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/community add libzip \
+apk --no-cache add libzip \
   php81 php81-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
   php81-pecl-{apcu,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php81 /usr/bin/php
@@ -182,7 +178,6 @@ EOF
 # PHP-FPM
 #
 
-FROM final-php as build-php-fpm-73
 FROM final-php as build-php-fpm-74
 
 RUN sudo -s <<EOF
@@ -202,8 +197,7 @@ COPY files/etc/php/php-fpm.d/www.conf /etc/php8/php-fpm.d/www.conf
 FROM final-php as build-php-fpm-81
 
 RUN sudo -s <<EOF
-apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/community add php81-fpm
-ln -sfn /usr/sbin/php-fpm81 /usr/sbin/php-fpm
+apk --no-cache add php81-fpm && ln -sfn /usr/sbin/php-fpm81 /usr/sbin/php-fpm
 EOF
 
 COPY files/etc/php/php-fpm.d/www.conf /etc/php81/php-fpm.d/www.conf
@@ -222,15 +216,12 @@ CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm", "-F
 # Drupal base
 #
 
-FROM final-php-fpm as drupal-php-7
+FROM final-php-fpm as drupal-php-74
 
 RUN sudo -s <<EOF
 apk --no-cache add mysql-client openssh rsync \
     php7-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter,zlib}
 EOF
-
-FROM drupal-php-7 as drupal-php-73
-FROM drupal-php-7 as drupal-php-74
 
 FROM final-php-fpm as drupal-php-80
 
