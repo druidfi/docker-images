@@ -74,14 +74,14 @@ WORKDIR ${APP_PATH}
 ENTRYPOINT ["/sbin/tini", "--", "entrypoint"]
 
 CMD ["tail", "-f", "/dev/null"]
-#CMD ["sleep", "infinity"]
 
 #
-# PHP 7
+# PHP 7.4
 #
 FROM base as build-php-7
 
 ENV PHP_MAJOR_VERSION=7
+ENV PHP_SHORT_VERSION=74
 ENV PHP_INSTALL_VERSION=7
 
 RUN sudo -s <<EOF
@@ -182,19 +182,33 @@ EOF
 FROM final-php as build-php-fpm-74
 
 RUN sudo -s <<EOF
-apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing add php7-fpm && ln -sfn /usr/sbin/php-fpm7 /usr/sbin/php-fpm
+apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing add php7-fpm
+ln -sfn /usr/sbin/php-fpm7 /usr/sbin/php-fpm
 EOF
 
 COPY files/etc/php/php-fpm.d/www.conf /etc/php7/php-fpm.d/www.conf
 
 FROM final-php as build-php-fpm-80
+
+RUN sudo -s <<EOF
+apk --no-cache add php8-fpm
+ln -sfn /usr/sbin/php-fpm8 /usr/sbin/php-fpm
+EOF
+
+COPY files/etc/php/php-fpm.d/www.conf /etc/php8/php-fpm.d/www.conf
+
 FROM final-php as build-php-fpm-81
 
 RUN sudo -s <<EOF
-apk --no-cache add php${PHP_INSTALL_VERSION}-fpm && ln -sfn /usr/sbin/php-fpm${PHP_INSTALL_VERSION} /usr/sbin/php-fpm
+apk --no-cache add php81-fpm
+ln -sfn /usr/sbin/php-fpm81 /usr/sbin/php-fpm
 EOF
 
-COPY files/etc/php/php-fpm.d/www.conf /etc/php${PHP_INSTALL_VERSION}/php-fpm.d/www.conf
+COPY files/etc/php/php-fpm.d/www.conf /etc/php81/php-fpm.d/www.conf
+
+#
+# Final PHP-FPM
+#
 
 FROM build-php-fpm-${PHP_SHORT_VERSION} as final-php-fpm
 
@@ -232,6 +246,10 @@ apk --no-cache add mysql-client openssh rsync \
     php81-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
+#
+# Drupal PHP
+#
+
 FROM drupal-php-${PHP_SHORT_VERSION} as drupal-base
 
 ENV DRUPAL_DB_NAME=drupal \
@@ -263,5 +281,3 @@ COPY files/etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 EXPOSE 8080
 
 CMD ["sudo", "nginx"]
-
-#HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost:8080/ping || exit 1
