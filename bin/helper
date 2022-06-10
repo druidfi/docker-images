@@ -2,9 +2,9 @@
 
 COMMAND=$1
 LATEST_ALPINE_VERSION=3.16
-FALLBACK_VERSION_74="7.4.29"
-FALLBACK_VERSION_80="8.0.19"
-FALLBACK_VERSION_81="8.1.6"
+FALLBACK_VERSION_74="7.4.30"
+FALLBACK_VERSION_80="8.0.20"
+FALLBACK_VERSION_81="8.1.7"
 
 if [[ $COMMAND == alpineversion ]]
 then
@@ -38,7 +38,7 @@ then
   then
     URL="https://git.alpinelinux.org/aports/plain/community/php81/APKBUILD"
   else
-    URL="https://git.alpinelinux.org/aports/plain/community/php7/APKBUILD"
+    URL="https://git.alpinelinux.org/aports/plain/testing/php7/APKBUILD"
   fi
 
   RESPONSE=$(curl -s -w "%{http_code}" "$URL")
