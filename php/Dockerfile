@@ -136,6 +136,24 @@ EOF
 COPY files/etc/php/conf.d/* /etc/php81/conf.d/
 
 #
+# PHP 8.2
+#
+FROM base as build-php-82
+
+ENV PHP_MAJOR_VERSION=8
+ENV PHP_SHORT_VERSION=82
+ENV PHP_INSTALL_VERSION=82
+
+RUN sudo -s <<EOF
+apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing add libzip \
+  php82 php82-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
+  php82-pecl-{apcu,redis,uploadprogress,xdebug}
+ln -sfn /usr/bin/php82 /usr/bin/php
+EOF
+
+COPY files/etc/php/conf.d/* /etc/php82/conf.d/
+
+#
 # Blackfire
 #
 FROM build-php-${PHP_SHORT_VERSION} AS blackfire
@@ -152,6 +170,8 @@ rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
 EOF
 
 RUN test -f ${SO_PATH}
+
+#FROM build-php-82 AS blackfire
 
 #
 # PHP
@@ -205,6 +225,15 @@ ln -sfn /usr/sbin/php-fpm81 /usr/sbin/php-fpm
 EOF
 
 COPY files/etc/php/php-fpm.d/www.conf /etc/php81/php-fpm.d/www.conf
+
+FROM final-php as build-php-fpm-82
+
+RUN sudo -s <<EOF
+apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing add php82-fpm
+ln -sfn /usr/sbin/php-fpm82 /usr/sbin/php-fpm
+EOF
+
+COPY files/etc/php/php-fpm.d/www.conf /etc/php82/php-fpm.d/www.conf
 
 #
 # Final PHP-FPM

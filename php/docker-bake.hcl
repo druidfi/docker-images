@@ -21,6 +21,9 @@ variable "ALPINE_VERSION" {
 variable "PHP74_MINOR" {}
 variable "PHP80_MINOR" {}
 variable "PHP81_MINOR" {}
+variable "PHP82_MINOR" {
+    default = "8.2.0"
+}
 
 group "default" {
   targets = ["php-variants", "php-fpm-variants", "drupal-fpm-variants", "drupal-web-variants"]
@@ -32,6 +35,10 @@ group "php-variants" {
 
 group "php-fpm-variants" {
   targets = [ "php-fpm-74", "php-fpm-80", "php-fpm-81"]
+}
+
+group "php-beta-variants" {
+  targets = [ "php-82", "php-fpm-82"]
 }
 
 group "drupal-fpm-variants" {
@@ -85,6 +92,16 @@ target "php-81" {
   tags = ["${REPO_BASE}:8.1", "${REPO_BASE}:${PHP81_MINOR}"]
 }
 
+target "php-82" {
+  inherits = ["common", "php"]
+  args = {
+    ALPINE_VERSION = "${ALPINE_VERSION}"
+    PHP_VERSION = "8.2"
+    PHP_SHORT_VERSION = "82"
+  }
+  tags = ["${REPO_BASE}:8.2-beta2", "${REPO_BASE}:${PHP82_MINOR}-beta2"]
+}
+
 #
 # PHP-FPM
 #
@@ -107,6 +124,11 @@ target "php-fpm-80" {
 target "php-fpm-81" {
   inherits = ["common", "php-81", "php-fpm"]
   tags = ["${REPO_FPM}:8.1", "${REPO_FPM}:${PHP81_MINOR}"]
+}
+
+target "php-fpm-82" {
+  inherits = ["common", "php-82", "php-fpm"]
+  tags = ["${REPO_FPM}:8.2-beta2", "${REPO_FPM}:${PHP82_MINOR}-beta2"]
 }
 
 #
