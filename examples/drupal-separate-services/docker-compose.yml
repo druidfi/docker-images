@@ -1,11 +1,9 @@
-version: '3.7'
-
 services:
 
   nginx:
     hostname: "${DRUPAL_HOSTNAME}"
     container_name: "${COMPOSE_PROJECT_NAME}-nginx"
-    image: druidfi/nginx:1.20-drupal
+    image: druidfi/nginx:1.21-drupal
     volumes:
       - .:/app:delegated
     labels:
@@ -23,7 +21,7 @@ services:
 
   app:
     container_name: "${COMPOSE_PROJECT_NAME}-app"
-    image: druidfi/drupal:php-8.0
+    image: druidfi/drupal:php-8.1
     volumes:
       - .:/app:delegated
     environment:
@@ -35,7 +33,7 @@ services:
 
   db:
     container_name: "${COMPOSE_PROJECT_NAME}-db"
-    image: druidfi/mariadb:10.5-drupal
+    image: druidfi/mariadb:10.6-drupal
     ports:
       - 3306
     networks:

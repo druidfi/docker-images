@@ -36,7 +36,7 @@ Tags:
 Added features:
 
 - Minimal set of PHP extensions
-- Composer 2.3.x
+- Composer 2.4.x
 - `/app/vendor/bin` added  to `$PATH`
 
 ### druidfi/php-fpm variant
@@ -66,8 +66,8 @@ Added features:
 
 Needs:
 
-- Nginx (`druidfi/nginx:1.20-drupal`)
-- Database (`druidfi/mariadb:10.5-drupal`)
+- Nginx (`druidfi/nginx:1.21-drupal`)
+- Database (`druidfi/mariadb:10.6-drupal`)
 
 ENV variables:
 
@@ -90,7 +90,7 @@ Added features:
 
 Needs:
 
-- Database (`druidfi/mariadb:10.5-drupal`)
+- Database (`druidfi/mariadb:10.6-drupal`)
 
 ### druidfi/drupal-test variant
 
@@ -103,7 +103,7 @@ Added features:
 
 Needs:
 
-- Database (`druidfi/mariadb:10.5-drupal`)
+- Database (`druidfi/mariadb:10.6-drupal`)
 
 ## druidfi/nginx
 
