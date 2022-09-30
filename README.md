@@ -79,9 +79,9 @@ ENV variables:
 
 ### druidfi/drupal-web variant
 
-- `druidfi/drupal-web:7`, `druidfi/drupal-web:7.4`, `druidfi/drupal-web:7.4.x`
-- `druidfi/drupal-web:8`, `druidfi/drupal-web:8.0` and `druidfi/drupal-web:8.0.x` and `druidfi/drupal-web:latest`
-- `druidfi/drupal-web:8.1` and `druidfi/drupal-web:8.1.x`
+- `druidfi/drupal-web:php-7`, `druidfi/drupal-web:php-7.4`, `druidfi/drupal-web:php-7.4.x`
+- `druidfi/drupal-web:php-8`, `druidfi/drupal-web:php-8.0` and `druidfi/drupal-web:php-8.0.x` and `druidfi/drupal-web:latest`
+- `druidfi/drupal-web:php-8.1` and `druidfi/drupal-web:php-8.1.x`
 
 Added features:
 
