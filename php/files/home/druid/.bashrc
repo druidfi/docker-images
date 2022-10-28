@@ -8,7 +8,7 @@ if [ "$PS1" ]; then
   NORMAL="\[\e[0m\]"
   RED="\[\e[1;31m\]"
   YELLOW="\[\e[1;33m\]"
-  PS1="🔥 ${RED}[${HOSTNAME}] ${YELLOW}\w${NORMAL} $ "
+  PS1="🔥 ${YELLOW}[${APP_ENV:-Unknown}] ${RED}[${HOSTNAME}] ${YELLOW}\w${NORMAL} $ "
 fi
 
 # Aliases
