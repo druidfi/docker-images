@@ -34,5 +34,5 @@ run-php-tests:
 
 PHONY += run-beta-tests
 run-beta-tests:
-	$(call step,Run tests in druidfi/drupal-web:php-8.2)
+	$(call step,Run tests in druidfi/php-fpm:8.2)
 	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/php-fpm:8.2-beta2 /app/scripts/tests.sh

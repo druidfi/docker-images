@@ -85,14 +85,13 @@ ENV PHP_SHORT_VERSION=74
 ENV PHP_INSTALL_VERSION=7
 
 RUN sudo -s <<EOF
-apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing add \
+apk --no-cache add \
   php7 php7-{curl,fileinfo,iconv,json,mbstring,opcache,openssl,phar,session,zip} \
   php7-pecl-{apcu,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php7 /usr/bin/php
 EOF
 
 COPY files/etc/php/conf.d/* /etc/php7/conf.d/
-COPY files/entrypoints/16-blackfire.sh /entrypoints/
 
 FROM build-php-7 as build-php-74
 
@@ -115,7 +114,6 @@ ln -sfn /usr/bin/php8 /usr/bin/php
 EOF
 
 COPY files/etc/php/conf.d/* /etc/php8/conf.d/
-COPY files/entrypoints/16-blackfire.sh /entrypoints/
 
 #
 # PHP 8.1
@@ -145,33 +143,16 @@ ENV PHP_SHORT_VERSION=82
 ENV PHP_INSTALL_VERSION=82
 
 RUN sudo -s <<EOF
+apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/main add libcrypto3 libssl3
 apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing add libzip \
   php82 php82-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
   php82-pecl-{apcu,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php82 /usr/bin/php
 EOF
 
+RUN php -v
+
 COPY files/etc/php/conf.d/* /etc/php82/conf.d/
-
-#
-# Blackfire
-#
-FROM build-php-${PHP_SHORT_VERSION} AS blackfire
-
-ARG URL=https://blackfire.io/api/v1/releases/probe/php/alpine
-ARG SO_PATH=/usr/lib/php${PHP_INSTALL_VERSION}/modules/blackfire.so
-
-RUN sudo -s <<EOF
-curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s ${URL}/$(uname -m)/${PHP_SHORT_VERSION}
-mkdir -p /tmp/blackfire
-tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire
-mv /tmp/blackfire/blackfire-*.so ${SO_PATH}
-rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
-EOF
-
-RUN test -f ${SO_PATH}
-
-#FROM build-php-82 AS blackfire
 
 #
 # PHP
@@ -181,9 +162,6 @@ FROM build-php-${PHP_SHORT_VERSION} as final-php
 # Fix iconv library with Alpine by gnu-libiconv
 COPY --from=libiconv /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
-
-# Copy Blackfire
-COPY --from=blackfire /usr/lib/php${PHP_INSTALL_VERSION}/modules/blackfire.so /usr/lib/php${PHP_INSTALL_VERSION}/modules/blackfire.so
 
 ENV APP_ENV=prod \
     COMPOSER_HOME=/home/${DEFAULT_USER}/.composer \
@@ -202,7 +180,7 @@ EOF
 FROM final-php as build-php-fpm-74
 
 RUN sudo -s <<EOF
-apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing add php7-fpm
+apk --no-cache add php7-fpm
 ln -sfn /usr/sbin/php-fpm7 /usr/sbin/php-fpm
 EOF
 
@@ -257,7 +235,7 @@ FROM final-php-fpm as drupal-php-74
 
 RUN sudo -s <<EOF
 apk --no-cache add mysql-client openssh rsync
-apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing add \
+apk --no-cache add \
     php7-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter,zlib}
 EOF
 
