@@ -167,9 +167,10 @@ ENV APP_ENV=prod \
     COMPOSER_HOME=/home/${DEFAULT_USER}/.composer \
     PATH="${PATH}:/home/${DEFAULT_USER}/.composer/vendor/bin:${APP_PATH}/vendor/bin"
 
+COPY --from=composer/composer:2-bin /composer /usr/bin/composer
+
 RUN sudo -s <<EOF
 apk --no-cache add patch unzip
-php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/local/bin/ --filename=composer
 install -o ${DEFAULT_USER} -g ${DEFAULT_USER} -d ${COMPOSER_HOME}
 EOF
 
