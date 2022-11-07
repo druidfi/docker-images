@@ -2,9 +2,9 @@
 
 COMMAND=$1
 LATEST_ALPINE_VERSION=3.16
-FALLBACK_VERSION_74="7.4.30"
-FALLBACK_VERSION_80="8.0.22"
-FALLBACK_VERSION_81="8.1.9"
+FALLBACK_VERSION_74="7.4.33"
+FALLBACK_VERSION_80="8.0.25"
+FALLBACK_VERSION_81="8.1.12"
 FALLBACK_VERSION_82="8.2.0"
 
 if [[ $COMMAND == alpineversion ]]
@@ -34,7 +34,7 @@ then
 
   if [[ $BRANCH == 8.0 ]]
   then
-    URL="https://git.alpinelinux.org/aports/plain/community/php8/APKBUILD"
+    URL="https://git.alpinelinux.org/aports/plain/testing/php8/APKBUILD"
   elif [[ $BRANCH == 8.1 ]]
   then
     URL="https://git.alpinelinux.org/aports/plain/community/php81/APKBUILD"
