@@ -2,8 +2,7 @@ BAKE_FLAGS := --pull --no-cache --push
 
 PHONY += php-bake-all
 php-bake-all: ## Bake all PHP images
-	@ALPINE_VERSION=$(call get_alpine_version) \
-	PHP74_MINOR=$(call get_php_minor,7.4) PHP80_MINOR=$(call get_php_minor,8.0) PHP81_MINOR=$(call get_php_minor,8.1) \
+	@PHP74_MINOR=$(call get_php_minor,7.4) PHP80_MINOR=$(call get_php_minor,8.0) PHP81_MINOR=$(call get_php_minor,8.1) \
 		docker buildx bake -f php/docker-bake.hcl $(BAKE_FLAGS)
 
 PHONY += php-bake-print

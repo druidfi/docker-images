@@ -14,10 +14,6 @@ variable "REPO_DRUPAL_WEB" {
   default = "druidfi/drupal-web"
 }
 
-variable "ALPINE_VERSION" {
-  default = "3.16.0"
-}
-
 variable "PHP74_MINOR" {}
 variable "PHP80_MINOR" {}
 variable "PHP81_MINOR" {}
@@ -75,7 +71,7 @@ target "php-74" {
 target "php-80" {
   inherits = ["common", "php"]
   args = {
-    ALPINE_VERSION = "${ALPINE_VERSION}"
+    ALPINE_VERSION = "3.16.3"
     PHP_VERSION = "8.0"
     PHP_SHORT_VERSION = "80"
   }
@@ -85,7 +81,7 @@ target "php-80" {
 target "php-81" {
   inherits = ["common", "php"]
   args = {
-    ALPINE_VERSION = "${ALPINE_VERSION}"
+    ALPINE_VERSION = "3.17"
     PHP_VERSION = "8.1"
     PHP_SHORT_VERSION = "81"
   }
@@ -95,7 +91,7 @@ target "php-81" {
 target "php-82" {
   inherits = ["common", "php"]
   args = {
-    ALPINE_VERSION = "${ALPINE_VERSION}"
+    ALPINE_VERSION = "3.17"
     PHP_VERSION = "8.2"
     PHP_SHORT_VERSION = "82"
   }
