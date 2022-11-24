@@ -32,7 +32,7 @@ target "saml-idp" {
 target "s3-sync" {
   inherits = ["common"]
   context = "./misc/s3-sync"
-  tags = ["druidfi/s3-sync:alpine", "druidfi/s3-sync:alpine-${ALPINE_VERSION}", "druidfi/s3-sync:alpine${ALPINE_VERSION}"]
+  tags = ["druidfi/s3-sync:alpine", "druidfi/s3-sync:alpine-${ALPINE_VERSION}", "druidfi/s3-sync:latest"]
 }
 
 target "solr" {
