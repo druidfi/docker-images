@@ -25,11 +25,11 @@ group "default" {
 }
 
 group "php-variants" {
-  targets = ["php-80", "php-81"]
+  targets = ["php-80", "php-81", "php-82"]
 }
 
 group "php-fpm-variants" {
-  targets = ["php-fpm-80", "php-fpm-81"]
+  targets = ["php-fpm-80", "php-fpm-81", "php-fpm-82"]
 }
 
 group "php-beta-variants" {
@@ -37,11 +37,11 @@ group "php-beta-variants" {
 }
 
 group "drupal-fpm-variants" {
-  targets = ["drupal-fpm-80", "drupal-fpm-81"]
+  targets = ["drupal-fpm-80", "drupal-fpm-81", "drupal-fpm-82"]
 }
 
 group "drupal-web-variants" {
-  targets = ["drupal-web-80", "drupal-web-81"]
+  targets = ["drupal-web-80", "drupal-web-81", "drupal-web-82"]
 }
 
 target "common" {
@@ -64,7 +64,7 @@ target "php-80" {
     PHP_VERSION = "8.0"
     PHP_SHORT_VERSION = "80"
   }
-  tags = ["${REPO_BASE}:8", "${REPO_BASE}:8.0", "${REPO_BASE}:${PHP80_MINOR}"]
+  tags = ["${REPO_BASE}:8.0", "${REPO_BASE}:${PHP80_MINOR}"]
 }
 
 target "php-81" {
@@ -74,7 +74,7 @@ target "php-81" {
     PHP_VERSION = "8.1"
     PHP_SHORT_VERSION = "81"
   }
-  tags = ["${REPO_BASE}:8.1", "${REPO_BASE}:${PHP81_MINOR}", "${REPO_BASE}:latest"]
+  tags = ["${REPO_BASE}:8", "${REPO_BASE}:8.1", "${REPO_BASE}:${PHP81_MINOR}", "${REPO_BASE}:latest"]
 }
 
 target "php-82" {
@@ -84,7 +84,7 @@ target "php-82" {
     PHP_VERSION = "8.2"
     PHP_SHORT_VERSION = "82"
   }
-  tags = ["${REPO_BASE}:8.2-beta2", "${REPO_BASE}:${PHP82_MINOR}-beta2"]
+  tags = ["${REPO_BASE}:8.2", "${REPO_BASE}:${PHP82_MINOR}"]
 }
 
 #
@@ -98,17 +98,17 @@ target "php-fpm" {
 
 target "php-fpm-80" {
   inherits = ["common", "php-80", "php-fpm"]
-  tags = ["${REPO_FPM}:8", "${REPO_FPM}:8.0", "${REPO_FPM}:${PHP80_MINOR}"]
+  tags = ["${REPO_FPM}:8.0", "${REPO_FPM}:${PHP80_MINOR}"]
 }
 
 target "php-fpm-81" {
   inherits = ["common", "php-81", "php-fpm"]
-  tags = ["${REPO_FPM}:8.1", "${REPO_FPM}:${PHP81_MINOR}", "${REPO_FPM}:latest"]
+  tags = ["${REPO_FPM}:8", "${REPO_FPM}:8.1", "${REPO_FPM}:${PHP81_MINOR}", "${REPO_FPM}:latest"]
 }
 
 target "php-fpm-82" {
   inherits = ["common", "php-82", "php-fpm"]
-  tags = ["${REPO_FPM}:8.2-beta2", "${REPO_FPM}:${PHP82_MINOR}-beta2"]
+  tags = ["${REPO_FPM}:8.2", "${REPO_FPM}:${PHP82_MINOR}"]
 }
 
 #
@@ -118,13 +118,19 @@ target "php-fpm-82" {
 target "drupal-fpm-80" {
   inherits = ["common", "php-80", "php-fpm"]
   target = "drupal-php-80"
-  tags = ["${REPO_DRUPAL_FPM}:php-8", "${REPO_DRUPAL_FPM}:php-8.0", "${REPO_DRUPAL_FPM}:php-${PHP80_MINOR}"]
+  tags = ["${REPO_DRUPAL_FPM}:php-8.0", "${REPO_DRUPAL_FPM}:php-${PHP80_MINOR}"]
 }
 
 target "drupal-fpm-81" {
   inherits = ["common", "php-81", "php-fpm"]
   target = "drupal-php-81"
-  tags = ["${REPO_DRUPAL_FPM}:php-8.1", "${REPO_DRUPAL_FPM}:php-${PHP81_MINOR}", "${REPO_DRUPAL_FPM}:latest"]
+  tags = ["${REPO_DRUPAL_FPM}:php-8", "${REPO_DRUPAL_FPM}:php-8.1", "${REPO_DRUPAL_FPM}:php-${PHP81_MINOR}", "${REPO_DRUPAL_FPM}:latest"]
+}
+
+target "drupal-fpm-82" {
+  inherits = ["common", "php-82", "php-fpm"]
+  target = "drupal-php-82"
+  tags = ["${REPO_DRUPAL_FPM}:php-8.2", "${REPO_DRUPAL_FPM}:php-${PHP82_MINOR}"]
 }
 
 #
@@ -134,11 +140,17 @@ target "drupal-fpm-81" {
 target "drupal-web-80" {
   inherits = ["common", "php-80", "php-fpm"]
   target = "drupal-web"
-  tags = ["${REPO_DRUPAL_WEB}:php-8", "${REPO_DRUPAL_WEB}:php-8.0", "${REPO_DRUPAL_WEB}:php-${PHP80_MINOR}"]
+  tags = ["${REPO_DRUPAL_WEB}:php-8.0", "${REPO_DRUPAL_WEB}:php-${PHP80_MINOR}"]
 }
 
 target "drupal-web-81" {
   inherits = ["common", "php-81", "php-fpm"]
   target = "drupal-web"
-  tags = ["${REPO_DRUPAL_WEB}:php-8.1", "${REPO_DRUPAL_WEB}:php-${PHP81_MINOR}", "${REPO_DRUPAL_WEB}:latest"]
+  tags = ["${REPO_DRUPAL_WEB}:php-8", "${REPO_DRUPAL_WEB}:php-8.1", "${REPO_DRUPAL_WEB}:php-${PHP81_MINOR}", "${REPO_DRUPAL_WEB}:latest"]
+}
+
+target "drupal-web-82" {
+  inherits = ["common", "php-82", "php-fpm"]
+  target = "drupal-web"
+  tags = ["${REPO_DRUPAL_WEB}:php-8.2", "${REPO_DRUPAL_WEB}:php-${PHP82_MINOR}"]
 }

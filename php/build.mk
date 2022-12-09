@@ -28,6 +28,8 @@ run-php-tests:
 	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/drupal-web:php-8.0 /app/scripts/tests.sh
 	$(call step,Run tests in druidfi/drupal-web:php-8.1)
 	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/drupal-web:php-8.1 /app/scripts/tests.sh
+	$(call step,Run tests in druidfi/drupal-web:php-8.2)
+	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/drupal-web:php-8.2 /app/scripts/tests.sh
 
 PHONY += run-beta-tests
 run-beta-tests:
