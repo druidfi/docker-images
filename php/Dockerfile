@@ -124,7 +124,7 @@ RUN sudo -s <<EOF
 apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/main add libcrypto3 libssl3
 apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/community add libzip \
   php82 php82-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip}
-apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/testing add \
+apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/community add \
   php82-pecl-{apcu,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php82 /usr/bin/php
 EOF
