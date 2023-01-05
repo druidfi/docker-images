@@ -18,8 +18,7 @@ RUN composer req --ignore-platform-reqs --no-progress --no-interaction \
         drupal/metatag \
         drupal/paragraphs \
         drupal/pathauto \
-        drupal/simplei \
-        drupal/pwa
+        drupal/simplei
 
 FROM druidfi/drupal-web:php-${PHP_VERSION} AS baseline
 
@@ -30,5 +29,5 @@ COPY --from=builder ${APP_PATH}/public/ ${APP_PATH}/public/
 COPY --from=builder ${APP_PATH}/vendor/ ${APP_PATH}/vendor/
 
 # Set up file folders
-RUN mkdir ${APP_PATH}/public/sites/default/files && \
-    chown -R www-data:www-data ${APP_PATH}/public/sites/default/files
+RUN sudo mkdir -p ${APP_PATH}/public/sites/default/files && \
+    sudo chown -R www-data:www-data ${APP_PATH}/public/sites/default/files
