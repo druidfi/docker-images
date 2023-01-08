@@ -16,9 +16,7 @@ variable "REPO_DRUPAL_WEB" {
 
 variable "PHP80_MINOR" {}
 variable "PHP81_MINOR" {}
-variable "PHP82_MINOR" {
-    default = "8.2.0"
-}
+variable "PHP82_MINOR" {}
 
 group "default" {
   targets = ["php-variants", "php-fpm-variants", "drupal-fpm-variants", "drupal-web-variants"]

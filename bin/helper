@@ -36,7 +36,7 @@ then
     URL="https://git.alpinelinux.org/aports/plain/community/php81/APKBUILD"
   elif [[ $BRANCH == 8.2 ]]
   then
-    URL="https://git.alpinelinux.org/aports/plain/testing/php82/APKBUILD"
+    URL="https://git.alpinelinux.org/aports/plain/community/php82/APKBUILD"
   else
     URL="https://git.alpinelinux.org/aports/plain/testing/php8/APKBUILD"
   fi
