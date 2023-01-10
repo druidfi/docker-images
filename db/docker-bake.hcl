@@ -3,7 +3,7 @@ group "default" {
 }
 
 group "mariadb-variants" {
-  targets = ["mariadb-105", "mariadb-106", "mariadb-107"]
+  targets = ["mariadb-105", "mariadb-106", "mariadb-107", "mariadb-108", "mariadb-109"]
 }
 
 group "mysql-variants" {
@@ -37,6 +37,22 @@ target "mariadb-107" {
     MARIADB_VERSION = "10.7"
   }
   tags = ["druidfi/mariadb:10.7-drupal"]
+}
+
+target "mariadb-108" {
+  inherits = ["mariadb-common"]
+  args = {
+    MARIADB_VERSION = "10.8"
+  }
+  tags = ["druidfi/mariadb:10.8-drupal"]
+}
+
+target "mariadb-109" {
+  inherits = ["mariadb-common"]
+  args = {
+    MARIADB_VERSION = "10.9"
+  }
+  tags = ["druidfi/mariadb:10.9-drupal"]
 }
 
 target "mysql-common" {
