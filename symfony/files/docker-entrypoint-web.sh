@@ -1,6 +1,10 @@
 #!/bin/sh
 set -e
 
+if [ "$1" = 'php' ] && [ "$2" = '-v' ]; then
+  php -v && exit 0
+fi
+
 echo "Start up PHP-FPM..."
 exec php-fpm -F -R &
 
@@ -50,6 +54,19 @@ if [ "$1" = 'php-fpm' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 
 	setfacl -R -m u:www-data:rwX -m u:"$(whoami)":rwX var
 	setfacl -dR -m u:www-data:rwX -m u:"$(whoami)":rwX var
+
+	if [ -d /entrypoints ]; then
+    for i in /entrypoints/*; do
+      if [ -r "$i" ]; then
+        echo "# Source $i"
+        . "$i"
+      else
+        echo "! $i not sourced"
+      fi
+    done
+    unset i
+  fi
+
 fi
 
 exec docker-php-entrypoint "$@"

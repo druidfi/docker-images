@@ -1,6 +1,10 @@
 #!/bin/sh
 set -e
 
+if [ "$1" = 'php' ] && [ "$2" = '-v' ]; then
+  php -v && exit 0
+fi
+
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then
 	set -- php-fpm "$@"
