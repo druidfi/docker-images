@@ -1,34 +1,31 @@
-FROM alpine as base
+ARG ALPINE_VERSION
 
-ARG SIMPLESAMLPHP_VERSION=1.19.1
+FROM alpine:${ALPINE_VERSION} as simplesamlphp
+
+ARG SIMPLESAMLPHP_VERSION=2.0.0-rc3
 ARG SIMPLESAMLPHP_URL=https://github.com/simplesamlphp/simplesamlphp/releases/download/v${SIMPLESAMLPHP_VERSION}/simplesamlphp-${SIMPLESAMLPHP_VERSION}.tar.gz
 
-RUN apk add curl
+RUN apk --update --no-cache add curl
 RUN curl -s -L -o /tmp/simplesamlphp.tar.gz ${SIMPLESAMLPHP_URL}
 RUN tar xzf /tmp/simplesamlphp.tar.gz -C /tmp
 RUN mv /tmp/simplesamlphp-* /home/simplesamlphp
-RUN touch /home/simplesamlphp/modules/exampleauth/enable
+RUN rm -rf /home/simplesamlphp/modules/cron /home/simplesamlphp/modules/multiauth
 
-FROM php:7.4-apache as final
+FROM druidfi/php-fpm:8.2 as final
 
 LABEL org.opencontainers.image.authors="Druid".fi maintainer="Druid.fi"
 LABEL org.opencontainers.image.source="https://github.com/druidfi/docker-images" repository="https://github.com/druidfi/docker-images"
 
+RUN sudo apk --update --no-cache add nginx && \
+    sudo apk --update --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/community add \
+    php82-tokenizer php82-xmlreader
+
 # Copy SimpleSAMLphp
-COPY --from=base /home/simplesamlphp /var/www/simplesamlphp
+COPY --from=simplesamlphp /home/simplesamlphp /app/simplesamlphp
 
 # Copy configuration files and scripts
 COPY files/ /
 
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
-    a2enmod ssl && \
-    # Disable default vhosts(s)
-    a2dissite 000-default.conf default-ssl.conf && \
-    # Enable SimpleSAMLphp vhost
-    a2ensite simplesamlphp.conf
+EXPOSE 8080
 
-# Set work dir
-WORKDIR /var/www/simplesamlphp
-
-# General setup
-EXPOSE 8080 8443
+CMD ["sudo", "nginx"]
