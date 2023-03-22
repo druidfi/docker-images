@@ -57,7 +57,7 @@ target "mariadb-109" {
 
 target "mysql-common" {
   context = "./db/mysql"
-  platforms = ["linux/amd64"]
+  platforms = ["linux/amd64", "linux/arm64"]
 }
 
 target "mysql-57" {
@@ -77,6 +77,5 @@ target "mysql-80" {
     MYSQL_VERSION = "8.0"
     MYSQL_SHORT_VERSION = "80"
   }
-  platforms = ["linux/amd64", "linux/arm64"]
   tags = ["druidfi/mysql:8.0-drupal", "druidfi/mysql:latest"]
 }
