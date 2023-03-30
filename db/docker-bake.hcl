@@ -3,7 +3,7 @@ group "default" {
 }
 
 group "mariadb-variants" {
-  targets = ["mariadb-105", "mariadb-106", "mariadb-107", "mariadb-108", "mariadb-109"]
+  targets = ["mariadb-106", "mariadb-107", "mariadb-108", "mariadb-109", "mariadb-1010", "mariadb-1011"]
 }
 
 group "mysql-variants" {
@@ -15,20 +15,12 @@ target "mariadb-common" {
   platforms = ["linux/amd64", "linux/arm64"]
 }
 
-target "mariadb-105" {
-  inherits = ["mariadb-common"]
-  args = {
-    MARIADB_VERSION = "10.5"
-  }
-  tags = ["druidfi/mariadb:10.5-drupal", "druidfi/mariadb:latest"]
-}
-
 target "mariadb-106" {
   inherits = ["mariadb-common"]
   args = {
     MARIADB_VERSION = "10.6"
   }
-  tags = ["druidfi/mariadb:10.6-drupal"]
+  tags = ["druidfi/mariadb:10.6-drupal", "druidfi/mariadb:10.6-drupal-lts"]
 }
 
 target "mariadb-107" {
@@ -53,6 +45,22 @@ target "mariadb-109" {
     MARIADB_VERSION = "10.9"
   }
   tags = ["druidfi/mariadb:10.9-drupal"]
+}
+
+target "mariadb-1010" {
+  inherits = ["mariadb-common"]
+  args = {
+    MARIADB_VERSION = "10.10"
+  }
+  tags = ["druidfi/mariadb:10.10-drupal"]
+}
+
+target "mariadb-1011" {
+  inherits = ["mariadb-common"]
+  args = {
+    MARIADB_VERSION = "10.11"
+  }
+  tags = ["druidfi/mariadb:10.11-drupal", "druidfi/mariadb:10.11-drupal-lts"]
 }
 
 target "mysql-common" {
