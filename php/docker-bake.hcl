@@ -58,7 +58,7 @@ target "php" {
 target "php-80" {
   inherits = ["common", "php"]
   args = {
-    ALPINE_VERSION = "3.16.4"
+    ALPINE_VERSION = "3.16.5"
     PHP_VERSION = "8.0"
     PHP_SHORT_VERSION = "80"
   }

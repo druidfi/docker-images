@@ -46,7 +46,9 @@ ENV KIND=druid-docker-image \
     DEFAULT_USER_UID=1000
 
 # See https://docs.microsoft.com/en-us/azure/mysql/howto-configure-ssl
-ADD https://www.digicert.com/CACerts/BaltimoreCyberTrustRoot.crt.pem /opt/ssl/
+ADD https://cacerts.digicert.com/BaltimoreCyberTrustRoot.crt.pem /opt/ssl/
+# See https://learn.microsoft.com/en-us/azure/postgresql/single-server/concepts-certificate-rotation#what-change-was-scheduled-to-be-performed-starting-december-2022-122022
+ADD https://cacerts.digicert.com/DigiCertGlobalRootG2.crt.pem /opt/ssl/
 
 RUN <<EOF
 apk update && apk upgrade
@@ -103,7 +105,7 @@ ENV PHP_SHORT_VERSION=81
 ENV PHP_INSTALL_VERSION=81
 
 RUN sudo -s <<EOF
-apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/community add libzip \
+apk --no-cache add libzip \
   php81 php81-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
   php81-pecl-{apcu,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php81 /usr/bin/php
@@ -169,7 +171,7 @@ COPY files/etc/php/php-fpm.d/www.conf /etc/php8/php-fpm.d/www.conf
 FROM final-php as build-php-fpm-81
 
 RUN sudo -s <<EOF
-apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/community add php81-fpm
+apk --no-cache add php81-fpm
 ln -sfn /usr/sbin/php-fpm81 /usr/sbin/php-fpm
 EOF
 
@@ -212,14 +214,16 @@ EOF
 FROM final-php-fpm as drupal-php-81
 
 RUN sudo -s <<EOF
-apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/community add mysql-client openssh rsync \
+apk --no-cache add mysql-client openssh rsync \
     php81-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
 FROM final-php-fpm as drupal-php-82
 
 RUN sudo -s <<EOF
-apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/community add mysql-client openssh rsync \
+apk --no-cache add mysql-client openssh rsync
+apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/main add icu-libs
+apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/community add \
     php82-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
