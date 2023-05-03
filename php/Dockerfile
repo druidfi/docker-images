@@ -60,7 +60,7 @@ echo "${DEFAULT_USER} ALL=(ALL) NOPASSWD:SETENV:ALL" > /etc/sudoers.d/${DEFAULT_
 chmod 0440 /etc/sudoers.d/${DEFAULT_USER}
 chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER}
 install -o ${DEFAULT_USER} -g ${DEFAULT_USER} ${APP_PATH}
-chmod 0644 /opt/ssl/BaltimoreCyberTrustRoot.crt.pem
+chmod 0644 /opt/ssl/*.crt.pem
 echo "Set disable_coredump false" > /etc/sudo.conf
 EOF
 
