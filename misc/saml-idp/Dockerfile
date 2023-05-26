@@ -13,7 +13,7 @@ RUN rm -rf /home/simplesamlphp/modules/cron /home/simplesamlphp/modules/multiaut
 
 FROM druidfi/php-fpm:8.2 as final
 
-LABEL org.opencontainers.image.authors="Druid".fi maintainer="Druid.fi"
+LABEL org.opencontainers.image.authors="Druid.fi" maintainer="Druid.fi"
 LABEL org.opencontainers.image.source="https://github.com/druidfi/docker-images" repository="https://github.com/druidfi/docker-images"
 
 RUN sudo apk --update --no-cache add nginx && \
