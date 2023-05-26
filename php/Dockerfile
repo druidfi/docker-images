@@ -123,10 +123,8 @@ ENV PHP_SHORT_VERSION=82
 ENV PHP_INSTALL_VERSION=82
 
 RUN sudo -s <<EOF
-apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/main add libcrypto3 libssl3
-apk --no-cache add libzip \
-  php82 php82-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip}
-apk --no-cache add \
+apk --no-cache add libcrypto3 libssl3 libzip \
+  php82 php82-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
   php82-pecl-{apcu,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php82 /usr/bin/php
 EOF
@@ -221,8 +219,7 @@ EOF
 FROM final-php-fpm as drupal-php-82
 
 RUN sudo -s <<EOF
-apk --no-cache add mysql-client openssh rsync
-apk --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/main add icu-libs
+apk --no-cache add mysql-client openssh rsync icu-libs
 apk --no-cache add \
     php82-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
