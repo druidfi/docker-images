@@ -257,6 +257,7 @@ EOF
 
 COPY files/entrypoints/20-php-fpm.sh files/entrypoints/30-nginx.sh /entrypoints/
 COPY files/etc/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY files/etc/nginx/fastcgi.conf /etc/nginx/fastcgi.conf
 COPY files/etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 8080
