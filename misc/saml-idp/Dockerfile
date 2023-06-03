@@ -2,7 +2,7 @@ ARG ALPINE_VERSION
 
 FROM alpine:${ALPINE_VERSION} as simplesamlphp
 
-ARG SIMPLESAMLPHP_VERSION=2.0.3
+ARG SIMPLESAMLPHP_VERSION=2.0.4
 ARG SIMPLESAMLPHP_URL=https://github.com/simplesamlphp/simplesamlphp/releases/download/v${SIMPLESAMLPHP_VERSION}/simplesamlphp-${SIMPLESAMLPHP_VERSION}.tar.gz
 
 RUN apk --update --no-cache add curl
@@ -16,9 +16,12 @@ FROM druidfi/php-fpm:8.2 as final
 LABEL org.opencontainers.image.authors="Druid.fi" maintainer="Druid.fi"
 LABEL org.opencontainers.image.source="https://github.com/druidfi/docker-images" repository="https://github.com/druidfi/docker-images"
 
-RUN sudo apk --update --no-cache add nginx && \
-    sudo apk --update --no-cache -X https://dl-cdn.alpinelinux.org/alpine/edge/community add \
-    php82-tokenizer php82-xmlreader
+USER root
+
+RUN apk --update --no-cache add nginx && \
+    apk --update --no-cache add php82-tokenizer php82-xmlreader
+
+USER druid
 
 # Copy SimpleSAMLphp
 COPY --from=simplesamlphp /home/simplesamlphp /app/simplesamlphp
