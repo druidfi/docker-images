@@ -1,9 +1,9 @@
 variable NGINX_STABLE_VERSION {
-  default = "1.22"
+  default = "1.24"
 }
 
 variable NGINX_MAINLINE_VERSION {
-  default = "1.23"
+  default = "1.25"
 }
 
 group "default" {
@@ -40,23 +40,23 @@ target "common-mainline" {
 target "base-stable" {
   inherits = ["common-stable"]
   target = "base"
-  tags = ["druidfi/nginx:${NGINX_STABLE_VERSION}"]
+  tags = ["druidfi/nginx:${NGINX_STABLE_VERSION}", "druidfi/nginx:stable"]
 }
 
 target "drupal-stable" {
   inherits = ["common-stable"]
   target = "drupal"
-  tags = ["druidfi/nginx:${NGINX_STABLE_VERSION}-drupal"]
+  tags = ["druidfi/nginx:${NGINX_STABLE_VERSION}-drupal", "druidfi/nginx:stable-drupal"]
 }
 
 target "base-mainline" {
   inherits = ["common-mainline"]
   target = "base"
-  tags = ["druidfi/nginx:${NGINX_MAINLINE_VERSION}"]
+  tags = ["druidfi/nginx:${NGINX_MAINLINE_VERSION}", "druidfi/nginx:mainline"]
 }
 
 target "drupal-mainline" {
   inherits = ["common-mainline"]
   target = "drupal"
-  tags = ["druidfi/nginx:${NGINX_MAINLINE_VERSION}-drupal"]
+  tags = ["druidfi/nginx:${NGINX_MAINLINE_VERSION}-drupal", "druidfi/nginx:mainline-drupal"]
 }
