@@ -1,5 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":dependencyDashboard"],
   "assignees": ["back-2-95"],
   "additionalBranchPrefix": "{{parentDir}}-",
   "commitMessageSuffix": " in ${parentDir}"
