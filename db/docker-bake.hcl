@@ -7,7 +7,7 @@ group "mariadb-variants" {
 }
 
 group "mysql-variants" {
-  targets = ["mysql-57", "mysql-80"]
+  targets = ["mysql-57", "mysql-80", "mysql-81"]
 }
 
 target "mariadb-common" {
@@ -54,4 +54,14 @@ target "mysql-80" {
     MYSQL_SHORT_VERSION = "80"
   }
   tags = ["druidfi/mysql:8.0-drupal", "druidfi/mysql:latest"]
+}
+
+target "mysql-81" {
+  inherits = ["mysql-common"]
+  target = "mysql-base"
+  args = {
+    MYSQL_VERSION = "8.1"
+    MYSQL_SHORT_VERSION = "81"
+  }
+  tags = ["druidfi/mysql:8.1-drupal", "druidfi/mysql:latest"]
 }
