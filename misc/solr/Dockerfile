@@ -1,7 +1,7 @@
 #
 # AMD64
 #
-FROM --platform=linux/amd64 solr:8.11-slim as solr-8-amd64
+FROM --platform=linux/amd64 solr:9.3-slim as solr-8-amd64
 
 ENV ARCH=amd64
 
