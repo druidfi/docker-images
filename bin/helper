@@ -2,7 +2,6 @@
 
 COMMAND=$1
 LATEST_ALPINE_VERSION=3.18
-FALLBACK_VERSION_80="8.0.30"
 FALLBACK_VERSION_81="8.1.22"
 FALLBACK_VERSION_82="8.2.8"
 
@@ -28,7 +27,7 @@ fi
 if [[ $COMMAND == phpminor ]]
 then
 
-  BRANCH=${2:-8.0}
+  BRANCH=${2:-8.2}
   #ALPINE=${LATEST_ALPINE_VERSION}
 
   if [[ $BRANCH == 8.1 ]]
@@ -38,7 +37,7 @@ then
   then
     URL="https://git.alpinelinux.org/aports/plain/community/php82/APKBUILD?h=3.18-stable"
   else
-    URL="https://git.alpinelinux.org/aports/plain/testing/php8/APKBUILD"
+    echo "Not supported PHP version: $BRANCH" && exit 1
   fi
 
   RESPONSE=$(curl -s -w "%{http_code}" "$URL")
@@ -48,7 +47,6 @@ then
   if [[ "$CODE" =~ ^2 ]]; then
       echo "$RESPONSE" | cat | grep -m 1 -i "pkgver=" | cut -d "=" -f2 && exit 0
   else
-      if [[ "$BRANCH" == "8.0" ]]; then echo "$FALLBACK_VERSION_80"; fi
       if [[ "$BRANCH" == "8.1" ]]; then echo "$CODE $FALLBACK_VERSION_81"; fi
       if [[ "$BRANCH" == "8.2" ]]; then echo "$CODE $FALLBACK_VERSION_82"; fi
       exit 0

@@ -27,11 +27,11 @@ group "default" {
 }
 
 group "php-variants" {
-  targets = ["php-80", "php-81", "php-82"]
+  targets = ["php-81", "php-82"]
 }
 
 group "php-fpm-variants" {
-  targets = ["php-fpm-80", "php-fpm-81", "php-fpm-82"]
+  targets = ["php-fpm-81", "php-fpm-82"]
 }
 
 group "php-beta-variants" {
@@ -39,11 +39,11 @@ group "php-beta-variants" {
 }
 
 group "drupal-fpm-variants" {
-  targets = ["drupal-fpm-80", "drupal-fpm-81", "drupal-fpm-82"]
+  targets = ["drupal-fpm-81", "drupal-fpm-82"]
 }
 
 group "drupal-web-variants" {
-  targets = ["drupal-web-80", "drupal-web-81", "drupal-web-82"]
+  targets = ["drupal-web-81", "drupal-web-82"]
 }
 
 target "common" {
@@ -57,16 +57,6 @@ target "common" {
 target "php" {
   context = "./php"
   target = "final-php"
-}
-
-target "php-80" {
-  inherits = ["common", "php"]
-  args = {
-    ALPINE_VERSION = "3.16.7"
-    PHP_VERSION = "8.0"
-    PHP_SHORT_VERSION = "80"
-  }
-  tags = ["${REPO_BASE}:8.0", "${REPO_BASE}:${PHP80_MINOR}"]
 }
 
 target "php-81" {
@@ -98,11 +88,6 @@ target "php-fpm" {
   target = "final-php-fpm"
 }
 
-target "php-fpm-80" {
-  inherits = ["common", "php-80", "php-fpm"]
-  tags = ["${REPO_FPM}:8.0", "${REPO_FPM}:${PHP80_MINOR}"]
-}
-
 target "php-fpm-81" {
   inherits = ["common", "php-81", "php-fpm"]
   tags = ["${REPO_FPM}:8", "${REPO_FPM}:8.1", "${REPO_FPM}:${PHP81_MINOR}", "${REPO_FPM}:latest"]
@@ -116,12 +101,6 @@ target "php-fpm-82" {
 #
 # Drupal (PHP-FPM)
 #
-
-target "drupal-fpm-80" {
-  inherits = ["common", "php-80", "php-fpm"]
-  target = "drupal-php-80"
-  tags = ["${REPO_DRUPAL_FPM}:php-8.0", "${REPO_DRUPAL_FPM}:php-${PHP80_MINOR}"]
-}
 
 target "drupal-fpm-81" {
   inherits = ["common", "php-81", "php-fpm"]
@@ -138,12 +117,6 @@ target "drupal-fpm-82" {
 #
 # Drupal (PHP-FPM + Nginx)
 #
-
-target "drupal-web-80" {
-  inherits = ["common", "php-80", "php-fpm"]
-  target = "drupal-web"
-  tags = ["${REPO_DRUPAL_WEB}:php-8.0", "${REPO_DRUPAL_WEB}:php-${PHP80_MINOR}"]
-}
 
 target "drupal-web-81" {
   inherits = ["common", "php-81", "php-fpm"]

@@ -78,24 +78,6 @@ ENTRYPOINT ["/sbin/tini", "--", "entrypoint"]
 CMD ["tail", "-f", "/dev/null"]
 
 #
-# PHP 8.0
-#
-FROM base as build-php-80
-
-ENV PHP_MAJOR_VERSION=8
-ENV PHP_SHORT_VERSION=80
-ENV PHP_INSTALL_VERSION=8
-
-RUN sudo -s <<EOF
-apk --no-cache add libzip \
-  php8 php8-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
-  php8-pecl-{apcu,redis,uploadprogress,xdebug}
-ln -sfn /usr/bin/php8 /usr/bin/php
-EOF
-
-COPY files/etc/php/conf.d/* /etc/php8/conf.d/
-
-#
 # PHP 8.1
 #
 FROM base as build-php-81
@@ -157,15 +139,6 @@ EOF
 # PHP-FPM
 #
 
-FROM final-php as build-php-fpm-80
-
-RUN sudo -s <<EOF
-apk --no-cache add php8-fpm
-ln -sfn /usr/sbin/php-fpm8 /usr/sbin/php-fpm
-EOF
-
-COPY files/etc/php/php-fpm.d/www.conf /etc/php8/php-fpm.d/www.conf
-
 FROM final-php as build-php-fpm-81
 
 RUN sudo -s <<EOF
@@ -201,13 +174,6 @@ CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm", "-F
 #
 # Drupal base
 #
-
-FROM final-php-fpm as drupal-php-80
-
-RUN sudo -s <<EOF
-apk --no-cache add mysql-client openssh rsync \
-    php8-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
-EOF
 
 FROM final-php-fpm as drupal-php-81
 
