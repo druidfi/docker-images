@@ -36,7 +36,7 @@ Tags:
 Added features:
 
 - Minimal set of PHP extensions
-- Composer 2.4.x
+- Composer 2.x.x
 - `/app/vendor/bin` added  to `$PATH`
 
 ### druidfi/php-fpm variant
@@ -66,8 +66,8 @@ Added features:
 
 Needs:
 
-- Nginx (`druidfi/nginx:1.21-drupal`)
-- Database (`druidfi/mariadb:10.6-drupal`)
+- Nginx (`druidfi/nginx:1.25-drupal`)
+- Database (`druidfi/mariadb:10.11-drupal-lts`)
 
 ENV variables:
 
@@ -90,7 +90,7 @@ Added features:
 
 Needs:
 
-- Database (`druidfi/mariadb:10.6-drupal`)
+- Database (`druidfi/mariadb:10.11-drupal-lts`)
 
 ### druidfi/drupal-test variant
 
@@ -98,18 +98,18 @@ Needs:
 
 Added features:
 
-- Drupal 9 installation and some contrib modules
+- Drupal 10 installation and some contrib modules
 
 Needs:
 
-- Database (`druidfi/mariadb:10.6-drupal`)
+- Database (`druidfi/mariadb:10.11-drupal-lts`)
 
 ## druidfi/nginx
 
 ### Base variant
 
-- `1.20` stable based on `nginx:1.20-alpine`
-- `1.21` mainline based on `nginx:1.21-alpine`
+- `1.24` stable based on `nginx:1.24-alpine`
+- `1.25` mainline based on `nginx:1.25-alpine`
 
 Added features:
 
@@ -117,8 +117,8 @@ Added features:
 
 ### Drupal variant
 
-- `1.20-drupal` based on `druidfi/nginx:1.20`
-- `1.21-drupal` based on `druidfi/nginx:1.21`
+- `1.24-drupal` based on `druidfi/nginx:1.24`
+- `1.25-drupal` based on `druidfi/nginx:1.25`
 
 Added features:
 
