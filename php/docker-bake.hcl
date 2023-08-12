@@ -1,3 +1,7 @@
+variable "ALPINE_VERSION" {
+  default = "3.18.3"
+}
+
 variable "REPO_BASE" {
   default = "druidfi/php"
 }
@@ -31,7 +35,7 @@ group "php-fpm-variants" {
 }
 
 group "php-beta-variants" {
-  targets = ["php-82", "php-fpm-82"]
+  targets = ["php-83", "php-fpm-83"]
 }
 
 group "drupal-fpm-variants" {
@@ -58,7 +62,7 @@ target "php" {
 target "php-80" {
   inherits = ["common", "php"]
   args = {
-    ALPINE_VERSION = "3.16.5"
+    ALPINE_VERSION = "3.16.7"
     PHP_VERSION = "8.0"
     PHP_SHORT_VERSION = "80"
   }
@@ -68,7 +72,7 @@ target "php-80" {
 target "php-81" {
   inherits = ["common", "php"]
   args = {
-    ALPINE_VERSION = "3.18"
+    ALPINE_VERSION = "${ALPINE_VERSION}"
     PHP_VERSION = "8.1"
     PHP_SHORT_VERSION = "81"
   }
@@ -78,7 +82,7 @@ target "php-81" {
 target "php-82" {
   inherits = ["common", "php"]
   args = {
-    ALPINE_VERSION = "3.18"
+    ALPINE_VERSION = "${ALPINE_VERSION}"
     PHP_VERSION = "8.2"
     PHP_SHORT_VERSION = "82"
   }
