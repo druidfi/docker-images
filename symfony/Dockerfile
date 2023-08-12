@@ -56,7 +56,7 @@ ENV PATH="${PATH}:/root/.composer/vendor/bin"
 COPY --from=composer/composer:2-bin --link /composer /usr/bin/composer
 
 # Build Caddy with the Mercure and Vulcain modules
-FROM caddy:2.6-builder-alpine AS app_caddy_builder
+FROM caddy:2.7-builder-alpine AS app_caddy_builder
 
 RUN xcaddy build \
 	--with github.com/dunglas/mercure \
@@ -65,7 +65,7 @@ RUN xcaddy build \
 	--with github.com/dunglas/vulcain/caddy
 
 # Caddy image
-FROM caddy:2.6-alpine AS symfony-caddy-2
+FROM caddy:2.7-alpine AS symfony-caddy-2
 
 WORKDIR /srv/app
 
