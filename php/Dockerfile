@@ -9,7 +9,7 @@ ARG PHP_SHORT_VERSION
 FROM alpine:${ALPINE_VERSION} AS envplate
 
 ARG REPO=https://github.com/kreuzwerker/envplate/releases/download
-ARG VERSION=1.0.2
+ARG VERSION=1.0.3
 
 WORKDIR /tmp
 RUN apk add curl
