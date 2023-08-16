@@ -37,7 +37,7 @@ mkdir somefolder || error "Cannot create a folder"
 
 folder="$APP_PATH/somefolder/"
 result=$(stat -c '%a' "$folder")
-expected='755'
+expected='775'
 
 title "Test that created folder has permissions $expected"
 
