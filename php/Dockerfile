@@ -201,6 +201,7 @@ ENV DRUPAL_DB_NAME=drupal \
     DRUPAL_DB_PASS=drupal \
     DRUPAL_DB_HOST=db \
     DRUPAL_DB_PORT=3306 \
+    PHP_SENDMAIL_PATH="/usr/sbin/sendmail -S host.docker.internal:1025 -t" \
     SSH_AUTH_SOCK=/tmp/ssh-agent
 
 RUN sudo -s <<EOF
