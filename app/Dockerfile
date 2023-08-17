@@ -40,19 +40,16 @@ COPY --link --from=envplate-builder /tmp/envplate /usr/local/bin/ep
 COPY --link --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
 # See https://learn.microsoft.com/en-us/azure/postgresql/single-server/concepts-certificate-rotation#what-change-was-scheduled-to-be-performed-starting-december-2022-122022
-ADD https://cacerts.digicert.com/DigiCertGlobalRootG2.crt.pem /opt/ssl/
+ADD --chmod=0644 https://cacerts.digicert.com/DigiCertGlobalRootG2.crt.pem /opt/ssl/
 
 RUN <<EOF
-apk --no-cache add bash curl git make mariadb-client mariadb-connector-c nano neofetch nginx patch sudo tar tini unzip
+apk --no-cache add bash curl doas git make mariadb-client mariadb-connector-c nano neofetch nginx patch tar tini unzip
 install-php-extensions apcu bcmath exif gd igbinary msgpack mysqli opcache pdo_mysql redis sockets uploadprogress xdebug zip
 addgroup -S ${DEFAULT_USER} -g ${DEFAULT_USER_UID}
 adduser -D -S -G ${DEFAULT_USER} -u ${DEFAULT_USER_UID} -s /bin/bash ${DEFAULT_USER}
-echo "${DEFAULT_USER} ALL=(ALL) NOPASSWD:SETENV:ALL" > /etc/sudoers.d/${DEFAULT_USER}
-chmod 0440 /etc/sudoers.d/${DEFAULT_USER}
+echo "permit nopass keepenv ${DEFAULT_USER} as root" > /etc/doas.d/doas.conf
 mkdir -p /home/${DEFAULT_USER}/.composer
 chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER} ${APP_PATH}
-chmod 0644 /opt/ssl/*.crt.pem
-echo "Set disable_coredump false" > /etc/sudo.conf
 EOF
 
 COPY --chown=${DEFAULT_USER}:${DEFAULT_USER} files/home/druid/ /home/druid
@@ -69,4 +66,4 @@ USER ${DEFAULT_USER}
 EXPOSE 8080/tcp
 
 ENTRYPOINT ["/sbin/tini", "--", "entrypoint"]
-CMD ["sudo", "nginx"]
+CMD ["doas", "nginx"]
