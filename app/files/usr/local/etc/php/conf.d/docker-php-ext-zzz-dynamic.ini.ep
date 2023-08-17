@@ -1,5 +1,5 @@
 [PHP]
 memory_limit=${PHP_MEMORY_LIMIT:-512M}
 post_max_size=${PHP_POST_MAX_SIZE:-32M}
-sendmail_path=${PHP_SENDMAIL_PATH:-/usr/sbin/sendmail -t -i}
+sendmail_path=${PHP_SENDMAIL_PATH:-/usr/sbin/sendmail -S host.docker.internal:1025 -t}
 upload_max_filesize=${PHP_UPLOAD_MAX_FILESIZE:-32M}

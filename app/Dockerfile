@@ -30,7 +30,6 @@ ENV KIND=druid-docker-image \
     APP_ENV=prod \
     COMPOSER_HOME=/home/druid/.composer \
     PATH="${PATH}:/home/druid/.composer/vendor/bin:/app/vendor/bin" \
-    PHP_SENDMAIL_PATH="/usr/sbin/sendmail -S host.docker.internal:1025 -t" \
     SSH_AUTH_SOCK=/tmp/ssh-agent
 
 WORKDIR ${APP_PATH}
