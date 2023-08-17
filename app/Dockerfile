@@ -40,7 +40,8 @@ COPY --link --from=envplate-builder /tmp/envplate /usr/local/bin/ep
 COPY --link --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
 # See https://learn.microsoft.com/en-us/azure/postgresql/single-server/concepts-certificate-rotation#what-change-was-scheduled-to-be-performed-starting-december-2022-122022
-ADD --chmod=0644 https://cacerts.digicert.com/DigiCertGlobalRootG2.crt.pem /opt/ssl/
+ADD --checksum=sha256:5d550643b6400d4341550a9b14aedd0b4fac33ae5deb7d8247b6b4f799c13306 --chmod=0644 \
+    https://cacerts.digicert.com/DigiCertGlobalRootG2.crt.pem /opt/ssl/
 
 RUN <<EOF
 apk --no-cache add bash curl doas git make mariadb-client mariadb-connector-c nano neofetch nginx patch tar tini unzip
@@ -53,12 +54,9 @@ chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER} ${APP_PATH}
 EOF
 
 COPY --chown=${DEFAULT_USER}:${DEFAULT_USER} files/home/druid/ /home/druid
-COPY files/usr/local/bin/ /usr/local/bin/
-COPY files/usr/local/etc/ /usr/local/etc/
 COPY files/entrypoints/ /entrypoints/
-COPY files/etc/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY files/etc/nginx/fastcgi.conf /etc/nginx/fastcgi.conf
-COPY files/etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
+COPY files/etc/ /etc/
+COPY files/usr/local/ /usr/local/
 
 SHELL ["/bin/bash", "-c"]
 USER ${DEFAULT_USER}
