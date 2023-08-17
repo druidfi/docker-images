@@ -43,7 +43,7 @@ ADD --checksum=sha256:5d550643b6400d4341550a9b14aedd0b4fac33ae5deb7d8247b6b4f799
     https://cacerts.digicert.com/DigiCertGlobalRootG2.crt.pem /opt/ssl/
 
 RUN <<EOF
-apk --no-cache add bash curl doas git make mariadb-client mariadb-connector-c nano neofetch nginx patch tar tini unzip
+apk --no-cache add bash curl doas git make mariadb-client mariadb-connector-c nano neofetch nginx openssh-client patch tar tini unzip
 install-php-extensions apcu bcmath exif gd igbinary msgpack mysqli opcache pdo_mysql redis sockets uploadprogress xdebug zip
 addgroup -S ${DEFAULT_USER} -g ${DEFAULT_USER_UID}
 adduser -D -S -G ${DEFAULT_USER} -u ${DEFAULT_USER_UID} -s /bin/bash ${DEFAULT_USER}
