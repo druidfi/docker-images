@@ -47,7 +47,6 @@ apk --no-cache add bash curl doas git make mariadb-client mariadb-connector-c na
 install-php-extensions apcu bcmath exif gd igbinary msgpack mysqli opcache pdo_mysql redis sockets uploadprogress xdebug zip
 addgroup -S ${DEFAULT_USER} -g ${DEFAULT_USER_UID}
 adduser -D -S -G ${DEFAULT_USER} -u ${DEFAULT_USER_UID} -s /bin/bash ${DEFAULT_USER}
-echo "permit nopass keepenv ${DEFAULT_USER} as root" > /etc/doas.d/doas.conf
 mkdir -p /home/${DEFAULT_USER}/.composer
 chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER} ${APP_PATH}
 EOF
@@ -57,10 +56,9 @@ COPY files/entrypoints/ /entrypoints/
 COPY files/etc/ /etc/
 COPY files/usr/local/ /usr/local/
 
-SHELL ["/bin/bash", "-c"]
-USER ${DEFAULT_USER}
-
 EXPOSE 8080/tcp
 
 ENTRYPOINT ["/sbin/tini", "--", "entrypoint"]
 CMD ["doas", "nginx"]
+USER ${DEFAULT_USER}
+SHELL ["/bin/bash", "-c"]
