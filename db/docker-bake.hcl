@@ -10,13 +10,23 @@ group "mysql-variants" {
   targets = ["mysql-57", "mysql-80", "mysql-81"]
 }
 
+target "common" {
+  platforms = ["linux/amd64", "linux/arm64"]
+  labels = {
+    "org.opencontainers.image.url" = "https://github.com/druidfi/docker-images"
+    "org.opencontainers.image.source" = "https://github.com/druidfi/docker-images"
+    "org.opencontainers.image.licenses" = "MIT"
+    "org.opencontainers.image.vendor" = "Druid Oy"
+    "org.opencontainers.image.created" = "${timestamp()}"
+  }
+}
+
 target "mariadb-common" {
   context = "./db/mariadb"
-  platforms = ["linux/amd64", "linux/arm64"]
 }
 
 target "mariadb-106" {
-  inherits = ["mariadb-common"]
+  inherits = ["common", "mariadb-common"]
   args = {
     MARIADB_VERSION = "10.6"
   }
@@ -24,7 +34,7 @@ target "mariadb-106" {
 }
 
 target "mariadb-1011" {
-  inherits = ["mariadb-common"]
+  inherits = ["common", "mariadb-common"]
   args = {
     MARIADB_VERSION = "10.11"
   }
@@ -33,11 +43,10 @@ target "mariadb-1011" {
 
 target "mysql-common" {
   context = "./db/mysql"
-  platforms = ["linux/amd64", "linux/arm64"]
 }
 
 target "mysql-57" {
-  inherits = ["mysql-common"]
+  inherits = ["common", "mysql-common"]
   target = "mysql-base"
   args = {
     MYSQL_VERSION = "5.7"
@@ -47,7 +56,7 @@ target "mysql-57" {
 }
 
 target "mysql-80" {
-  inherits = ["mysql-common"]
+  inherits = ["common", "mysql-common"]
   target = "mysql-base"
   args = {
     MYSQL_VERSION = "8.0"
@@ -57,7 +66,7 @@ target "mysql-80" {
 }
 
 target "mysql-81" {
-  inherits = ["mysql-common"]
+  inherits = ["common", "mysql-common"]
   target = "mysql-base"
   args = {
     MYSQL_VERSION = "8.1"
