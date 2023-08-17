@@ -13,9 +13,6 @@ FROM mysql:8.1 as mysql-81
 
 FROM mysql-${MYSQL_SHORT_VERSION} as mysql-base
 
-LABEL org.opencontainers.image.authors="Druid.fi" maintainer="Druid.fi"
-LABEL org.opencontainers.image.source="https://github.com/druidfi/docker-images" repository="https://github.com/druidfi/docker-images"
-
 ARG DRUPAL_CONF="/etc/mysql/conf.d/drupal.cnf"
 
 ENV KIND=druid-docker-image \
