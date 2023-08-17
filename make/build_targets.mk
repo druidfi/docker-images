@@ -5,8 +5,6 @@ include $(PROJECT_DIR)/php/build.mk
 include $(PROJECT_DIR)/nginx/build.mk
 include $(PROJECT_DIR)/db/build.mk
 include $(PROJECT_DIR)/misc/build.mk
-include $(PROJECT_DIR)/symfony/build.mk
-include $(PROJECT_DIR)/debug/build.mk
 include $(PROJECT_DIR)/drupal-test/build.mk
 
 PHONY += build-all
