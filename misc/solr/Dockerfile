@@ -23,6 +23,3 @@ ENV SOLR_HEAP="1024m" \
 RUN rm -rf /opt/docker-solr/configsets/
 
 COPY --from=wodby/solr:8 /opt/docker-solr/configsets/ /opt/docker-solr/configsets/
-
-LABEL org.opencontainers.image.authors="Druid.fi" maintainer="Druid.fi"
-LABEL org.opencontainers.image.source="https://github.com/druidfi/docker-images" repository="https://github.com/druidfi/docker-images"
