@@ -46,9 +46,9 @@ ENV KIND=druid-docker-image \
     DEFAULT_USER_UID=1000
 
 # See https://docs.microsoft.com/en-us/azure/mysql/howto-configure-ssl
-ADD https://cacerts.digicert.com/BaltimoreCyberTrustRoot.crt.pem /opt/ssl/
+ADD --chmod=0644 https://cacerts.digicert.com/BaltimoreCyberTrustRoot.crt.pem /opt/ssl/
 # See https://learn.microsoft.com/en-us/azure/postgresql/single-server/concepts-certificate-rotation#what-change-was-scheduled-to-be-performed-starting-december-2022-122022
-ADD https://cacerts.digicert.com/DigiCertGlobalRootG2.crt.pem /opt/ssl/
+ADD --chmod=0644 https://cacerts.digicert.com/DigiCertGlobalRootG2.crt.pem /opt/ssl/
 
 RUN <<EOF
 apk update && apk upgrade
@@ -60,13 +60,12 @@ echo "${DEFAULT_USER} ALL=(ALL) NOPASSWD:SETENV:ALL" > /etc/sudoers.d/${DEFAULT_
 chmod 0440 /etc/sudoers.d/${DEFAULT_USER}
 chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER}
 install -o ${DEFAULT_USER} -g ${DEFAULT_USER} ${APP_PATH}
-chmod 0644 /opt/ssl/*.crt.pem
 echo "Set disable_coredump false" > /etc/sudo.conf
 EOF
 
 COPY --chown=${DEFAULT_USER}:${DEFAULT_USER} files/home/druid/ /home/druid
 COPY files/usr/local/bin/ /usr/local/bin/
-COPY --from=envplate /tmp/envplate /bin/ep
+COPY --link --from=envplate /tmp/envplate /usr/local/bin/ep
 COPY files/entrypoints/00-umask.sh files/entrypoints/15-xdebug.sh files/entrypoints/19-php_ini.sh /entrypoints/
 
 SHELL ["/bin/bash", "-c"]
@@ -128,7 +127,7 @@ ENV APP_ENV=prod \
     COMPOSER_HOME=/home/${DEFAULT_USER}/.composer \
     PATH="${PATH}:/home/${DEFAULT_USER}/.composer/vendor/bin:${APP_PATH}/vendor/bin"
 
-COPY --from=composer/composer:2-bin /composer /usr/bin/composer
+COPY --link --from=composer/composer:2-bin /composer /usr/bin/composer
 
 RUN sudo -s <<EOF
 apk --no-cache add patch unzip
