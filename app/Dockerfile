@@ -5,18 +5,12 @@
 #
 FROM alpine AS envplate-builder
 
-ARG REPO=https://github.com/kreuzwerker/envplate/releases/download
 ARG VERSION=1.0.3
+ARG TARGETPLATFORM
 
-WORKDIR /tmp
-RUN apk add curl
-
-RUN <<EOF
-curl -LJ --silent ${REPO}/v${VERSION}/envplate_${VERSION}_Linux_arm64.tar.gz -o envplate_aarch64.tar.gz
-curl -LJ --silent ${REPO}/v${VERSION}/envplate_${VERSION}_Linux_x86_64.tar.gz -o envplate_x86_64.tar.gz
-tar -xf envplate_$(uname -m).tar.gz
-chmod +x envplate
-EOF
+RUN case ${TARGETPLATFORM} in "linux/amd64") ARCH=x86_64 ;; "linux/arm64") ARCH=arm64 ;; esac && echo "$ARCH" && \
+    wget -q https://github.com/kreuzwerker/envplate/releases/download/v${VERSION}/envplate_${VERSION}_Linux_${ARCH}.tar.gz -O /envplate && \
+    chmod +x /envplate
 
 #
 # App image
@@ -35,7 +29,7 @@ ENV KIND=druid-docker-image \
 WORKDIR ${APP_PATH}
 
 COPY --link --from=composer/composer:2-bin /composer /usr/local/bin/
-COPY --link --from=envplate-builder /tmp/envplate /usr/local/bin/ep
+COPY --link --from=envplate-builder /envplate /usr/local/bin/ep
 COPY --link --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
 RUN apk --no-cache add \
