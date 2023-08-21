@@ -5,12 +5,18 @@
 #
 FROM alpine AS envplate-builder
 
+ARG REPO=https://github.com/kreuzwerker/envplate/releases/download
 ARG VERSION=1.0.3
-ARG TARGETPLATFORM
 
-RUN case ${TARGETPLATFORM} in "linux/amd64") ARCH=x86_64 ;; "linux/arm64") ARCH=arm64 ;; esac && echo "$ARCH" && \
-    wget -q https://github.com/kreuzwerker/envplate/releases/download/v${VERSION}/envplate_${VERSION}_Linux_${ARCH}.tar.gz -O /envplate && \
-    chmod +x /envplate
+WORKDIR /tmp
+RUN apk add curl
+
+RUN <<EOF
+curl -LJ --silent ${REPO}/v${VERSION}/envplate_${VERSION}_Linux_arm64.tar.gz -o envplate_aarch64.tar.gz
+curl -LJ --silent ${REPO}/v${VERSION}/envplate_${VERSION}_Linux_x86_64.tar.gz -o envplate_x86_64.tar.gz
+tar -xf envplate_$(uname -m).tar.gz
+chmod +x envplate
+EOF
 
 #
 # App image
@@ -29,7 +35,7 @@ ENV KIND=druid-docker-image \
 WORKDIR ${APP_PATH}
 
 COPY --link --from=composer/composer:2-bin /composer /usr/local/bin/
-COPY --link --from=envplate-builder /envplate /usr/local/bin/ep
+COPY --link --from=envplate-builder /tmp/envplate /usr/local/bin/ep
 COPY --link --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
 RUN apk --no-cache add \
@@ -39,7 +45,8 @@ RUN apk --no-cache add \
     addgroup -S ${DEFAULT_USER} -g ${DEFAULT_USER_UID} && \
     adduser -D -S -G ${DEFAULT_USER} -u ${DEFAULT_USER_UID} -s /bin/bash ${DEFAULT_USER} && \
     mkdir -p /home/${DEFAULT_USER}/.composer && \
-    chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER} ${APP_PATH}
+    chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER} ${APP_PATH} && \
+    chmod -R a+rwx /var/lib/nginx /var/log/nginx
 
 COPY --chown=${DEFAULT_USER}:${DEFAULT_USER} files/home/druid/ /home/druid
 COPY files/entrypoints/ /entrypoints/
@@ -52,7 +59,7 @@ ADD --checksum=sha256:5d550643b6400d4341550a9b14aedd0b4fac33ae5deb7d8247b6b4f799
 
 EXPOSE 8080/tcp
 
-ENTRYPOINT ["/sbin/tini", "--", "entrypoint"]
-CMD ["doas", "nginx"]
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["entrypoint"]
 USER ${DEFAULT_USER}
 SHELL ["/bin/bash", "-c"]
