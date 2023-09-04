@@ -18,7 +18,6 @@ variable "REPO_DRUPAL_WEB" {
   default = "druidfi/drupal-web"
 }
 
-variable "PHP80_MINOR" {}
 variable "PHP81_MINOR" {}
 variable "PHP82_MINOR" {}
 
@@ -32,10 +31,6 @@ group "php-variants" {
 
 group "php-fpm-variants" {
   targets = ["php-fpm-81", "php-fpm-82"]
-}
-
-group "php-beta-variants" {
-  targets = ["php-83", "php-fpm-83"]
 }
 
 group "drupal-fpm-variants" {
