@@ -37,7 +37,12 @@ mkdir somefolder || error "Cannot create a folder"
 
 folder="$APP_PATH/somefolder/"
 result=$(stat -c '%a' "$folder")
-expected='775'
+
+if [[ -z "${PHP_INSTALL_VERSION}" ]]; then
+  expected='755'
+else
+  expected='775'
+fi
 
 title "Test that created folder has permissions $expected"
 
