@@ -2,7 +2,7 @@ ARG ALPINE_VERSION
 
 FROM alpine:${ALPINE_VERSION} as simplesamlphp
 
-ARG SIMPLESAMLPHP_VERSION=2.0.5
+ARG SIMPLESAMLPHP_VERSION
 ARG SIMPLESAMLPHP_URL=https://github.com/simplesamlphp/simplesamlphp/releases/download/v${SIMPLESAMLPHP_VERSION}/simplesamlphp-${SIMPLESAMLPHP_VERSION}.tar.gz
 
 RUN apk --update --no-cache add curl
