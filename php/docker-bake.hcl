@@ -1,5 +1,5 @@
 variable "ALPINE_VERSION" {
-  default = "3.18.3"
+  default = "3.18.4"
 }
 
 variable "REPO_BASE" {
