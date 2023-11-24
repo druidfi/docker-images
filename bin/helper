@@ -39,7 +39,7 @@ then
     URL="https://git.alpinelinux.org/aports/plain/community/php82/APKBUILD?h=3.18-stable"
   elif [[ $BRANCH == 8.3 ]]
   then
-    URL="https://git.alpinelinux.org/aports/plain/testing/php83/APKBUILD"
+    URL="https://git.alpinelinux.org/aports/plain/community/php83/APKBUILD"
   else
     echo "Not supported PHP version: $BRANCH" && exit 1
   fi
