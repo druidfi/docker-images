@@ -4,24 +4,6 @@ ARG ALPINE_VERSION
 ARG PHP_SHORT_VERSION
 
 #
-# Envplate
-#
-FROM alpine:${ALPINE_VERSION} AS envplate
-
-ARG REPO=https://github.com/kreuzwerker/envplate/releases/download
-ARG VERSION=1.0.3
-
-WORKDIR /tmp
-RUN apk add curl
-
-RUN <<EOF
-curl -LJ --silent ${REPO}/v${VERSION}/envplate_${VERSION}_Linux_arm64.tar.gz -o envplate_aarch64.tar.gz
-curl -LJ --silent ${REPO}/v${VERSION}/envplate_${VERSION}_Linux_x86_64.tar.gz -o envplate_x86_64.tar.gz
-tar -xf envplate_$(uname -m).tar.gz
-chmod +x envplate
-EOF
-
-#
 # libiconv
 #
 FROM alpine:3.13 as libiconv
@@ -62,7 +44,7 @@ EOF
 
 COPY --chown=${DEFAULT_USER}:${DEFAULT_USER} files/home/druid/ /home/druid
 COPY files/usr/local/bin/ /usr/local/bin/
-COPY --link --from=envplate /tmp/envplate /usr/local/bin/ep
+COPY --link --from=amazeeio/envplate:v1.0.3 /usr/local/bin/ep /usr/local/bin/ep
 COPY files/entrypoints/00-umask.sh files/entrypoints/15-xdebug.sh files/entrypoints/19-php_ini.sh /entrypoints/
 
 SHELL ["/bin/bash", "-c"]
