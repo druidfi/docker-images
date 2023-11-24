@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.4
+# syntax=docker/dockerfile:1.6
 
 ARG ALPINE_VERSION
 ARG PHP_SHORT_VERSION
@@ -112,6 +112,28 @@ RUN php -v
 COPY files/etc/php/conf.d/* /etc/php82/conf.d/
 
 #
+# PHP 8.3
+#
+FROM base as build-php-83
+
+ENV PHP_MAJOR_VERSION=8
+ENV PHP_SHORT_VERSION=83
+ENV PHP_INSTALL_VERSION=83
+
+RUN sudo -s <<EOF
+echo http://dl-cdn.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories
+apk update
+apk --no-cache add libcrypto3 libssl3 libzip \
+  php83 php83-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
+  php83-pecl-{apcu,redis,uploadprogress,xdebug}
+ln -sfn /usr/bin/php83 /usr/bin/php
+EOF
+
+RUN php -v
+
+COPY files/etc/php/conf.d/* /etc/php83/conf.d/
+
+#
 # PHP
 #
 FROM build-php-${PHP_SHORT_VERSION} as final-php
@@ -153,6 +175,15 @@ EOF
 
 COPY files/etc/php/php-fpm.d/www.conf /etc/php82/php-fpm.d/www.conf
 
+FROM final-php as build-php-fpm-83
+
+RUN sudo -s <<EOF
+apk --no-cache add php83-fpm
+ln -sfn /usr/sbin/php-fpm83 /usr/sbin/php-fpm
+EOF
+
+COPY files/etc/php/php-fpm.d/www.conf /etc/php83/php-fpm.d/www.conf
+
 #
 # Final PHP-FPM
 #
@@ -184,6 +215,15 @@ RUN sudo -s <<EOF
 apk --no-cache add mysql-client openssh rsync icu-libs
 apk --no-cache add \
     php82-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
+EOF
+
+FROM final-php-fpm as drupal-php-83
+
+RUN sudo -s <<EOF
+apk --no-cache add --repository http://dl-cdn.alpinelinux.org/alpine/edge/main libavif icu-libs libsodium
+apk --no-cache add mysql-client openssh rsync
+apk --no-cache add \
+    php83-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
 #

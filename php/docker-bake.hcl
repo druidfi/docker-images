@@ -20,25 +20,30 @@ variable "REPO_DRUPAL_WEB" {
 
 variable "PHP81_MINOR" {}
 variable "PHP82_MINOR" {}
+variable "PHP83_MINOR" {}
 
 group "default" {
   targets = ["php-variants", "php-fpm-variants", "drupal-fpm-variants", "drupal-web-variants"]
 }
 
 group "php-variants" {
-  targets = ["php-81", "php-82"]
+  targets = ["php-81", "php-82", "php-83"]
 }
 
 group "php-fpm-variants" {
-  targets = ["php-fpm-81", "php-fpm-82"]
+  targets = ["php-fpm-81", "php-fpm-82", "php-fpm-83"]
 }
 
 group "drupal-fpm-variants" {
-  targets = ["drupal-fpm-81", "drupal-fpm-82"]
+  targets = ["drupal-fpm-81", "drupal-fpm-82", "drupal-fpm-83"]
 }
 
 group "drupal-web-variants" {
-  targets = ["drupal-web-81", "drupal-web-82"]
+  targets = ["drupal-web-81", "drupal-web-82", "drupal-web-83"]
+}
+
+group "php-83" {
+  targets = ["php-83", "php-fpm-83", "drupal-fpm-83", "drupal-web-83"]
 }
 
 target "common" {
@@ -68,7 +73,7 @@ target "php-81" {
     PHP_VERSION = "8.1"
     PHP_SHORT_VERSION = "81"
   }
-  tags = ["${REPO_BASE}:8", "${REPO_BASE}:8.1", "${REPO_BASE}:${PHP81_MINOR}", "${REPO_BASE}:latest"]
+  tags = ["${REPO_BASE}:8.1", "${REPO_BASE}:${PHP81_MINOR}"]
 }
 
 target "php-82" {
@@ -78,7 +83,17 @@ target "php-82" {
     PHP_VERSION = "8.2"
     PHP_SHORT_VERSION = "82"
   }
-  tags = ["${REPO_BASE}:8.2", "${REPO_BASE}:${PHP82_MINOR}"]
+  tags = ["${REPO_BASE}:8", "${REPO_BASE}:8.2", "${REPO_BASE}:${PHP82_MINOR}", "${REPO_BASE}:latest"]
+}
+
+target "php-83" {
+  inherits = ["common", "php"]
+  args = {
+    ALPINE_VERSION = "${ALPINE_VERSION}"
+    PHP_VERSION = "8.3"
+    PHP_SHORT_VERSION = "83"
+  }
+  tags = ["${REPO_BASE}:8.3", "${REPO_BASE}:${PHP83_MINOR}"]
 }
 
 #
@@ -92,12 +107,17 @@ target "php-fpm" {
 
 target "php-fpm-81" {
   inherits = ["common", "php-81", "php-fpm"]
-  tags = ["${REPO_FPM}:8", "${REPO_FPM}:8.1", "${REPO_FPM}:${PHP81_MINOR}", "${REPO_FPM}:latest"]
+  tags = ["${REPO_FPM}:8.1", "${REPO_FPM}:${PHP81_MINOR}"]
 }
 
 target "php-fpm-82" {
   inherits = ["common", "php-82", "php-fpm"]
-  tags = ["${REPO_FPM}:8.2", "${REPO_FPM}:${PHP82_MINOR}"]
+  tags = ["${REPO_FPM}:8", "${REPO_FPM}:8.2", "${REPO_FPM}:${PHP82_MINOR}", "${REPO_FPM}:latest"]
+}
+
+target "php-fpm-83" {
+  inherits = ["common", "php-83", "php-fpm"]
+  tags = ["${REPO_FPM}:8.3", "${REPO_FPM}:${PHP83_MINOR}"]
 }
 
 #
@@ -107,13 +127,19 @@ target "php-fpm-82" {
 target "drupal-fpm-81" {
   inherits = ["common", "php-81", "php-fpm"]
   target = "drupal-php-81"
-  tags = ["${REPO_DRUPAL_FPM}:php-8", "${REPO_DRUPAL_FPM}:php-8.1", "${REPO_DRUPAL_FPM}:php-${PHP81_MINOR}", "${REPO_DRUPAL_FPM}:latest"]
+  tags = ["${REPO_DRUPAL_FPM}:php-8.1", "${REPO_DRUPAL_FPM}:php-${PHP81_MINOR}"]
 }
 
 target "drupal-fpm-82" {
   inherits = ["common", "php-82", "php-fpm"]
   target = "drupal-php-82"
-  tags = ["${REPO_DRUPAL_FPM}:php-8.2", "${REPO_DRUPAL_FPM}:php-${PHP82_MINOR}"]
+  tags = ["${REPO_DRUPAL_FPM}:php-8", "${REPO_DRUPAL_FPM}:php-8.2", "${REPO_DRUPAL_FPM}:php-${PHP82_MINOR}", "${REPO_DRUPAL_FPM}:latest"]
+}
+
+target "drupal-fpm-83" {
+  inherits = ["common", "php-83", "php-fpm"]
+  target = "drupal-php-83"
+  tags = ["${REPO_DRUPAL_FPM}:php-8.3", "${REPO_DRUPAL_FPM}:php-${PHP83_MINOR}"]
 }
 
 #
@@ -123,11 +149,17 @@ target "drupal-fpm-82" {
 target "drupal-web-81" {
   inherits = ["common", "php-81", "php-fpm"]
   target = "drupal-web"
-  tags = ["${REPO_DRUPAL_WEB}:php-8", "${REPO_DRUPAL_WEB}:php-8.1", "${REPO_DRUPAL_WEB}:php-${PHP81_MINOR}", "${REPO_DRUPAL_WEB}:latest"]
+  tags = ["${REPO_DRUPAL_WEB}:php-8.1", "${REPO_DRUPAL_WEB}:php-${PHP81_MINOR}"]
 }
 
 target "drupal-web-82" {
   inherits = ["common", "php-82", "php-fpm"]
   target = "drupal-web"
-  tags = ["${REPO_DRUPAL_WEB}:php-8.2", "${REPO_DRUPAL_WEB}:php-${PHP82_MINOR}"]
+  tags = ["${REPO_DRUPAL_WEB}:php-8", "${REPO_DRUPAL_WEB}:php-8.2", "${REPO_DRUPAL_WEB}:php-${PHP82_MINOR}", "${REPO_DRUPAL_WEB}:latest"]
+}
+
+target "drupal-web-83" {
+  inherits = ["common", "php-83", "php-fpm"]
+  target = "drupal-web"
+  tags = ["${REPO_DRUPAL_WEB}:php-8.3", "${REPO_DRUPAL_WEB}:php-${PHP83_MINOR}"]
 }
