@@ -2,12 +2,12 @@ variable "REPO_BASE" {
   default = "druidfi/app"
 }
 
-variable "PHP80_MINOR" {}
 variable "PHP81_MINOR" {}
 variable "PHP82_MINOR" {}
+variable "PHP83_MINOR" {}
 
 group "default" {
-  targets = ["php-81", "php-82"]
+  targets = ["php-81", "php-82", "php-83"]
 }
 
 target "common" {
@@ -72,7 +72,7 @@ target "php-83" {
     PHP_SHORT_VERSION = "83"
   }
   contexts = {
-    php-base = "docker-image://8.3.0beta2-fpm-alpine"
+    php-base = "docker-image://php:8.3-rc-fpm-alpine"
   }
   labels = {
     "org.opencontainers.image.title" = "Druid App image with PHP 8.3"
@@ -80,5 +80,5 @@ target "php-83" {
     #"org.opencontainers.image.version" = VERSION
     #"org.opencontainers.image.revision" = SHA
   }
-  tags = ["${REPO_BASE}:php-8.3-beta2"]
+  tags = ["${REPO_BASE}:php-8.3"]
 }
