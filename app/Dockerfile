@@ -1,22 +1,4 @@
-# syntax=docker/dockerfile:1
-
-#
-# Envplate
-#
-FROM alpine AS envplate-builder
-
-ARG REPO=https://github.com/kreuzwerker/envplate/releases/download
-ARG VERSION=1.0.3
-
-WORKDIR /tmp
-RUN apk add curl
-
-RUN <<EOF
-curl -LJ --silent ${REPO}/v${VERSION}/envplate_${VERSION}_Linux_arm64.tar.gz -o envplate_aarch64.tar.gz
-curl -LJ --silent ${REPO}/v${VERSION}/envplate_${VERSION}_Linux_x86_64.tar.gz -o envplate_x86_64.tar.gz
-tar -xf envplate_$(uname -m).tar.gz
-chmod +x envplate
-EOF
+# syntax=docker/dockerfile:1.6
 
 #
 # App image
@@ -35,7 +17,7 @@ ENV KIND=druid-docker-image \
 WORKDIR ${APP_PATH}
 
 COPY --link --from=composer/composer:2-bin /composer /usr/local/bin/
-COPY --link --from=envplate-builder /tmp/envplate /usr/local/bin/ep
+COPY --link --from=amazeeio/envplate:v1.0.3 /usr/local/bin/ep /usr/local/bin/ep
 COPY --link --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
 RUN apk --no-cache add \
