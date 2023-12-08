@@ -1,6 +1,6 @@
 ARG PHP_VERSION
 
-FROM composer AS builder
+FROM druidfi/php:${PHP_VERSION} AS builder
 
 ARG BRANCH=main
 
@@ -16,7 +16,6 @@ RUN composer req --ignore-platform-reqs --no-progress --no-interaction \
         drupal/gin_login \
         drupal/gin_toolbar \
         drupal/metatag \
-        drupal/paragraphs \
         drupal/pathauto \
         drupal/simplei
 
