@@ -103,7 +103,6 @@ ENV PHP_SHORT_VERSION=83
 ENV PHP_INSTALL_VERSION=83
 
 RUN sudo -s <<EOF
-echo http://dl-cdn.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories
 apk update
 apk --no-cache add libcrypto3 libssl3 libzip \
   php83 php83-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
@@ -202,8 +201,7 @@ EOF
 FROM final-php-fpm as drupal-php-83
 
 RUN sudo -s <<EOF
-apk --no-cache add --repository http://dl-cdn.alpinelinux.org/alpine/edge/main libavif icu-libs libsodium
-apk --no-cache add mysql-client openssh rsync
+apk --no-cache add mysql-client openssh rsync libavif icu-libs libsodium
 apk --no-cache add \
     php83-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
