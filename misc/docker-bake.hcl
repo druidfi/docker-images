@@ -1,6 +1,6 @@
 variable ALPINE_VERSION {}
 variable SIMPLESAMLPHP_VERSION {
-  default = "2.0.6"
+  default = "2.1.1"
 }
 
 group "default" {
