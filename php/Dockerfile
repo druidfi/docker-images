@@ -186,14 +186,14 @@ CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm", "-F
 FROM final-php-fpm as drupal-php-81
 
 RUN sudo -s <<EOF
-apk --no-cache add mysql-client openssh rsync \
+apk --no-cache add mysql-client openssh rsync mariadb-connector-c \
     php81-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
 FROM final-php-fpm as drupal-php-82
 
 RUN sudo -s <<EOF
-apk --no-cache add mysql-client openssh rsync icu-libs
+apk --no-cache add mysql-client openssh rsync icu-libs mariadb-connector-c
 apk --no-cache add \
     php82-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
@@ -201,7 +201,7 @@ EOF
 FROM final-php-fpm as drupal-php-83
 
 RUN sudo -s <<EOF
-apk --no-cache add mysql-client openssh rsync libavif icu-libs libsodium
+apk --no-cache add mysql-client openssh rsync libavif icu-libs libsodium mariadb-connector-c
 apk --no-cache add \
     php83-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
