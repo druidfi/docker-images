@@ -2,14 +2,19 @@
 # shellcheck disable=SC2086
 
 DATA_PATH="/data/"
+S3CMD_BIN="/usr/bin/s3cmd"
 
-: "${ACCESS_KEY:?"ACCESS_KEY env variable is required"}"
-: "${SECRET_KEY:?"SECRET_KEY env variable is required"}"
-REGION=${REGION:-eu-central-1}
+if [ -n "${REGION}" ]; then
+  $S3CMD_BIN="${$S3CMD_BIN} --region=${REGION}"
+fi
 
-S3CMD_BIN="/usr/bin/s3cmd --region=$REGION"
-S3CMD_BIN="$S3CMD_BIN --access_key=$ACCESS_KEY"
-S3CMD_BIN="$S3CMD_BIN --secret_key=$SECRET_KEY"
+if [ -n "${ACCESS_KEY}" ]; then
+  $S3CMD_BIN="${$S3CMD_BIN} --access_key=${ACCESS_KEY}"
+fi
+
+if [ -n "${SECRET_KEY}" ]; then
+  $S3CMD_BIN="${$S3CMD_BIN} --secret_key=${SECRET_KEY}"
+fi
 
 if [ "$1" = 'conf' ]; then
     echo -e "\n\nsc3cmd:" "$S3CMD_BIN" "\n\n"

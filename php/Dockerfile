@@ -4,24 +4,6 @@ ARG ALPINE_VERSION
 ARG PHP_SHORT_VERSION
 
 #
-# Envplate
-#
-FROM alpine:${ALPINE_VERSION} AS envplate
-
-ARG REPO=https://github.com/kreuzwerker/envplate/releases/download
-ARG VERSION=1.0.3
-
-WORKDIR /tmp
-RUN apk add curl
-
-RUN <<EOF
-curl -LJ --silent ${REPO}/v${VERSION}/envplate_${VERSION}_Linux_arm64.tar.gz -o envplate_aarch64.tar.gz
-curl -LJ --silent ${REPO}/v${VERSION}/envplate_${VERSION}_Linux_x86_64.tar.gz -o envplate_x86_64.tar.gz
-tar -xf envplate_$(uname -m).tar.gz
-chmod +x envplate
-EOF
-
-#
 # libiconv
 #
 FROM alpine:3.13 as libiconv
@@ -62,7 +44,7 @@ EOF
 
 COPY --chown=${DEFAULT_USER}:${DEFAULT_USER} files/home/druid/ /home/druid
 COPY files/usr/local/bin/ /usr/local/bin/
-COPY --link --from=envplate /tmp/envplate /usr/local/bin/ep
+COPY --link --from=amazeeio/envplate:v1.0.3 /usr/local/bin/ep /usr/local/bin/ep
 COPY files/entrypoints/00-umask.sh files/entrypoints/15-xdebug.sh files/entrypoints/19-php_ini.sh /entrypoints/
 
 SHELL ["/bin/bash", "-c"]
@@ -121,7 +103,6 @@ ENV PHP_SHORT_VERSION=83
 ENV PHP_INSTALL_VERSION=83
 
 RUN sudo -s <<EOF
-echo http://dl-cdn.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories
 apk update
 apk --no-cache add libcrypto3 libssl3 libzip \
   php83 php83-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
@@ -205,25 +186,24 @@ CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm", "-F
 FROM final-php-fpm as drupal-php-81
 
 RUN sudo -s <<EOF
-apk --no-cache add mysql-client openssh rsync \
-    php81-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
+apk --no-cache add mysql-client openssh rsync mariadb-connector-c \
+    php81-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
 FROM final-php-fpm as drupal-php-82
 
 RUN sudo -s <<EOF
-apk --no-cache add mysql-client openssh rsync icu-libs
+apk --no-cache add mysql-client openssh rsync icu-libs mariadb-connector-c
 apk --no-cache add \
-    php82-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
+    php82-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
 FROM final-php-fpm as drupal-php-83
 
 RUN sudo -s <<EOF
-apk --no-cache add --repository http://dl-cdn.alpinelinux.org/alpine/edge/main libavif icu-libs libsodium
-apk --no-cache add mysql-client openssh rsync
+apk --no-cache add mysql-client openssh rsync libavif icu-libs libsodium mariadb-connector-c
 apk --no-cache add \
-    php83-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
+    php83-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
 #

@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.4
+# syntax=docker/dockerfile:1.6
 
 ARG MYSQL_SHORT_VERSION
 
@@ -10,6 +10,8 @@ FROM mysql-57-${TARGETARCH} as mysql-57
 FROM mysql:8.0 as mysql-80
 
 FROM mysql:8.1 as mysql-81
+
+FROM mysql:8.2 as mysql-82
 
 FROM mysql-${MYSQL_SHORT_VERSION} as mysql-base
 

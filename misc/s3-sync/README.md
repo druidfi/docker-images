@@ -7,14 +7,22 @@ Container to sync backups to Amazon S3 and get them from there using s3cmd.
 - Mount local path `/abs/path/to/backups` to container in `/data`
 - Sync all files from local path to S3 bucket `foobar-bucket`
 
-```
+```console
 docker run -it -e ACCESS_KEY=foobar -e SECRET_KEY=foobar -e S3_PATH=s3://foobar-bucket \
     -v /abs/path/to/backups:/data druidfi/s3-sync sync
 ```
 
+## Use custom s3cmd configuration
+
+```console
+docker run -it -e S3_PATH=s3://foobar-bucket \
+    -v /abs/path/to/.s3cfg:/root/.s3cfg:ro \
+    -v /abs/path/to/backups:/data druidfi/s3-sync
+```
+
 ## Run in cron mode
 
-```
+```console
 docker run -it -e ACCESS_KEY=foobar -e SECRET_KEY=foobar -e S3_PATH=s3://foobar-bucket -e CRON_SCHEDULE="*/5 * * * *" \
     -v /abs/path/to/backups:/data druidfi/s3-sync
 ```
@@ -24,9 +32,9 @@ docker run -it -e ACCESS_KEY=foobar -e SECRET_KEY=foobar -e S3_PATH=s3://foobar-
 - See the documentation in https://s3tools.org/usage
 - Sync specific documentation in https://s3tools.org/s3cmd-sync
 
-## How to give access to S3 bucket
+## How to give access to AWS S3 bucket
 
-```
+```json
 {
     "Version": "2008-10-17",
     "Statement": [

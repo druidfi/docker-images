@@ -1,13 +1,11 @@
-version: '3.7'
-
 services:
 
   app:
-    container_name: "${COMPOSE_PROJECT_NAME}-app"
-    hostname: "${DRUPAL_HOSTNAME}"
-    image: "${DRUPAL_IMAGE}"
+    container_name: ${COMPOSE_PROJECT_NAME}-app
+    hostname: ${DRUPAL_HOSTNAME}
+    image: ${DRUPAL_IMAGE}
     environment:
-      DRUSH_OPTIONS_URI: "https://${DRUPAL_HOSTNAME}"
+      DRUSH_OPTIONS_URI: https://${DRUPAL_HOSTNAME}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.entrypoints=https"
@@ -16,19 +14,15 @@ services:
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}-app.loadbalancer.server.port=8080"
       - "traefik.docker.network=stonehenge-network"
     networks:
-      - internal
+      - default
       - stonehenge-network
     depends_on:
       - db
 
   db:
-    container_name: "${COMPOSE_PROJECT_NAME}-db"
-    image: druidfi/mariadb:10.5-drupal
-    networks:
-      - internal
+    container_name: ${COMPOSE_PROJECT_NAME}-db
+    image: druidfi/mariadb:10.11-drupal-lts
 
 networks:
-  internal:
-    external: false
   stonehenge-network:
     external: true

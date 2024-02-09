@@ -1,11 +1,9 @@
-version: '3.7'
-
 services:
 
   nginx:
-    hostname: "${DRUPAL_HOSTNAME}"
-    container_name: "${COMPOSE_PROJECT_NAME}-nginx"
-    image: druidfi/nginx:1.21-drupal
+    hostname: ${DRUPAL_HOSTNAME}
+    container_name: ${COMPOSE_PROJECT_NAME}-nginx
+    image: druidfi/nginx:1.25-drupal
     volumes:
       - .:/app:delegated
     labels:
@@ -16,33 +14,27 @@ services:
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}-nginx.loadbalancer.server.port=8080"
       - "traefik.docker.network=stonehenge-network"
     networks:
-      - internal
+      - default
       - stonehenge-network
     depends_on:
       - app
 
   app:
-    container_name: "${COMPOSE_PROJECT_NAME}-app"
-    image: druidfi/drupal:php-8.1
+    container_name: ${COMPOSE_PROJECT_NAME}-app
+    image: druidfi/drupal:php-8.2
     volumes:
       - .:/app:delegated
     environment:
-      DRUSH_OPTIONS_URI: "https://${DRUPAL_HOSTNAME}"
-    networks:
-      - internal
+      DRUSH_OPTIONS_URI: https://${DRUPAL_HOSTNAME}
     depends_on:
       - db
 
   db:
-    container_name: "${COMPOSE_PROJECT_NAME}-db"
-    image: druidfi/mariadb:10.6-drupal
+    container_name: ${COMPOSE_PROJECT_NAME}-db
+    image: druidfi/mariadb:10.11-drupal-lts
     ports:
       - 3306
-    networks:
-      - internal
 
 networks:
-  internal:
-    external: false
   stonehenge-network:
     external: true
