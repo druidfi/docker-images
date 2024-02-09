@@ -11,6 +11,8 @@ ENV KIND=druid-docker-image \
     DEFAULT_USER_UID=1000 \
     APP_ENV=prod \
     COMPOSER_HOME=/home/druid/.composer \
+    COMPOSER_AUDIT_ABANDONED=report \
+    COMPOSER_FUND=0 \
     PATH="${PATH}:/home/druid/.composer/vendor/bin:/app/vendor/bin" \
     SSH_AUTH_SOCK=/tmp/ssh-agent
 
