@@ -1,6 +1,7 @@
 #!/bin/bash
 
 COMMAND=$1
+LATEST_ALPINE_MINOR=3.19
 LATEST_ALPINE_VERSION=3.19.1
 FALLBACK_VERSION_81="8.1.26"
 FALLBACK_VERSION_82="8.2.13"
@@ -9,7 +10,7 @@ FALLBACK_VERSION_83="8.3.0"
 if [[ $COMMAND == alpineversion ]]
 then
 
-  BRANCH=${2:-${LATEST_ALPINE_VERSION}}
+  BRANCH=${2:-${LATEST_ALPINE_MINOR}}
   API_URL="https://hub.docker.com/v2/repositories/library/alpine/tags?page_size=100"
   JQ=$(which jq) || bin/jq-osx-amd64
   TAGS=$(curl -L -s "$API_URL" | $JQ --raw-output '."results"[]["name"]')
