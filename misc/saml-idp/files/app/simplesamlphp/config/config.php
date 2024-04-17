@@ -259,13 +259,28 @@ $config = [
     /*
      * Set the allowed clock skew between encrypting/decrypting assertions
      *
-     * If you have an server that is constantly out of sync, this option
+     * If you have a server that is constantly out of sync, this option
      * allows you to adjust the allowed clock-skew.
      *
      * Allowed range: 180 - 300
      * Defaults to 180.
      */
     'assertion.allowed_clock_skew' => 180,
+
+    /*
+     * Set custom security headers. The defaults can be found in \SimpleSAML\Configuration::DEFAULT_SECURITY_HEADERS
+     *
+     * NOTE: When a header is already set on the response we will NOT overrule it and leave it untouched.
+     *
+     * Whenever you change any of these headers, make sure to validate your config by running your
+     * hostname through a security-test like https://en.internet.nl
+    'headers.security' => [
+        'Content-Security-Policy' => "default-src 'none'; frame-ancestors 'self'; object-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'",
+        'X-Frame-Options' => 'SAMEORIGIN',
+        'X-Content-Type-Options' => 'nosniff',
+        'Referrer-Policy' => 'origin-when-cross-origin',
+    ],
+     */
 
 
     /************************
@@ -349,7 +364,7 @@ $config = [
      * loggingdir above to 'null'.
      */
     'logging.level' => SimpleSAML\Logger::DEBUG,
-    'logging.handler' => 'syslog',
+    'logging.handler' => 'stderr',
 
     /*
      * Specify the format of the logs. Its use varies depending on the log handler used (for instance, you cannot
@@ -1163,6 +1178,7 @@ $config = [
     'metadata.sign.privatekey' => null,
     'metadata.sign.privatekey_pass' => null,
     'metadata.sign.certificate' => null,
+    'metadata.sign.algorithm' => 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
 
 
     /****************************
@@ -1226,6 +1242,28 @@ $config = [
     'store.redis.password' => '',
 
     /*
+     * Communicate with Redis over a secure connection instead of plain TCP.
+     *
+     * This setting affects both single host connections as
+     * well as Sentinel mode.
+     */
+    'store.redis.tls' => false,
+
+    /*
+     * Verify the Redis server certificate.
+     */
+    'store.redis.insecure' => false,
+
+    /*
+     * Files related to secure communication with Redis.
+     *
+     * Files are searched in the 'certdir' when using relative paths.
+     */
+    'store.redis.ca_certificate' => null,
+    'store.redis.certificate' => null,
+    'store.redis.privatekey' => null,
+
+    /*
      * The prefix we should use on our Redis datastore.
      */
     'store.redis.prefix' => 'SimpleSAMLphp',
@@ -1243,6 +1281,9 @@ $config = [
      *     'tcp://[yoursentinel2]:[port]',
      *     'tcp://[yoursentinel3]:[port]
      * ],
+     *
+     * Use 'tls' instead of 'tcp' in order to make use of the additional
+     * TLS settings.
      */
     'store.redis.sentinels' => [],
 

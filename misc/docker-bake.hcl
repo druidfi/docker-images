@@ -1,6 +1,6 @@
 variable ALPINE_VERSION {}
 variable SIMPLESAMLPHP_VERSION {
-  default = "2.1.1"
+  default = "2.1.5"
 }
 
 group "default" {
@@ -30,8 +30,8 @@ target "curl" {
 target "saml-idp" {
   inherits = ["common"]
   context = "./misc/saml-idp"
+  target = "final"
   args = {
-    ALPINE_VERSION = "${ALPINE_VERSION}"
     SIMPLESAMLPHP_VERSION = "${SIMPLESAMLPHP_VERSION}"
   }
   tags = ["druidfi/saml-idp:${SIMPLESAMLPHP_VERSION}"]
