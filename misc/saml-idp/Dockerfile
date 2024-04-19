@@ -1,9 +1,7 @@
 FROM alpine as simplesamlphp
 
 ARG SIMPLESAMLPHP_VERSION
-#ARG SIMPLESAMLPHP_URL=https://github.com/simplesamlphp/simplesamlphp/releases/download/v${SIMPLESAMLPHP_VERSION}/simplesamlphp-${SIMPLESAMLPHP_VERSION}.tar.gz
-# After 2.1.0
-ARG SIMPLESAMLPHP_URL=https://github.com/simplesamlphp/simplesamlphp/releases/download/v${SIMPLESAMLPHP_VERSION}/simplesamlphp-${SIMPLESAMLPHP_VERSION}.tar.gz
+ARG SIMPLESAMLPHP_URL=https://github.com/simplesamlphp/simplesamlphp/releases/download/v${SIMPLESAMLPHP_VERSION}/simplesamlphp-${SIMPLESAMLPHP_VERSION}-slim.tar.gz
 
 RUN apk --update --no-cache add curl
 RUN curl -s -L -o /tmp/simplesamlphp.tar.gz ${SIMPLESAMLPHP_URL}
@@ -20,8 +18,6 @@ RUN apk --update --no-cache add nginx && \
 
 # Copy SimpleSAMLphp
 COPY --from=simplesamlphp --chown=www-data /home/simplesamlphp /app/simplesamlphp
-
-RUN cd /app/simplesamlphp && php bin/translations translations:update:binary
 
 # Copy configuration files and scripts
 COPY --chown=www-data files/ /
