@@ -1,12 +1,13 @@
 #!/bin/bash
 
+EP="sudo --preserve-env ep"; [ "$APP_ENV" = "dev" ] && EP+=" -v"
 TEMPLATE=/etc/php$PHP_INSTALL_VERSION/php-fpm.d/www.conf.ep
 TARGET=/etc/php$PHP_INSTALL_VERSION/php-fpm.d/www.conf
 
 if [ -f "$TEMPLATE" ]; then
-  echo "Prepare PHP-FPM www.conf file..."
+  echo "- Prepare PHP-FPM www.conf file..."
 
-  sudo --preserve-env ep -v "$TEMPLATE"
+  $EP "$TEMPLATE"
   sudo mv "$TEMPLATE" "$TARGET"
 fi
 
