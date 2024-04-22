@@ -1,5 +1,16 @@
 #!/bin/bash
 
+EP="sudo --preserve-env ep"; [ "$APP_ENV" = "dev" ] && EP+=" -v"
+TEMPLATE=/etc/php$PHP_INSTALL_VERSION/php-fpm.d/www.conf.ep
+TARGET=/etc/php$PHP_INSTALL_VERSION/php-fpm.d/www.conf
+
+if [ -f "$TEMPLATE" ]; then
+  echo "- Prepare PHP-FPM www.conf file..."
+
+  $EP "$TEMPLATE"
+  sudo mv "$TEMPLATE" "$TARGET"
+fi
+
 echo "Start up PHP-FPM..."
 
 sudo -E LD_PRELOAD=/usr/lib/preloadable_libiconv.so php-fpm -F -R &

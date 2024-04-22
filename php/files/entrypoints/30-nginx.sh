@@ -1,5 +1,6 @@
 #!/bin/bash
 
-echo "Prepare Nginx conf..."
+echo "- Prepare Nginx conf..."
 
-sudo --preserve-env ep -v /etc/nginx/conf.d/default.conf
+EP="sudo --preserve-env ep"; [ "$APP_ENV" = "dev" ] && EP+=" -v"
+$EP /etc/nginx/conf.d/default.conf
