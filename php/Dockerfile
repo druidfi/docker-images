@@ -149,7 +149,7 @@ apk --no-cache add php81-fpm
 ln -sfn /usr/sbin/php-fpm81 /usr/sbin/php-fpm
 EOF
 
-COPY files/etc/php/php-fpm.d/www.conf /etc/php81/php-fpm.d/www.conf
+COPY files/etc/php/php-fpm.d/www.conf.ep /etc/php81/php-fpm.d/www.conf.ep
 
 FROM final-php as build-php-fpm-82
 
@@ -158,7 +158,7 @@ apk --no-cache add php82-fpm
 ln -sfn /usr/sbin/php-fpm82 /usr/sbin/php-fpm
 EOF
 
-COPY files/etc/php/php-fpm.d/www.conf /etc/php82/php-fpm.d/www.conf
+COPY files/etc/php/php-fpm.d/www.conf.ep /etc/php82/php-fpm.d/www.conf.ep
 
 FROM final-php as build-php-fpm-83
 
@@ -167,7 +167,7 @@ apk --no-cache add php83-fpm
 ln -sfn /usr/sbin/php-fpm83 /usr/sbin/php-fpm
 EOF
 
-COPY files/etc/php/php-fpm.d/www.conf /etc/php83/php-fpm.d/www.conf
+COPY files/etc/php/php-fpm.d/www.conf.ep /etc/php83/php-fpm.d/www.conf.ep
 
 #
 # Final PHP-FPM

@@ -1,10 +1,10 @@
 #!/bin/bash
-/etc/php82/php-fpm.d/www.conf
+
 TEMPLATE=/etc/php$PHP_INSTALL_VERSION/php-fpm.d/www.conf.ep
 TARGET=/etc/php$PHP_INSTALL_VERSION/php-fpm.d/www.conf
 
 if [ -f "$TEMPLATE" ]; then
-  echo "Prepare PHP-FPM /www.conf file..."
+  echo "Prepare PHP-FPM www.conf file..."
 
   sudo --preserve-env ep -v "$TEMPLATE"
   sudo mv "$TEMPLATE" "$TARGET"
