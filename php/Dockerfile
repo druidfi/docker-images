@@ -28,10 +28,12 @@ ENV KIND=druid-docker-image \
 ADD --chmod=0644 https://cacerts.digicert.com/BaltimoreCyberTrustRoot.crt.pem /opt/ssl/
 # See https://learn.microsoft.com/en-us/azure/postgresql/single-server/concepts-certificate-rotation#what-change-was-scheduled-to-be-performed-starting-december-2022-122022
 ADD --chmod=0644 https://cacerts.digicert.com/DigiCertGlobalRootG2.crt.pem /opt/ssl/
+# https://learn.microsoft.com/en-us/azure/mysql/flexible-server/how-to-connect-tls-ssl
+ADD --chmod=0644 https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem /opt/ssl/
 
 RUN <<EOF
 apk update && apk upgrade
-apk --no-cache add bash curl git make nano neofetch sudo tar tini
+apk --no-cache add bash curl git make msmtp nano neofetch ssmtp sudo tar tini
 neofetch
 addgroup -S ${DEFAULT_USER} -g ${DEFAULT_USER_UID}
 adduser -D -S -G ${DEFAULT_USER} -u ${DEFAULT_USER_UID} -s /bin/bash ${DEFAULT_USER}
@@ -45,7 +47,12 @@ EOF
 COPY --chown=${DEFAULT_USER}:${DEFAULT_USER} files/home/druid/ /home/druid
 COPY files/usr/local/bin/ /usr/local/bin/
 COPY --link --from=amazeeio/envplate:v1.0.3 /usr/local/bin/ep /usr/local/bin/ep
-COPY files/entrypoints/00-umask.sh files/entrypoints/15-xdebug.sh files/entrypoints/19-php_ini.sh /entrypoints/
+COPY files/entrypoints/00-umask.sh \
+     files/entrypoints/15-xdebug.sh \
+     files/entrypoints/19-php_ini.sh \
+     files/entrypoints/40-ssmtp.sh /entrypoints/
+COPY files/etc/msmtprc /etc/msmtprc
+COPY files/etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf
 
 SHELL ["/bin/bash", "-c"]
 USER ${DEFAULT_USER}
@@ -125,6 +132,8 @@ ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 ENV APP_ENV=prod \
     COMPOSER_HOME=/home/${DEFAULT_USER}/.composer \
+    COMPOSER_AUDIT_ABANDONED=report \
+    COMPOSER_FUND=0 \
     PATH="${PATH}:/home/${DEFAULT_USER}/.composer/vendor/bin:${APP_PATH}/vendor/bin"
 
 COPY --link --from=composer/composer:2-bin /composer /usr/bin/composer
@@ -145,7 +154,7 @@ apk --no-cache add php81-fpm
 ln -sfn /usr/sbin/php-fpm81 /usr/sbin/php-fpm
 EOF
 
-COPY files/etc/php/php-fpm.d/www.conf /etc/php81/php-fpm.d/www.conf
+COPY files/etc/php/php-fpm.d/www.conf.ep /etc/php81/php-fpm.d/www.conf.ep
 
 FROM final-php as build-php-fpm-82
 
@@ -154,7 +163,7 @@ apk --no-cache add php82-fpm
 ln -sfn /usr/sbin/php-fpm82 /usr/sbin/php-fpm
 EOF
 
-COPY files/etc/php/php-fpm.d/www.conf /etc/php82/php-fpm.d/www.conf
+COPY files/etc/php/php-fpm.d/www.conf.ep /etc/php82/php-fpm.d/www.conf.ep
 
 FROM final-php as build-php-fpm-83
 
@@ -163,13 +172,15 @@ apk --no-cache add php83-fpm
 ln -sfn /usr/sbin/php-fpm83 /usr/sbin/php-fpm
 EOF
 
-COPY files/etc/php/php-fpm.d/www.conf /etc/php83/php-fpm.d/www.conf
+COPY files/etc/php/php-fpm.d/www.conf.ep /etc/php83/php-fpm.d/www.conf.ep
 
 #
 # Final PHP-FPM
 #
 
 FROM build-php-fpm-${PHP_SHORT_VERSION} as final-php-fpm
+
+ENV PHP_SENDMAIL_PATH="/usr/bin/msmtp -t --read-envelope-from"
 
 RUN sudo -s <<EOF
 addgroup -g 82 -S www-data || echo "www-data group already exists"
@@ -184,6 +195,8 @@ CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm", "-F
 #
 
 FROM final-php-fpm as drupal-php-81
+
+ENV PHP_SENDMAIL_PATH="/usr/bin/dos2unix -u | /usr/bin/msmtp -t --read-envelope-from"
 
 RUN sudo -s <<EOF
 apk --no-cache add mysql-client openssh rsync mariadb-connector-c \
@@ -217,7 +230,6 @@ ENV DRUPAL_DB_NAME=drupal \
     DRUPAL_DB_PASS=drupal \
     DRUPAL_DB_HOST=db \
     DRUPAL_DB_PORT=3306 \
-    PHP_SENDMAIL_PATH="/usr/sbin/sendmail -S host.docker.internal:1025 -t" \
     SSH_AUTH_SOCK=/tmp/ssh-agent
 
 RUN sudo -s <<EOF
@@ -225,6 +237,7 @@ install -o ${DEFAULT_USER} -g ${DEFAULT_USER} -d /home/${DEFAULT_USER}/.drush /h
 EOF
 
 COPY files/entrypoints/10-ssh-agent.sh /entrypoints/
+COPY drupal/set-permissions.sh /entrypoints/99-set-permissions.sh
 
 #
 # Drupal Web

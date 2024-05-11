@@ -149,17 +149,17 @@ target "drupal-fpm-83" {
 target "drupal-web-81" {
   inherits = ["common", "php-81", "php-fpm"]
   target = "drupal-web"
-  tags = ["${REPO_DRUPAL_WEB}:php-8.1", "${REPO_DRUPAL_WEB}:php-${PHP81_MINOR}"]
+  tags = ["${REPO_DRUPAL_WEB}:php-8.1", "${REPO_DRUPAL_WEB}:php-${PHP81_MINOR}", "${REPO_DRUPAL_WEB}:v${PHP81_MINOR}"]
 }
 
 target "drupal-web-82" {
   inherits = ["common", "php-82", "php-fpm"]
   target = "drupal-web"
-  tags = ["${REPO_DRUPAL_WEB}:php-8", "${REPO_DRUPAL_WEB}:php-8.2", "${REPO_DRUPAL_WEB}:php-${PHP82_MINOR}", "${REPO_DRUPAL_WEB}:latest"]
+  tags = ["${REPO_DRUPAL_WEB}:php-8", "${REPO_DRUPAL_WEB}:php-8.2", "${REPO_DRUPAL_WEB}:php-${PHP82_MINOR}", "${REPO_DRUPAL_WEB}:v${PHP82_MINOR}", "${REPO_DRUPAL_WEB}:latest"]
 }
 
 target "drupal-web-83" {
   inherits = ["common", "php-83", "php-fpm"]
   target = "drupal-web"
-  tags = ["${REPO_DRUPAL_WEB}:php-8.3", "${REPO_DRUPAL_WEB}:php-${PHP83_MINOR}"]
+  tags = ["${REPO_DRUPAL_WEB}:php-8.3", "${REPO_DRUPAL_WEB}:php-${PHP83_MINOR}", "${REPO_DRUPAL_WEB}:v${PHP83_MINOR}"]
 }
