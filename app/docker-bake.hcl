@@ -1,13 +1,16 @@
 variable "REPO_BASE" {
   default = "druidfi/app"
 }
+variable "REPO_BASE_WOLFI" {
+  default = "druidfi/wolfi"
+}
 
 variable "PHP81_MINOR" {}
 variable "PHP82_MINOR" {}
 variable "PHP83_MINOR" {}
 
 group "default" {
-  targets = ["php-81", "php-82", "php-83"]
+  targets = ["php-81", "php-82", "wolfi-82", "php-83", "wolfi-83"]
 }
 
 target "common" {
@@ -65,6 +68,25 @@ target "php-82" {
   tags = ["${REPO_BASE}:php-8", "${REPO_BASE}:php-8.2", "${REPO_BASE}:latest"]
 }
 
+target "wolfi-82" {
+  inherits = ["common", "php"]
+  args = {
+    PHP_VERSION = "8.2"
+    PHP_SHORT_VERSION = "82"
+  }
+  dockerfile = "./wolfi.Dockerfile"
+  contexts = {
+    base = "docker-image://cgr.dev/chainguard/wolfi-base:latest"
+  }
+  labels = {
+    "org.opencontainers.image.title" = "Druid Wolfi image with PHP 8.2"
+    "org.opencontainers.image.description" = "Base PHP 8.2 image"
+    #"org.opencontainers.image.version" = VERSION
+    #"org.opencontainers.image.revision" = SHA
+  }
+  tags = ["${REPO_BASE_WOLFI}:php-8.2"]
+}
+
 target "php-83" {
   inherits = ["common", "php"]
   args = {
@@ -81,4 +103,23 @@ target "php-83" {
     #"org.opencontainers.image.revision" = SHA
   }
   tags = ["${REPO_BASE}:php-8.3"]
+}
+
+target "wolfi-83" {
+  inherits = ["common", "php"]
+  args = {
+    PHP_VERSION = "8.3"
+    PHP_SHORT_VERSION = "83"
+  }
+  dockerfile = "./wolfi.Dockerfile"
+  contexts = {
+    base = "docker-image://cgr.dev/chainguard/wolfi-base:latest"
+  }
+  labels = {
+    "org.opencontainers.image.title" = "Druid Wolfi image with PHP 8.3"
+    "org.opencontainers.image.description" = "Base PHP 8.3 image"
+    #"org.opencontainers.image.version" = VERSION
+    #"org.opencontainers.image.revision" = SHA
+  }
+  tags = ["${REPO_BASE_WOLFI}:php-8.3"]
 }
