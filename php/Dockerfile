@@ -196,8 +196,6 @@ CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm", "-F
 
 FROM final-php-fpm as drupal-php-81
 
-ENV PHP_SENDMAIL_PATH="/usr/bin/dos2unix -u | /usr/bin/msmtp -t --read-envelope-from"
-
 RUN sudo -s <<EOF
 apk --no-cache add mysql-client openssh rsync mariadb-connector-c \
     php81-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
