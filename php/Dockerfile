@@ -6,7 +6,7 @@ ARG PHP_SHORT_VERSION
 #
 # libiconv
 #
-FROM alpine:3.13 as libiconv
+FROM alpine:3.20 as libiconv
 
 RUN apk --no-cache add gnu-libiconv && test -f /usr/lib/preloadable_libiconv.so
 
