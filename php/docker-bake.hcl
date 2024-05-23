@@ -1,5 +1,5 @@
 variable "ALPINE_VERSION" {
-  default = "3.19.1"
+  default = "3.20.0"
 }
 
 variable "REPO_BASE" {
@@ -69,7 +69,7 @@ target "php" {
 target "php-81" {
   inherits = ["common", "php"]
   args = {
-    ALPINE_VERSION = "${ALPINE_VERSION}"
+    ALPINE_VERSION = "3.19.1"
     PHP_VERSION = "8.1"
     PHP_SHORT_VERSION = "81"
   }
