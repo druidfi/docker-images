@@ -3,11 +3,11 @@ group "default" {
 }
 
 group "mariadb-variants" {
-  targets = ["mariadb-106", "mariadb-1011"]
+  targets = ["mariadb-106", "mariadb-1011", "mariadb-114"]
 }
 
 group "mysql-variants" {
-  targets = ["mysql-57", "mysql-80", "mysql-82"]
+  targets = ["mysql-57", "mysql-80", "mysql-84"]
 }
 
 target "common" {
@@ -38,7 +38,15 @@ target "mariadb-1011" {
   args = {
     MARIADB_VERSION = "10.11"
   }
-  tags = ["druidfi/mariadb:10.11-drupal", "druidfi/mariadb:10.11-drupal-lts", "druidfi/mariadb:latest"]
+  tags = ["druidfi/mariadb:10.11-drupal", "druidfi/mariadb:10.11-drupal-lts"]
+}
+
+target "mariadb-114" {
+  inherits = ["common", "mariadb-common"]
+  args = {
+    MARIADB_VERSION = "11.4"
+  }
+  tags = ["druidfi/mariadb:11.4-drupal", "druidfi/mariadb:11.4-drupal-lts", "druidfi/mariadb:latest"]
 }
 
 target "mysql-common" {
@@ -62,15 +70,15 @@ target "mysql-80" {
     MYSQL_VERSION = "8.0"
     MYSQL_SHORT_VERSION = "80"
   }
-  tags = ["druidfi/mysql:8.0-drupal", "druidfi/mysql:8.0-drupal-lts", "druidfi/mysql:latest"]
+  tags = ["druidfi/mysql:8.0-drupal", "druidfi/mysql:8.0-drupal-lts"]
 }
 
-target "mysql-82" {
+target "mysql-84" {
   inherits = ["common", "mysql-common"]
   target = "mysql-base"
   args = {
-    MYSQL_VERSION = "8.2"
-    MYSQL_SHORT_VERSION = "82"
+    MYSQL_VERSION = "8.4"
+    MYSQL_SHORT_VERSION = "84"
   }
-  tags = ["druidfi/mysql:8.2-drupal", "druidfi/mysql:latest"]
+  tags = ["druidfi/mysql:8.4-drupal", "druidfi/mysql:8.4-drupal-lts", "druidfi/mysql:latest"]
 }

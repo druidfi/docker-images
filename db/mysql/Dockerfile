@@ -9,9 +9,7 @@ FROM mysql-57-${TARGETARCH} as mysql-57
 
 FROM mysql:8.0 as mysql-80
 
-FROM mysql:8.1 as mysql-81
-
-FROM mysql:8.2 as mysql-82
+FROM mysql:8.4 as mysql-84
 
 FROM mysql-${MYSQL_SHORT_VERSION} as mysql-base
 
