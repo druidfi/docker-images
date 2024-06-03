@@ -180,7 +180,7 @@ COPY files/etc/php/php-fpm.d/www.conf.ep /etc/php83/php-fpm.d/www.conf.ep
 
 FROM build-php-fpm-${PHP_SHORT_VERSION} as final-php-fpm
 
-ENV PHP_SENDMAIL_PATH="/usr/bin/msmtp -t --read-envelope-from"
+ENV PHP_SENDMAIL_PATH="/usr/bin/msmtp -t"
 
 RUN sudo -s <<EOF
 addgroup -g 82 -S www-data || echo "www-data group already exists"
