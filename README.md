@@ -66,7 +66,7 @@ Added features:
 
 Needs:
 
-- Nginx (`druidfi/nginx:1.25-drupal`)
+- Nginx (`druidfi/nginx:1.27-drupal`)
 - Database (`druidfi/mariadb:10.11-drupal-lts`)
 
 ENV variables:
@@ -108,8 +108,8 @@ Needs:
 
 ### Base variant
 
-- `1.24` stable based on `nginx:1.24-alpine`
-- `1.25` mainline based on `nginx:1.25-alpine`
+- `1.26` stable based on `nginx:1.26-alpine`
+- `1.27` mainline based on `nginx:1.27-alpine`
 
 Added features:
 
@@ -117,8 +117,8 @@ Added features:
 
 ### Drupal variant
 
-- `1.24-drupal` based on `druidfi/nginx:1.24`
-- `1.25-drupal` based on `druidfi/nginx:1.25`
+- `1.26-drupal` based on `druidfi/nginx:1.26`
+- `1.27-drupal` based on `druidfi/nginx:1.27`
 
 Added features:
 
