@@ -74,7 +74,7 @@ ENV PHP_INSTALL_VERSION=81
 RUN sudo -s <<EOF
 apk --no-cache add libzip \
   php81 php81-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
-  php81-pecl-{apcu,redis,uploadprogress,xdebug}
+  php81-pecl-{apcu,imagick,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php81 /usr/bin/php
 EOF
 
@@ -92,7 +92,7 @@ ENV PHP_INSTALL_VERSION=82
 RUN sudo -s <<EOF
 apk --no-cache add libcrypto3 libssl3 libzip \
   php82 php82-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
-  php82-pecl-{apcu,redis,uploadprogress,xdebug}
+  php82-pecl-{apcu,imagick,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php82 /usr/bin/php
 EOF
 
@@ -113,7 +113,7 @@ RUN sudo -s <<EOF
 apk update
 apk --no-cache add libcrypto3 libssl3 libzip \
   php83 php83-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
-  php83-pecl-{apcu,redis,uploadprogress,xdebug}
+  php83-pecl-{apcu,imagick,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php83 /usr/bin/php
 EOF
 
