@@ -3,13 +3,13 @@
 ARG MYSQL_SHORT_VERSION
 
 FROM --platform=linux/arm64 biarms/mysql:5.7 as mysql-57-arm64
-FROM --platform=linux/amd64 mysql:5.7 as mysql-57-amd64
+FROM --platform=linux/amd64 mysql:9.0 as mysql-57-amd64
 
 FROM mysql-57-${TARGETARCH} as mysql-57
 
-FROM mysql:8.0 as mysql-80
+FROM mysql:9.0 as mysql-80
 
-FROM mysql:8.4 as mysql-84
+FROM mysql:9.0 as mysql-84
 
 FROM mysql-${MYSQL_SHORT_VERSION} as mysql-base
 
