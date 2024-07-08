@@ -4,8 +4,8 @@ COMMAND=$1
 LATEST_ALPINE_MINOR=3.20
 LATEST_ALPINE_VERSION=3.20.1
 FALLBACK_VERSION_81="8.1.29"
-FALLBACK_VERSION_82="8.2.20"
-FALLBACK_VERSION_83="8.3.8"
+FALLBACK_VERSION_82="8.2.21"
+FALLBACK_VERSION_83="8.3.9"
 
 if [[ $COMMAND == alpineversion ]]
 then
@@ -37,10 +37,10 @@ then
     URL="https://git.alpinelinux.org/aports/plain/community/php81/APKBUILD?h=3.19-stable"
   elif [[ $BRANCH == 8.2 ]]
   then
-    URL="https://git.alpinelinux.org/aports/plain/community/php82/APKBUILD?h=3.19-stable"
+    URL="https://git.alpinelinux.org/aports/plain/community/php82/APKBUILD?h=3.20-stable"
   elif [[ $BRANCH == 8.3 ]]
   then
-    URL="https://git.alpinelinux.org/aports/plain/community/php83/APKBUILD?h=3.19-stable"
+    URL="https://git.alpinelinux.org/aports/plain/community/php83/APKBUILD?h=3.20-stable"
   else
     echo "Not supported PHP version: $BRANCH" && exit 1
   fi
