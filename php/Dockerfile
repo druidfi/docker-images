@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.6
+# syntax=docker/dockerfile:1.9
 
 ARG ALPINE_VERSION
 ARG PHP_SHORT_VERSION
