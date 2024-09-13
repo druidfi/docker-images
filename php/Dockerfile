@@ -6,14 +6,14 @@ ARG PHP_SHORT_VERSION
 #
 # libiconv
 #
-FROM alpine:3.13 as libiconv
+FROM alpine:3.13 AS libiconv
 
 RUN apk --no-cache add gnu-libiconv && test -f /usr/lib/preloadable_libiconv.so
 
 #
 # Base
 #
-FROM alpine:${ALPINE_VERSION} as base
+FROM alpine:${ALPINE_VERSION} AS base
 
 ARG ALPINE_VERSION
 
@@ -65,7 +65,7 @@ CMD ["tail", "-f", "/dev/null"]
 #
 # PHP 8.1
 #
-FROM base as build-php-81
+FROM base AS build-php-81
 
 ENV PHP_MAJOR_VERSION=8
 ENV PHP_SHORT_VERSION=81
@@ -83,7 +83,7 @@ COPY files/etc/php/conf.d/* /etc/php81/conf.d/
 #
 # PHP 8.2
 #
-FROM base as build-php-82
+FROM base AS build-php-82
 
 ENV PHP_MAJOR_VERSION=8
 ENV PHP_SHORT_VERSION=82
@@ -103,7 +103,7 @@ COPY files/etc/php/conf.d/* /etc/php82/conf.d/
 #
 # PHP 8.3
 #
-FROM base as build-php-83
+FROM base AS build-php-83
 
 ENV PHP_MAJOR_VERSION=8
 ENV PHP_SHORT_VERSION=83
@@ -124,7 +124,7 @@ COPY files/etc/php/conf.d/* /etc/php83/conf.d/
 #
 # PHP 8.4
 #
-FROM base as build-php-84
+FROM base AS build-php-84
 
 ENV PHP_MAJOR_VERSION=8
 ENV PHP_SHORT_VERSION=84
@@ -145,7 +145,7 @@ COPY files/etc/php/conf.d/* /etc/php84/conf.d/
 #
 # PHP
 #
-FROM build-php-${PHP_SHORT_VERSION} as final-php
+FROM build-php-${PHP_SHORT_VERSION} AS final-php
 
 # Fix iconv library with Alpine by gnu-libiconv
 COPY --from=libiconv /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
@@ -168,7 +168,7 @@ EOF
 # PHP-FPM
 #
 
-FROM final-php as build-php-fpm-81
+FROM final-php AS build-php-fpm-81
 
 RUN sudo -s <<EOF
 apk --no-cache add php81-fpm
@@ -177,7 +177,7 @@ EOF
 
 COPY files/etc/php/php-fpm.d/www.conf.ep /etc/php81/php-fpm.d/www.conf.ep
 
-FROM final-php as build-php-fpm-82
+FROM final-php AS build-php-fpm-82
 
 RUN sudo -s <<EOF
 apk --no-cache add php82-fpm
@@ -186,7 +186,7 @@ EOF
 
 COPY files/etc/php/php-fpm.d/www.conf.ep /etc/php82/php-fpm.d/www.conf.ep
 
-FROM final-php as build-php-fpm-83
+FROM final-php AS build-php-fpm-83
 
 RUN sudo -s <<EOF
 apk --no-cache add php83-fpm
@@ -195,7 +195,7 @@ EOF
 
 COPY files/etc/php/php-fpm.d/www.conf.ep /etc/php83/php-fpm.d/www.conf.ep
 
-FROM final-php as build-php-fpm-84
+FROM final-php AS build-php-fpm-84
 
 RUN sudo -s <<EOF
 apk --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing add php84-fpm
@@ -208,7 +208,7 @@ COPY files/etc/php/php-fpm.d/www.conf.ep /etc/php84/php-fpm.d/www.conf.ep
 # Final PHP-FPM
 #
 
-FROM build-php-fpm-${PHP_SHORT_VERSION} as final-php-fpm
+FROM build-php-fpm-${PHP_SHORT_VERSION} AS final-php-fpm
 
 ENV PHP_SENDMAIL_PATH="/usr/bin/msmtp -t"
 
@@ -224,14 +224,14 @@ CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm", "-F
 # Drupal base
 #
 
-FROM final-php-fpm as drupal-php-81
+FROM final-php-fpm AS drupal-php-81
 
 RUN sudo -s <<EOF
 apk --no-cache add mysql-client openssh rsync mariadb-connector-c \
     php81-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
-FROM final-php-fpm as drupal-php-82
+FROM final-php-fpm AS drupal-php-82
 
 RUN sudo -s <<EOF
 apk --no-cache add mysql-client openssh rsync icu-libs mariadb-connector-c
@@ -239,7 +239,7 @@ apk --no-cache add \
     php82-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
-FROM final-php-fpm as drupal-php-83
+FROM final-php-fpm AS drupal-php-83
 
 RUN sudo -s <<EOF
 apk --no-cache add mysql-client openssh rsync libavif icu-libs libsodium mariadb-connector-c
@@ -247,7 +247,7 @@ apk --no-cache add \
     php83-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
-FROM final-php-fpm as drupal-php-84
+FROM final-php-fpm AS drupal-php-84
 
 RUN sudo -s <<EOF
 apk --no-cache add mysql-client openssh rsync libavif icu-libs libsodium mariadb-connector-c
@@ -259,7 +259,7 @@ EOF
 # Drupal PHP
 #
 
-FROM drupal-php-${PHP_SHORT_VERSION} as drupal-base
+FROM drupal-php-${PHP_SHORT_VERSION} AS drupal-base
 
 ENV DRUPAL_DB_NAME=drupal \
     DRUPAL_DB_USER=drupal \
@@ -278,7 +278,7 @@ COPY drupal/set-permissions.sh /entrypoints/99-set-permissions.sh
 #
 # Drupal Web
 #
-FROM drupal-base as drupal-web
+FROM drupal-base AS drupal-web
 
 RUN sudo -s <<EOF
 apk --no-cache add nginx
