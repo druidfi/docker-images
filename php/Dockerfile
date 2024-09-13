@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.6
+# syntax=docker/dockerfile:1
 
 ARG ALPINE_VERSION
 ARG PHP_SHORT_VERSION
@@ -122,6 +122,27 @@ RUN php -v
 COPY files/etc/php/conf.d/* /etc/php83/conf.d/
 
 #
+# PHP 8.4
+#
+FROM base as build-php-84
+
+ENV PHP_MAJOR_VERSION=8
+ENV PHP_SHORT_VERSION=84
+ENV PHP_INSTALL_VERSION=84
+
+RUN sudo -s <<EOF
+apk update
+apk --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing add libcrypto3 libssl3 libzip \
+  php84 php84-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
+  php84-pecl-{apcu,imagick,redis,uploadprogress,xdebug}
+ln -sfn /usr/bin/php84 /usr/bin/php
+EOF
+
+RUN php -v
+
+COPY files/etc/php/conf.d/* /etc/php84/conf.d/
+
+#
 # PHP
 #
 FROM build-php-${PHP_SHORT_VERSION} as final-php
@@ -136,7 +157,7 @@ ENV APP_ENV=prod \
     COMPOSER_FUND=0 \
     PATH="${PATH}:/home/${DEFAULT_USER}/.composer/vendor/bin:${APP_PATH}/vendor/bin"
 
-COPY --link --from=composer/composer:2-bin /composer /usr/bin/composer
+COPY --link --from=composer/composer:2.7-bin /composer /usr/bin/composer
 
 RUN sudo -s <<EOF
 apk --no-cache add patch unzip
@@ -173,6 +194,15 @@ ln -sfn /usr/sbin/php-fpm83 /usr/sbin/php-fpm
 EOF
 
 COPY files/etc/php/php-fpm.d/www.conf.ep /etc/php83/php-fpm.d/www.conf.ep
+
+FROM final-php as build-php-fpm-84
+
+RUN sudo -s <<EOF
+apk --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing add php84-fpm
+ln -sfn /usr/sbin/php-fpm84 /usr/sbin/php-fpm
+EOF
+
+COPY files/etc/php/php-fpm.d/www.conf.ep /etc/php84/php-fpm.d/www.conf.ep
 
 #
 # Final PHP-FPM
@@ -215,6 +245,14 @@ RUN sudo -s <<EOF
 apk --no-cache add mysql-client openssh rsync libavif icu-libs libsodium mariadb-connector-c
 apk --no-cache add \
     php83-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
+EOF
+
+FROM final-php-fpm as drupal-php-84
+
+RUN sudo -s <<EOF
+apk --no-cache add mysql-client openssh rsync libavif icu-libs libsodium mariadb-connector-c
+apk --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing add \
+    php84-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
 #
