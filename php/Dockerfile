@@ -72,7 +72,7 @@ ENV PHP_SHORT_VERSION=81
 ENV PHP_INSTALL_VERSION=81
 
 RUN sudo -s <<EOF
-apk --no-cache add libzip \
+apk --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing add libzip \
   php81 php81-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
   php81-pecl-{apcu,imagick,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php81 /usr/bin/php
@@ -171,7 +171,7 @@ EOF
 FROM final-php AS build-php-fpm-81
 
 RUN sudo -s <<EOF
-apk --no-cache add php81-fpm
+apk --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing add php81-fpm
 ln -sfn /usr/sbin/php-fpm81 /usr/sbin/php-fpm
 EOF
 
@@ -227,7 +227,7 @@ CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm", "-F
 FROM final-php-fpm AS drupal-php-81
 
 RUN sudo -s <<EOF
-apk --no-cache add mysql-client openssh rsync mariadb-connector-c \
+apk --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing add mysql-client openssh rsync mariadb-connector-c \
     php81-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
