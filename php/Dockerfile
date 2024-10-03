@@ -157,7 +157,7 @@ ENV APP_ENV=prod \
     COMPOSER_FUND=0 \
     PATH="${PATH}:/home/${DEFAULT_USER}/.composer/vendor/bin:${APP_PATH}/vendor/bin"
 
-COPY --link --from=composer/composer:2.7-bin /composer /usr/bin/composer
+COPY --link --from=composer/composer:2.8-bin /composer /usr/bin/composer
 
 RUN sudo -s <<EOF
 apk --no-cache add patch unzip
