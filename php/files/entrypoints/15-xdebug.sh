@@ -8,6 +8,7 @@ if [ "$XDEBUG_ENABLE" = "true" ]; then
     echo "- Already enabled..."
   else
     sudo mv "$XDEBUG_INI".disabled "$XDEBUG_INI"
+    sudo -u root touch /tmp/xdebug.log && sudo chmod 666 /tmp/xdebug.log
   fi
 else
   echo "- Start with Xdebug disabled. Add XDEBUG_ENABLE=true ENV variable to enable it."
