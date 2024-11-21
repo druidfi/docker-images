@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1
+# check=skip=SecretsUsedInArgOrEnv
 
-ARG MYSQL_SHORT_VERSION
+ARG MYSQL_SHORT_VERSION=80
 
 FROM --platform=linux/arm64 biarms/mysql:5.7 AS mysql-57-arm64
 FROM --platform=linux/amd64 mysql:5.7 AS mysql-57-amd64
