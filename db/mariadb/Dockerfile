@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG MARIADB_VERSION=10.6
+ARG MARIADB_VERSION=11.5
 
 FROM mariadb:${MARIADB_VERSION} AS base
 
