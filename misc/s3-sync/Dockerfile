@@ -1,12 +1,11 @@
-ARG ALPINE_VERSION
+# syntax=docker/dockerfile:1
 
-FROM alpine:${ALPINE_VERSION} as base
+ARG ALPINE_VERSION=3.20.3
 
-ARG ALPINE_VERSION
+FROM alpine:${ALPINE_VERSION} AS base
 
 # All images based on this one will have these ENV vars
-ENV KIND=druid-docker-image \
-    ALPINE_VERSION=${ALPINE_VERSION}
+ENV KIND=druid-docker-image
 
 COPY s3cfg /root/.s3cfg
 COPY entrypoint.sh /

@@ -1,24 +1,27 @@
+# syntax=docker/dockerfile:1
+# check=skip=InvalidBaseImagePlatform
+
 #
 # AMD64
 #
-FROM --platform=linux/amd64 solr:8.11-slim as solr-8-amd64
+FROM --platform=linux/amd64 solr:8.11-slim AS solr-8-amd64
 
 ENV ARCH=amd64
 
 #
 # ARM64
 #
-FROM --platform=linux/arm64 arm64v8/solr:8.11-slim as solr-8-arm64
+FROM --platform=linux/arm64 arm64v8/solr:8.11-slim AS solr-8-arm64
 
 ENV ARCH=arm64
 
 #
 # Final
 #
-FROM solr-8-${TARGETARCH} as solr
+FROM solr-8-${TARGETARCH} AS solr
 
 ENV SOLR_HEAP="1024m" \
-    SOLR_DEFAULT_CONFIG_SET="search_api_solr_4.2.1"
+    SOLR_DEFAULT_CONFIG_SET="search_api_solr_4.3.0"
 
 RUN rm -rf /opt/docker-solr/configsets/
 

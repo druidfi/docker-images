@@ -1,5 +1,8 @@
+# syntax=docker/dockerfile:1
+# check=skip=SecretsUsedInArgOrEnv
+
 # See https://github.com/wodby/varnish
-FROM wodby/varnish:6 as base
+FROM wodby/varnish:6 AS base
 
 ENV VARNISH_SECRET=secret \
     VARNISH_BACKEND_HOST=app \

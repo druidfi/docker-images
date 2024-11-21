@@ -1,4 +1,6 @@
-FROM alpine as simplesamlphp
+# syntax=docker/dockerfile:1
+
+FROM alpine AS simplesamlphp
 
 ARG SIMPLESAMLPHP_VERSION
 ARG SIMPLESAMLPHP_URL=https://github.com/simplesamlphp/simplesamlphp/releases/download/v${SIMPLESAMLPHP_VERSION}/simplesamlphp-${SIMPLESAMLPHP_VERSION}-slim.tar.gz
@@ -9,7 +11,7 @@ RUN tar xzf /tmp/simplesamlphp.tar.gz -C /tmp
 RUN mv /tmp/simplesamlphp-* /home/simplesamlphp
 RUN rm -rf /home/simplesamlphp/modules/cron /home/simplesamlphp/modules/multiauth
 
-FROM druidfi/php-fpm:8.3 as final
+FROM druidfi/php-fpm:8.3 AS final
 
 USER root
 
