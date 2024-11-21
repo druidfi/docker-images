@@ -1,6 +1,8 @@
-ARG MARIADB_VERSION
+# syntax=docker/dockerfile:1
 
-FROM mariadb:${MARIADB_VERSION} as base
+ARG MARIADB_VERSION=10.6
+
+FROM mariadb:${MARIADB_VERSION} AS base
 
 ENV KIND=druid-docker-image \
     MYSQL_DATABASE=drupal \
