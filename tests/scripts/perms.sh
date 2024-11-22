@@ -2,6 +2,8 @@
 
 title "Test that pwd is $APP_PATH"
 
+sudo_bin=$(command -v doas || command -v sudo)
+
 result=$(pwd)
 expected=$APP_PATH
 
@@ -58,8 +60,8 @@ title "Test that user can operate folders inside folder owned by www-data"
 folder="$APP_PATH/folder-owned-by-www-data/"
 
 mkdir "$folder" || error "Cannot create a folder"
-sudo chown www-data:www-data "$folder" || error "Cannot change owner of folder: $result"
-#sudo chmod g+rwx "$folder" || error "Cannot change permissions of folder: $result"
+$sudo_bin chown www-data:www-data "$folder" || error "Cannot change owner of folder: $result"
+$sudo_bin chmod g+rwx "$folder" || error "Cannot change permissions of folder: $result"
 result=$(stat -c '%U:%G %A %a' "$folder")
 title "Permissions: $folder : $result"
 mkdir "$folder/somefolder" || error "Cannot create a folder inside folder"
