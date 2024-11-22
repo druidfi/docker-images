@@ -63,24 +63,6 @@ ENTRYPOINT ["/sbin/tini", "--", "entrypoint"]
 CMD ["tail", "-f", "/dev/null"]
 
 #
-# PHP 8.1
-#
-FROM base AS build-php-81
-
-ENV PHP_MAJOR_VERSION=8
-ENV PHP_SHORT_VERSION=81
-ENV PHP_INSTALL_VERSION=81
-
-RUN sudo -s <<EOF
-apk --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing add libzip \
-  php81 php81-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
-  php81-pecl-{apcu,imagick,redis,uploadprogress,xdebug}
-ln -sfn /usr/bin/php81 /usr/bin/php
-EOF
-
-COPY files/etc/php/conf.d/* /etc/php81/conf.d/
-
-#
 # PHP 8.2
 #
 FROM base AS build-php-82
@@ -168,15 +150,6 @@ EOF
 # PHP-FPM
 #
 
-FROM final-php AS build-php-fpm-81
-
-RUN sudo -s <<EOF
-apk --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing add php81-fpm
-ln -sfn /usr/sbin/php-fpm81 /usr/sbin/php-fpm
-EOF
-
-COPY files/etc/php/php-fpm.d/www.conf.ep /etc/php81/php-fpm.d/www.conf.ep
-
 FROM final-php AS build-php-fpm-82
 
 RUN sudo -s <<EOF
@@ -223,13 +196,6 @@ CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm", "-F
 #
 # Drupal base
 #
-
-FROM final-php-fpm AS drupal-php-81
-
-RUN sudo -s <<EOF
-apk --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing add mysql-client openssh rsync mariadb-connector-c \
-    php81-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
-EOF
 
 FROM final-php-fpm AS drupal-php-82
 

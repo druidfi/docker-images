@@ -25,7 +25,7 @@ services:
 
   db:
     container_name: ${COMPOSE_PROJECT_NAME}-db
-    image: druidfi/mysql:5.7-drupal
+    image: druidfi/mysql:8.0-drupal-lts
     ports:
       - 3306
 

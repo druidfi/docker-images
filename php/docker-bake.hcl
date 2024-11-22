@@ -18,7 +18,6 @@ variable "REPO_DRUPAL_WEB" {
   default = "druidfi/drupal-web"
 }
 
-variable "PHP81_MINOR" {}
 variable "PHP82_MINOR" {}
 variable "PHP83_MINOR" {}
 variable "PHP84_MINOR" {}
@@ -28,23 +27,19 @@ group "default" {
 }
 
 group "php-variants" {
-  targets = ["php-81", "php-82", "php-83", "php-84"]
+  targets = ["php-82", "php-83", "php-84"]
 }
 
 group "php-fpm-variants" {
-  targets = ["php-fpm-81", "php-fpm-82", "php-fpm-83", "php-fpm-84"]
+  targets = ["php-fpm-82", "php-fpm-83", "php-fpm-84"]
 }
 
 group "drupal-fpm-variants" {
-  targets = ["drupal-fpm-81", "drupal-fpm-82", "drupal-fpm-83", "drupal-fpm-84"]
+  targets = ["drupal-fpm-82", "drupal-fpm-83", "drupal-fpm-84"]
 }
 
 group "drupal-web-variants" {
-  targets = ["drupal-web-81", "drupal-web-82", "drupal-web-83", "drupal-web-84"]
-}
-
-group "php-83" {
-  targets = ["php-83", "php-fpm-83", "drupal-fpm-83", "drupal-web-83"]
+  targets = ["drupal-web-82", "drupal-web-83", "drupal-web-84"]
 }
 
 target "common" {
@@ -65,16 +60,6 @@ target "common" {
 target "php" {
   context = "./php"
   target = "final-php"
-}
-
-target "php-81" {
-  inherits = ["common", "php"]
-  args = {
-    ALPINE_VERSION = "${ALPINE_VERSION}"
-    PHP_VERSION = "8.1"
-    PHP_SHORT_VERSION = "81"
-  }
-  tags = ["${REPO_BASE}:8.1", "${REPO_BASE}:${PHP81_MINOR}"]
 }
 
 target "php-82" {
@@ -116,11 +101,6 @@ target "php-fpm" {
   target = "final-php-fpm"
 }
 
-target "php-fpm-81" {
-  inherits = ["common", "php-81", "php-fpm"]
-  tags = ["${REPO_FPM}:8.1", "${REPO_FPM}:${PHP81_MINOR}"]
-}
-
 target "php-fpm-82" {
   inherits = ["common", "php-82", "php-fpm"]
   tags = ["${REPO_FPM}:8.2", "${REPO_FPM}:${PHP82_MINOR}"]
@@ -139,12 +119,6 @@ target "php-fpm-84" {
 #
 # Drupal (PHP-FPM)
 #
-
-target "drupal-fpm-81" {
-  inherits = ["common", "php-81", "php-fpm"]
-  target = "drupal-php-81"
-  tags = ["${REPO_DRUPAL_FPM}:php-8.1", "${REPO_DRUPAL_FPM}:php-${PHP81_MINOR}"]
-}
 
 target "drupal-fpm-82" {
   inherits = ["common", "php-82", "php-fpm"]
@@ -167,12 +141,6 @@ target "drupal-fpm-84" {
 #
 # Drupal (PHP-FPM + Nginx)
 #
-
-target "drupal-web-81" {
-  inherits = ["common", "php-81", "php-fpm"]
-  target = "drupal-web"
-  tags = ["${REPO_DRUPAL_WEB}:php-8.1", "${REPO_DRUPAL_WEB}:php-${PHP81_MINOR}", "${REPO_DRUPAL_WEB}:v${PHP81_MINOR}"]
-}
 
 target "drupal-web-82" {
   inherits = ["common", "php-82", "php-fpm"]
