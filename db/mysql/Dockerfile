@@ -1,19 +1,18 @@
-# syntax=docker/dockerfile:1.6
+# syntax=docker/dockerfile:1
+# check=skip=SecretsUsedInArgOrEnv
 
-ARG MYSQL_SHORT_VERSION
+ARG MYSQL_SHORT_VERSION=80
 
-FROM --platform=linux/arm64 biarms/mysql:5.7 as mysql-57-arm64
-FROM --platform=linux/amd64 mysql:5.7 as mysql-57-amd64
+FROM --platform=linux/arm64 biarms/mysql:5.7 AS mysql-57-arm64
+FROM --platform=linux/amd64 mysql:5.7 AS mysql-57-amd64
 
-FROM mysql-57-${TARGETARCH} as mysql-57
+FROM mysql-57-${TARGETARCH} AS mysql-57
 
-FROM mysql:8.0 as mysql-80
+FROM mysql:8.0 AS mysql-80
 
-FROM mysql:8.1 as mysql-81
+FROM mysql:8.4 AS mysql-84
 
-FROM mysql:8.2 as mysql-82
-
-FROM mysql-${MYSQL_SHORT_VERSION} as mysql-base
+FROM mysql-${MYSQL_SHORT_VERSION} AS mysql-base
 
 ARG DRUPAL_CONF="/etc/mysql/conf.d/drupal.cnf"
 

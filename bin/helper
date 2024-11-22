@@ -1,11 +1,11 @@
 #!/bin/bash
 
 COMMAND=$1
-LATEST_ALPINE_MINOR=3.19
-LATEST_ALPINE_VERSION=3.19.1
-FALLBACK_VERSION_81="8.1.26"
-FALLBACK_VERSION_82="8.2.13"
-FALLBACK_VERSION_83="8.3.0"
+LATEST_ALPINE_MINOR=3.20
+LATEST_ALPINE_VERSION=3.20.3
+FALLBACK_VERSION_82="8.2.26"
+FALLBACK_VERSION_83="8.3.14"
+FALLBACK_VERSION_84="8.4.1"
 
 if [[ $COMMAND == alpineversion ]]
 then
@@ -32,15 +32,15 @@ then
   BRANCH=${2:-8.2}
   #ALPINE=${LATEST_ALPINE_VERSION}
 
-  if [[ $BRANCH == 8.1 ]]
+  if [[ $BRANCH == 8.2 ]]
   then
-    URL="https://git.alpinelinux.org/aports/plain/community/php81/APKBUILD?h=3.19-stable"
-  elif [[ $BRANCH == 8.2 ]]
-  then
-    URL="https://git.alpinelinux.org/aports/plain/community/php82/APKBUILD?h=3.19-stable"
+    URL="https://git.alpinelinux.org/aports/plain/community/php82/APKBUILD?h=3.20-stable"
   elif [[ $BRANCH == 8.3 ]]
   then
-    URL="https://git.alpinelinux.org/aports/plain/community/php83/APKBUILD?h=3.19-stable"
+    URL="https://git.alpinelinux.org/aports/plain/community/php83/APKBUILD?h=3.20-stable"
+  elif [[ $BRANCH == 8.4 ]]
+  then
+    URL="https://git.alpinelinux.org/aports/plain/testing/php84/APKBUILD"
   else
     echo "Not supported PHP version: $BRANCH" && exit 1
   fi
@@ -52,9 +52,9 @@ then
   if [[ "$CODE" =~ ^2 ]]; then
       echo "$RESPONSE" | cat | grep -m 1 -i "pkgver=" | cut -d "=" -f2 && exit 0
   else
-      if [[ "$BRANCH" == "8.1" ]]; then echo "$CODE $FALLBACK_VERSION_81"; fi
       if [[ "$BRANCH" == "8.2" ]]; then echo "$CODE $FALLBACK_VERSION_82"; fi
       if [[ "$BRANCH" == "8.3" ]]; then echo "$CODE $FALLBACK_VERSION_83"; fi
+      if [[ "$BRANCH" == "8.4" ]]; then echo "$CODE $FALLBACK_VERSION_84"; fi
       exit 0
   fi
 

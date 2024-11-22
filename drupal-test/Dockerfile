@@ -1,3 +1,6 @@
+# syntax=docker/dockerfile:1
+# check=skip=InvalidDefaultArgInFrom
+
 ARG PHP_VERSION
 
 FROM druidfi/php:${PHP_VERSION} AS builder

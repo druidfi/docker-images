@@ -13,7 +13,7 @@ fi
 
 if [ $APP_ENV = 'prod' ]; then
   echo "- Enable 99_production.ini..."
-  sudo mv \
+  sudo cp -f \
     /etc/php$PHP_INSTALL_VERSION/conf.d/99_production.ini.dist \
     /etc/php$PHP_INSTALL_VERSION/conf.d/99_production.ini
 fi

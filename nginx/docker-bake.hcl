@@ -1,9 +1,9 @@
 variable NGINX_STABLE_VERSION {
-  default = "1.24"
+  default = "1.26"
 }
 
 variable NGINX_MAINLINE_VERSION {
-  default = "1.25"
+  default = "1.27"
 }
 
 group "default" {

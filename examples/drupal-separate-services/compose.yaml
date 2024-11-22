@@ -1,18 +1,18 @@
 services:
 
   nginx:
-    hostname: ${DRUPAL_HOSTNAME}
     container_name: ${COMPOSE_PROJECT_NAME}-nginx
-    image: druidfi/nginx:1.25-drupal
+    hostname: ${COMPOSE_PROJECT_NAME}
+    image: druidfi/nginx:1.27-drupal
     volumes:
       - .:/app:delegated
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-nginx.entrypoints=https"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-nginx.rule=Host(`${DRUPAL_HOSTNAME}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-nginx.tls=true"
-      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-nginx.loadbalancer.server.port=8080"
-      - "traefik.docker.network=stonehenge-network"
+      - traefik.enable=true
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}-nginx.entrypoints=https
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}-nginx.rule=Host(`${DRUPAL_HOSTNAME}`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}-nginx.tls=true
+      - traefik.http.services.${COMPOSE_PROJECT_NAME}-nginx.loadbalancer.server.port=8080
+      - traefik.docker.network=stonehenge-network
     networks:
       - default
       - stonehenge-network
@@ -21,7 +21,7 @@ services:
 
   app:
     container_name: ${COMPOSE_PROJECT_NAME}-app
-    image: druidfi/drupal:php-8.2
+    image: druidfi/drupal:php-8.3
     volumes:
       - .:/app:delegated
     environment:

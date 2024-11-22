@@ -1,0 +1,34 @@
+services:
+
+  app:
+    container_name: ${COMPOSE_PROJECT_NAME}-app
+    hostname: ${COMPOSE_PROJECT_NAME}
+    image: ${WP_IMAGE}
+    environment:
+      WP_SITEURL: https://${WP_HOSTNAME}
+      DB_HOST: db
+      DB_NAME: drupal
+      DB_USER: drupal
+      DB_PASSWORD: drupal
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.entrypoints=https
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.rule=Host(`${WP_HOSTNAME}`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.tls=true
+      - traefik.http.services.${COMPOSE_PROJECT_NAME}-app.loadbalancer.server.port=8080
+      - traefik.docker.network=stonehenge-network
+    networks:
+      - default
+      - stonehenge-network
+    depends_on:
+      - db
+
+  db:
+    container_name: ${COMPOSE_PROJECT_NAME}-db
+    image: druidfi/mysql:8.0-drupal-lts
+    ports:
+      - 3306
+
+networks:
+  stonehenge-network:
+    external: true

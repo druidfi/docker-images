@@ -29,9 +29,9 @@ ENV variables:
 
 Tags:
 
-- `druidfi/php:8.1` and `druidfi/php:8.1.x`
-- `druidfi/php:8`, `druidfi/php:8.2`, `druidfi/php:8.2.x` and `druidfi/php:latest`
-- `druidfi/php:8.3` and `druidfi/php:8.3.x`
+- `druidfi/php:8.2` and `druidfi/php:8.2.x`
+- `druidfi/php:8`, `druidfi/php:8.3`, `druidfi/php:8.3.x` and `druidfi/php:latest`
+- `druidfi/php:8.4` and `druidfi/php:8.4.x`
 
 Added features:
 
@@ -43,9 +43,9 @@ Added features:
 
 Tags:
 
-- `druidfi/php-fpm:8.1`, `druidfi/php-fpm:8.1.x`
-- `druidfi/php-fpm:8`, `druidfi/php-fpm:8.2`, `druidfi/php-fpm:8.2.x` and `druidfi/php-fpm:latest`
-- `druidfi/php-fpm:8.3`, `druidfi/php-fpm:8.3.x`
+- `druidfi/php-fpm:8.2` and `druidfi/php-fpm:8.2.x`
+- `druidfi/php-fpm:8`, `druidfi/php-fpm:8.3`, `druidfi/php-fpm:8.3.x` and `druidfi/php-fpm:latest`
+- `druidfi/php-fpm:8.4` and `druidfi/php-fpm:8.4.x`
 
 Added features:
 
@@ -56,9 +56,9 @@ Added features:
 
 Tags:
 
-- `druidfi/drupal:8.1`, `druidfi/drupal:8.1.x`
-- `druidfi/drupal:8`, `druidfi/drupal:8.2`, `druidfi/drupal:8.2.x` and `druidfi/drupal:latest`
-- `druidfi/drupal:8.3`, `druidfi/drupal:8.3.x`
+- `druidfi/drupal:php-8.2` and `druidfi/drupal:php-8.2.x`
+- `druidfi/drupal:php-8`, `druidfi/drupal:php-8.3`, `druidfi/drupal:php-8.3.x` and `druidfi/drupal:latest`
+- `druidfi/drupal:php-8.4` and `druidfi/drupal:php-8.4.x`
 
 Added features:
 
@@ -66,7 +66,7 @@ Added features:
 
 Needs:
 
-- Nginx (`druidfi/nginx:1.25-drupal`)
+- Nginx (`druidfi/nginx:1.27-drupal`)
 - Database (`druidfi/mariadb:10.11-drupal-lts`)
 
 ENV variables:
@@ -79,9 +79,9 @@ ENV variables:
 
 ### druidfi/drupal-web variant
 
-- `druidfi/drupal-web:php-8.1`, `druidfi/drupal-web:php-8.1.x`
-- `druidfi/drupal-web:php-8`, `druidfi/drupal-web:php-8.2`, `druidfi/drupal-web:php-8.2.x` and `druidfi/drupal-web:latest`
-- `druidfi/drupal-web:php-8.3`, `druidfi/drupal-web:php-8.3.x`
+- `druidfi/drupal-web:php-8.2`, `druidfi/drupal-web:php-8.2.x` and `druidfi/drupal-web:v8.2.x`
+- `druidfi/drupal-web:php-8`, `druidfi/drupal-web:php-8.3`, `druidfi/drupal-web:php-8.3.x`, `druidfi/drupal-web:v8.3.x` and `druidfi/drupal-web:latest`
+- `druidfi/drupal-web:php-8.4`, `druidfi/drupal-web:php-8.4.x` and `druidfi/drupal-web:v8.4.x`
 
 Added features:
 
@@ -108,8 +108,8 @@ Needs:
 
 ### Base variant
 
-- `1.24` stable based on `nginx:1.24-alpine`
-- `1.25` mainline based on `nginx:1.25-alpine`
+- `1.26` stable based on `nginx:1.26-alpine`
+- `1.27` mainline based on `nginx:1.27-alpine`
 
 Added features:
 
@@ -117,8 +117,8 @@ Added features:
 
 ### Drupal variant
 
-- `1.24-drupal` based on `druidfi/nginx:1.24`
-- `1.25-drupal` based on `druidfi/nginx:1.25`
+- `1.26-drupal` based on `druidfi/nginx:1.26`
+- `1.27-drupal` based on `druidfi/nginx:1.27`
 
 Added features:
 

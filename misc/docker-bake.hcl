@@ -1,13 +1,18 @@
-variable ALPINE_VERSION {}
+variable "ALPINE_VERSION" {
+  default = "3.20.3"
+}
+
 variable SIMPLESAMLPHP_VERSION {
   default = "2.2.1"
 }
 
 group "default" {
-  targets = ["curl", "s3-sync", "saml-idp", "solr", "varnish"]
+  #targets = ["curl", "s3-sync", "saml-idp", "solr", "varnish"]
+  targets = ["s3-sync", "saml-idp", "solr", "varnish"]
 }
 
 target "common" {
+  debug = true
   args = {
     ALPINE_VERSION = "${ALPINE_VERSION}"
   }
