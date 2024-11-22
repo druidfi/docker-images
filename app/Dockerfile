@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.6
+# syntax=docker/dockerfile:1
 
 #
 # App image
@@ -18,7 +18,7 @@ ENV KIND=druid-docker-image \
 
 WORKDIR ${APP_PATH}
 
-COPY --link --from=composer/composer:2-bin /composer /usr/local/bin/
+COPY --link --from=composer/composer:2.8-bin /composer /usr/local/bin/
 COPY --link --from=amazeeio/envplate:v1.0.3 /usr/local/bin/ep /usr/local/bin/ep
 COPY --link --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
@@ -28,6 +28,7 @@ RUN apk --no-cache add \
     apcu bcmath exif gd igbinary msgpack mysqli opcache pdo_mysql redis sockets uploadprogress xdebug zip && \
     addgroup -S ${DEFAULT_USER} -g ${DEFAULT_USER_UID} && \
     adduser -D -S -G ${DEFAULT_USER} -u ${DEFAULT_USER_UID} -s /bin/bash ${DEFAULT_USER} && \
+    adduser ${DEFAULT_USER} www-data && \
     mkdir -p /home/${DEFAULT_USER}/.composer && \
     chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER} ${APP_PATH} && \
     chmod -R a+rwx /var/lib/nginx /var/log/nginx

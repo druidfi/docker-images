@@ -2,12 +2,12 @@ variable "REPO_BASE" {
   default = "druidfi/app"
 }
 
-variable "PHP81_MINOR" {}
 variable "PHP82_MINOR" {}
 variable "PHP83_MINOR" {}
+variable "PHP84_MINOR" {}
 
 group "default" {
-  targets = ["php-81", "php-82", "php-83"]
+  targets = ["php-82", "php-83"]
 }
 
 target "common" {
@@ -29,24 +29,6 @@ target "php" {
   context = "./app"
 }
 
-target "php-81" {
-  inherits = ["common", "php"]
-  args = {
-    PHP_VERSION = "8.1"
-    PHP_SHORT_VERSION = "81"
-  }
-  contexts = {
-    php-base = "docker-image://php:8.1-fpm-alpine"
-  }
-  labels = {
-    "org.opencontainers.image.title" = "Druid App image with PHP 8.1"
-    "org.opencontainers.image.description" = "Base PHP 8.1 image"
-    #"org.opencontainers.image.version" = VERSION
-    #"org.opencontainers.image.revision" = SHA
-  }
-  tags = ["${REPO_BASE}:php-8.1"]
-}
-
 target "php-82" {
   inherits = ["common", "php"]
   args = {
@@ -54,7 +36,7 @@ target "php-82" {
     PHP_SHORT_VERSION = "82"
   }
   contexts = {
-    php-base = "docker-image://php:8.2-fpm-alpine"
+    php-base = "docker-image://php:${PHP82_MINOR}-fpm-alpine"
   }
   labels = {
     "org.opencontainers.image.title" = "Druid App image with PHP 8.2"
@@ -72,7 +54,7 @@ target "php-83" {
     PHP_SHORT_VERSION = "83"
   }
   contexts = {
-    php-base = "docker-image://php:8.3-rc-fpm-alpine"
+    php-base = "docker-image://php:${PHP83_MINOR}-fpm-alpine"
   }
   labels = {
     "org.opencontainers.image.title" = "Druid App image with PHP 8.3"
@@ -81,4 +63,22 @@ target "php-83" {
     #"org.opencontainers.image.revision" = SHA
   }
   tags = ["${REPO_BASE}:php-8.3"]
+}
+
+target "php-84" {
+  inherits = ["common", "php"]
+  args = {
+    PHP_VERSION = "8.4"
+    PHP_SHORT_VERSION = "84"
+  }
+  contexts = {
+    php-base = "docker-image://php:${PHP84_MINOR}-fpm-alpine"
+  }
+  labels = {
+    "org.opencontainers.image.title" = "Druid App image with PHP 8.4"
+    "org.opencontainers.image.description" = "Base PHP 8.4 image"
+    #"org.opencontainers.image.version" = VERSION
+    #"org.opencontainers.image.revision" = SHA
+  }
+  tags = ["${REPO_BASE}:php-8.4"]
 }
