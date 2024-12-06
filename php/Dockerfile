@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
-ARG ALPINE_VERSION
-ARG PHP_SHORT_VERSION
+ARG ALPINE_VERSION=3.21.0
+ARG PHP_SHORT_VERSION=82
 
 #
 # libiconv
@@ -33,7 +33,8 @@ ADD --chmod=0644 https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem /o
 
 RUN <<EOF
 apk update && apk upgrade
-apk --no-cache add bash curl git make msmtp nano neofetch ssmtp sudo tar tini
+apk --no-cache add bash curl git make msmtp nano ssmtp sudo tar tini
+apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/v3.20/community neofetch
 neofetch
 addgroup -S ${DEFAULT_USER} -g ${DEFAULT_USER_UID}
 adduser -D -S -G ${DEFAULT_USER} -u ${DEFAULT_USER_UID} -s /bin/bash ${DEFAULT_USER}
@@ -114,7 +115,7 @@ ENV PHP_INSTALL_VERSION=84
 
 RUN sudo -s <<EOF
 apk update
-apk --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing add libcrypto3 libssl3 libzip \
+apk --no-cache add libcrypto3 libssl3 libzip \
   php84 php84-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
   php84-pecl-{apcu,imagick,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php84 /usr/bin/php
@@ -171,7 +172,7 @@ COPY files/etc/php/php-fpm.d/www.conf.ep /etc/php83/php-fpm.d/www.conf.ep
 FROM final-php AS build-php-fpm-84
 
 RUN sudo -s <<EOF
-apk --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing add php84-fpm
+apk --no-cache add php84-fpm
 ln -sfn /usr/sbin/php-fpm84 /usr/sbin/php-fpm
 EOF
 
@@ -217,7 +218,7 @@ FROM final-php-fpm AS drupal-php-84
 
 RUN sudo -s <<EOF
 apk --no-cache add mysql-client openssh rsync libavif icu-libs libsodium mariadb-connector-c
-apk --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing add \
+apk --no-cache add \
     php84-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
