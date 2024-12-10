@@ -201,24 +201,21 @@ CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm", "-F
 FROM final-php-fpm AS drupal-php-82
 
 RUN sudo -s <<EOF
-apk --no-cache add mysql-client openssh rsync icu-libs mariadb-connector-c
-apk --no-cache add \
+apk --no-cache add openssh rsync libavif icu-libs libsodium \
     php82-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
 FROM final-php-fpm AS drupal-php-83
 
 RUN sudo -s <<EOF
-apk --no-cache add mysql-client openssh rsync libavif icu-libs libsodium mariadb-connector-c
-apk --no-cache add \
+apk --no-cache add openssh rsync libavif icu-libs libsodium \
     php83-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
 FROM final-php-fpm AS drupal-php-84
 
 RUN sudo -s <<EOF
-apk --no-cache add mysql-client openssh rsync libavif icu-libs libsodium mariadb-connector-c
-apk --no-cache add \
+apk --no-cache add openssh rsync libavif icu-libs libsodium \
     php84-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
@@ -236,6 +233,7 @@ ENV DRUPAL_DB_NAME=drupal \
     SSH_AUTH_SOCK=/tmp/ssh-agent
 
 RUN sudo -s <<EOF
+apk --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/v3.20/main add mariadb-client=~10.11 mariadb-connector-c
 install -o ${DEFAULT_USER} -g ${DEFAULT_USER} -d /home/${DEFAULT_USER}/.drush /home/${DEFAULT_USER}/drush-backups/drupal
 EOF
 
