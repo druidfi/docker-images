@@ -23,6 +23,6 @@ ENV KIND=druid-docker-image \
     MYSQL_ROOT_PASSWORD=drupal
 
 RUN <<EOF
-printf '[mysqld]\nmax_allowed_packet=16M' >> ${DRUPAL_CONF}
+printf '[mysqld]\nmax_allowed_packet=64M' >> ${DRUPAL_CONF}
 cat ${DRUPAL_CONF}
 EOF
