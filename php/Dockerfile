@@ -237,6 +237,7 @@ apk --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/v3.20/main add
 install -o ${DEFAULT_USER} -g ${DEFAULT_USER} -d /home/${DEFAULT_USER}/.drush /home/${DEFAULT_USER}/drush-backups/drupal
 EOF
 
+COPY files/etc/my.cnf.d/mariadb-client.cnf /etc/my.cnf.d/mariadb-client.cnf
 COPY files/entrypoints/10-ssh-agent.sh /entrypoints/
 COPY drupal/set-permissions.sh /entrypoints/99-set-permissions.sh
 
