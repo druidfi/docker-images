@@ -11,7 +11,7 @@ ENV ARCH=amd64
 #
 # ARM64
 #
-FROM --platform=linux/arm64 arm64v8/solr:8.11-slim AS solr-8-arm64
+FROM --platform=linux/arm64 arm64v8/solr:9.8-slim AS solr-8-arm64
 
 ENV ARCH=arm64
 
