@@ -1,7 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", ":dependencyDashboard"],
-  "assignees": ["back-2-95"],
-  "additionalBranchPrefix": "{{packageFileDir}}-",
-  "commitMessageSuffix": " in ${packageFileDir}"
+  "extends": [
+    "config:recommended",
+    "github>druidfi/renovate-config:global"
+  ],
+  "enabled": true
 }
