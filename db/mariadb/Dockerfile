@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 # check=skip=SecretsUsedInArgOrEnv
 
-ARG MARIADB_VERSION=10.6
+ARG MARIADB_VERSION=10.11
 
 FROM mariadb:${MARIADB_VERSION} AS base
 
