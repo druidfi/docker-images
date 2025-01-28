@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG ALPINE_VERSION=3.20.3
+ARG ALPINE_VERSION=3.20.5
 
 FROM alpine:${ALPINE_VERSION} AS base
 
