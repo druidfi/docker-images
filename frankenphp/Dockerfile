@@ -32,9 +32,9 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV PATH="${PATH}:/root/.composer/vendor/bin"
 ENV PHP_INI_SCAN_DIR=":$PHP_INI_DIR/app.conf.d"
 
-COPY --link frankenphp/conf.d/ $PHP_INI_DIR/app.conf.d/
-COPY --link frankenphp/caddy/ /etc/caddy/
-COPY --link --chmod=755 frankenphp/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+COPY --link conf/php/ $PHP_INI_DIR/app.conf.d/
+COPY --link conf/caddy/ /etc/caddy/
+COPY --link --chmod=755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
 ENTRYPOINT ["docker-entrypoint"]
 

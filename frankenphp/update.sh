@@ -23,23 +23,23 @@ NORMAL="[0m"
 declare -a files=(
   ".dockerignore"
   "Dockerfile"
+  "frankenphp/docker-entrypoint.sh"
+  "frankenphp/Caddyfile"
+  "frankenphp/worker.Caddyfile"
   "frankenphp/conf.d/10-app.ini"
   "frankenphp/conf.d/20-app.dev.ini"
   "frankenphp/conf.d/20-app.prod.ini"
-  "frankenphp/Caddyfile"
-  "frankenphp/docker-entrypoint.sh"
-  "frankenphp/worker.Caddyfile"
 )
 
 declare -a targets=(
-  ".dockerignore"
-  "Dockerfile.dist"
-  "frankenphp/caddy/Caddyfile"
-  "frankenphp/caddy/worker.Caddyfile"
-  "frankenphp/conf.d/10-app.ini"
-  "frankenphp/conf.d/20-app.dev.ini"
-  "frankenphp/conf.d/20-app.prod.ini"
+  "frankenphp/.dockerignore"
+  "frankenphp/Dockerfile.dist"
   "frankenphp/docker-entrypoint.dist.sh"
+  "frankenphp/conf/caddy/Caddyfile"
+  "frankenphp/conf/caddy/worker.Caddyfile"
+  "frankenphp/conf/php/10-app.ini"
+  "frankenphp/conf/php/20-app.dev.ini"
+  "frankenphp/conf/php/20-app.prod.ini"
 )
 
 main() {
