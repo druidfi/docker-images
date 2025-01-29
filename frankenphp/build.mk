@@ -11,7 +11,7 @@ frankenphp-bake-print: frankenphp-bake-all ## Print bake plan for FrankenPHP ima
 
 PHONY += frankenphp-bake-local
 frankenphp-bake-local: BAKE_FLAGS := --pull --progress plain --no-cache --load --set *.platform=linux/$(CURRENT_ARCH)
-frankenphp-bake-local: frankenphp-bake-all ## Bake all FrankenPHP images locally
+frankenphp-bake-local: frankenphp-bake-all run-frankenphp-tests ## Bake all FrankenPHP images locally
 
 PHONY += frankenphp-bake-test
 frankenphp-bake-test: BAKE_FLAGS := --pull --progress plain --no-cache
@@ -19,9 +19,11 @@ frankenphp-bake-test: frankenphp-bake-all run-frankenphp-tests ## CI test for Fr
 
 PHONY += run-frankenphp-tests
 run-frankenphp-tests:
-	$(call step,Run tests in druidfi/drupal-web:php-8.2)
-	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/drupal-web:php-8.2 /app/scripts/tests.sh
-	$(call step,Run tests in druidfi/drupal-web:php-8.3)
-	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/drupal-web:php-8.3 /app/scripts/tests.sh
-	$(call step,Run tests in druidfi/drupal-web:php-8.4)
-	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/drupal-web:php-8.4 /app/scripts/tests.sh
+	$(call step,Run tests in druidfi/frankenphp:1.4.2-php8.3)
+	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/frankenphp:1.4.2-php8.3 /app/scripts/tests_symfony.sh
+	$(call step,Run tests in druidfi/frankenphp:1.4.2-php8.4)
+	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/frankenphp:1.4.2-php8.4 /app/scripts/tests_symfony.sh
+
+PHONY += frankenphp-update
+frankenphp-update:
+	@frankenphp/update.sh

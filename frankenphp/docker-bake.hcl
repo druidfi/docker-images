@@ -43,8 +43,8 @@ target "php-83" {
     frankenphp_upstream = "docker-image://dunglas/frankenphp:${FRANKENPHP_VERSION}-php${PHP83_PATCH}"
   }
   tags = [
-    "${REPO_BASE}:8.3",
-    "${REPO_BASE}:${PHP83_PATCH}"
+    "${REPO_BASE}:${FRANKENPHP_VERSION}-php8.3",
+    "${REPO_BASE}:${FRANKENPHP_VERSION}-php${PHP83_PATCH}"
   ]
 }
 
@@ -58,9 +58,9 @@ target "php-84" {
     frankenphp_upstream = "docker-image://dunglas/frankenphp:${FRANKENPHP_VERSION}-php${PHP84_PATCH}"
   }
   tags = [
-    "${REPO_BASE}:8",
-    "${REPO_BASE}:8.4",
-    "${REPO_BASE}:${PHP84_PATCH}",
+    "${REPO_BASE}:${FRANKENPHP_VERSION}-php8",
+    "${REPO_BASE}:${FRANKENPHP_VERSION}-php8.4",
+    "${REPO_BASE}:${FRANKENPHP_VERSION}-php${PHP84_PATCH}",
     "${REPO_BASE}:latest"
   ]
 }
