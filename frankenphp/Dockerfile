@@ -1,5 +1,6 @@
 #syntax=docker/dockerfile:1
 
+# Base FrankenPHP image
 FROM frankenphp_upstream AS frankenphp_base
 
 # defaults
