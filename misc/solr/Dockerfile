@@ -25,4 +25,4 @@ ENV SOLR_HEAP="1024m" \
 
 RUN rm -rf /opt/docker-solr/configsets/
 
-COPY --from=wodby/solr:8 /opt/docker-solr/configsets/ /opt/docker-solr/configsets/
+COPY --from=wodby/solr:9 /opt/docker-solr/configsets/ /opt/docker-solr/configsets/
