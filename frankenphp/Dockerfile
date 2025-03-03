@@ -1,10 +1,14 @@
 #syntax=docker/dockerfile:1
 
+ARG FRANKENPHP_VERSION=1.4.4-php8.4.4
+
 # Base FrankenPHP image
 FROM frankenphp_upstream AS frankenphp_base
 
+ARG FRANKENPHP_VERSION
+
 # defaults
-ENV APP_ENV=dev XDEBUG_MODE=off
+ENV APP_ENV=dev XDEBUG_MODE=off FRANKENPHP_VERSION=$FRANKENPHP_VERSION
 
 WORKDIR /app
 

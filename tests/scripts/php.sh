@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [[ -n "$FRANKENPHP_VERSION" ]]; then
+  title "Test FrankenPHP version"
+  (frankenphp -v && echo -e "") || error "Something wrong with FrankenPHP"
+fi
+
 title "Test 'php -v'"
 
 (php -v && echo -e "") || error "Something wrong with PHP"

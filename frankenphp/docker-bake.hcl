@@ -1,5 +1,5 @@
 variable "FRANKENPHP_VERSION" {
-  default = "1.4.2"
+  default = "1.4.4"
 }
 
 variable "REPO_BASE" {
@@ -20,6 +20,9 @@ group "php-variants" {
 target "common" {
   context = "./frankenphp"
   platforms = ["linux/amd64", "linux/arm64"]
+  args = {
+    FRANKENPHP_VERSION = "${FRANKENPHP_VERSION}"
+  }
   labels = {
     "org.opencontainers.image.url" = "https://github.com/druidfi/docker-images"
     "org.opencontainers.image.source" = "https://github.com/druidfi/docker-images"
