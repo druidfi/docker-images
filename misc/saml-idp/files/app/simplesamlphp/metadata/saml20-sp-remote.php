@@ -7,6 +7,22 @@
  */
 
 $metadata[getenv('SIMPLESAMLPHP_SP_ENTITY_ID')] = [
-    'AssertionConsumerService' => getenv('SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE'),
-    'SingleLogoutService' => getenv('SIMPLESAMLPHP_SP_SINGLE_LOGOUT_SERVICE'),
+    'AssertionConsumerService' => [
+        [
+            'Location' => getenv('SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE'),
+            'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
+        ],
+    ],
+    'SingleLogoutService' => [
+        [
+            'Location' => getenv('SIMPLESAMLPHP_SP_SINGLE_LOGOUT_SERVICE'),
+            'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
+        ],
+    ],
 ];
+
+if (isset($_GET['_debug']) && $_GET['_debug'] === '2') {
+    echo '<pre>';
+    print_r($metadata);
+    exit;
+}

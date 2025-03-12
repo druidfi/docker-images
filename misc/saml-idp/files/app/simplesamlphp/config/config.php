@@ -1,5 +1,11 @@
 <?php
 
+if (isset($_GET['_debug']) && $_GET['_debug'] === '1') {
+    echo '<pre>';
+    print_r(getenv());
+    exit;
+}
+
 /**
  * The configuration of SimpleSAMLphp
  */
@@ -196,6 +202,10 @@ $config = [
      * This password will give access to the installation page of SimpleSAMLphp with
      * metadata listing and diagnostics pages.
      * You can also put a hash here; run "bin/pwgen.php" to generate one.
+     *
+     * If you are using Ansible you might like to use
+     * ansible.builtin.password_hash(hashtype='blowfish', ident='2y', rounds=13)
+     * to generate this hashed value.
      */
     'auth.adminpassword' => 'debugpass',
 
@@ -366,7 +376,7 @@ $config = [
      * loggingdir above to 'null'.
      */
     'logging.level' => SimpleSAML\Logger::DEBUG,
-    'logging.handler' => 'stderr',
+    'logging.handler' => 'syslog',
 
     /*
      * Specify the format of the logs. Its use varies depending on the log handler used (for instance, you cannot
@@ -451,7 +461,7 @@ $config = [
      * Proxy to use for retrieving URLs.
      *
      * Example:
-     *   'proxy' => 'tcp://proxy.example.com:5100'
+     *   'proxy' => 'http://proxy.example.com:5100'
      */
     'proxy' => null,
 
@@ -661,7 +671,7 @@ $config = [
     /*
      * Option to override the default settings for the auth token cookie
      */
-    'session.authtoken.cookiename' => 'SimpleSAMLAuthTokenIdp',
+    'session.authtoken.cookiename' => 'SimpleSAMLAuthToken',
 
     /*
      * Options for remember me feature for IdP sessions. Remember me feature
@@ -821,8 +831,8 @@ $config = [
      */
     'language.available' => [
         'en', 'no', 'nn', 'se', 'da', 'de', 'sv', 'fi', 'es', 'ca', 'fr', 'it', 'nl', 'lb',
-        'cs', 'sk', 'sl', 'lt', 'hr', 'hu', 'pl', 'pt', 'pt-br', 'tr', 'ja', 'zh', 'zh-tw',
-        'ru', 'et', 'he', 'id', 'sr', 'lv', 'ro', 'eu', 'el', 'af', 'zu', 'xh', 'st',
+        'cs', 'sk', 'sl', 'lt', 'hr', 'hu', 'pl', 'pt', 'pt_BR', 'tr', 'ja', 'zh', 'zh_TW',
+        'ru', 'et', 'he', 'id', 'sr', 'lv', 'ro', 'eu', 'el', 'af', 'zu', 'xh', 'st'
     ],
     'language.rtl' => ['ar', 'dv', 'fa', 'ur', 'he'],
     'language.default' => 'en',
@@ -992,12 +1002,6 @@ $config = [
 
         // Adopts language from attribute to use in UI
         30 => 'core:LanguageAdaptor',
-
-        45 => [
-            'class'         => 'core:StatisticsWithAttribute',
-            'attributename' => 'realm',
-            'type'          => 'saml20-idp-SSO',
-        ],
 
         /* When called without parameters, it will fallback to filter attributes 'the old way'
          * by checking the 'attributes' parameter in metadata on IdP hosted and SP remote.
