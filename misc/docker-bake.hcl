@@ -10,7 +10,7 @@ group "default" {
   #targets = ["curl", "s3-sync", "saml-idp", "solr", "varnish"]
   #targets = ["s3-sync", "saml-idp", "solr", "varnish"]
   #targets = ["s3-sync", "saml-idp", "solr"]
-  targets = ["s3-sync", "saml-idp", "solr", "solr8"]
+  targets = ["s3-sync", "saml-idp", "solr", "solr-8"]
 }
 
 target "common" {
@@ -57,10 +57,10 @@ target "solr" {
   tags = ["druidfi/solr:9-drupal","druidfi/solr:9.8.1-drupal"]
 }
 
-target "solr8" {
+target "solr-8" {
   inherits = ["common"]
   context = "./misc/solr"
-  dockerfile = "Dockerfile.solr8"
+  dockerfile = "Dockerfile.8"
   target = "solr8"
   tags = ["druidfi/solr:8-drupal","druidfi/solr:8.11-drupal"]
 }
