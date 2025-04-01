@@ -18,7 +18,8 @@ group "php-variants" {
 }
 
 target "common" {
-  context = "./frankenphp"
+  context = "./"
+  dockerfile = "./frankenphp/Dockerfile"
   platforms = ["linux/amd64", "linux/arm64"]
   args = {
     FRANKENPHP_VERSION = "${FRANKENPHP_VERSION}"
