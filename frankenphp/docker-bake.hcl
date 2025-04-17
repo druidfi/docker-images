@@ -1,5 +1,5 @@
 variable "FRANKENPHP_VERSION" {
-  default = "1.4.4"
+  default = "1.5.0"
 }
 
 variable "REPO_BASE" {
@@ -18,7 +18,8 @@ group "php-variants" {
 }
 
 target "common" {
-  context = "./frankenphp"
+  context = "./"
+  dockerfile = "./frankenphp/Dockerfile"
   platforms = ["linux/amd64", "linux/arm64"]
   args = {
     FRANKENPHP_VERSION = "${FRANKENPHP_VERSION}"
