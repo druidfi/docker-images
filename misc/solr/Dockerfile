@@ -2,22 +2,23 @@
 # check=skip=InvalidBaseImagePlatform
 
 ### Git downloader for search_api_solr
-FROM alpine AS git-downloader
+FROM alpine AS search_api_solr
 
-RUN apk --update --no-cache add git
-
-WORKDIR /tmp
-
-RUN git clone https://git.drupalcode.org/project/search_api_solr.git
+ADD https://git.drupalcode.org/project/search_api_solr.git#4.3.8 /search_api_solr
 
 #
 # Final
 #
-FROM solr:9.8.1-slim AS solr
+FROM solr:9.8.1 AS solr
 
 ENV SOLR_HEAP="1024m" \
-    SOLR_DEFAULT_CONFIG_SET="search_api_solr_4.3.8"
+    SOLR_MODULES="extraction,langid,ltr,analysis-extras" \
+    SOLR_ULIMIT_CHECKS="false"
 
-COPY --from=git-downloader /tmp/search_api_solr/jump-start/solr9/config-set/ /opt/docker-solr/configsets/search_api_solr_4.3.8/
+COPY --from=search_api_solr /search_api_solr/jump-start/solr9/config-set /solr-conf/conf
 
-RUN test -f /opt/docker-solr/configsets/search_api_solr_4.3.8/solrconfig.xml || exit 1
+RUN test -f /solr-conf/conf/schema.xml && \
+    cat /solr-conf/conf/schema.xml | grep drupal || \
+    exit 1
+
+CMD ["solr-precreate", "drupal", "/solr-conf"]

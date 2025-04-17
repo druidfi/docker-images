@@ -7,10 +7,7 @@ variable SIMPLESAMLPHP_VERSION {
 }
 
 group "default" {
-  #targets = ["curl", "s3-sync", "saml-idp", "solr", "varnish"]
-  #targets = ["s3-sync", "saml-idp", "solr", "varnish"]
-  #targets = ["s3-sync", "saml-idp", "solr"]
-  targets = ["s3-sync", "saml-idp", "solr", "solr-8"]
+  targets = ["s3-sync", "saml-idp", "solr"]
 }
 
 target "common" {
