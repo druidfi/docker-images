@@ -1,5 +1,5 @@
 variable NGINX_STABLE_VERSION {
-  default = "1.26"
+  default = "1.28"
 }
 
 variable NGINX_MAINLINE_VERSION {

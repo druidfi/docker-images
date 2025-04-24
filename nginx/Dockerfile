@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG NGINX_VERSION=1.26
+ARG NGINX_VERSION=1.27
 
 FROM nginx:${NGINX_VERSION}-alpine AS base
 
