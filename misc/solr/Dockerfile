@@ -1,28 +1,24 @@
 # syntax=docker/dockerfile:1
 # check=skip=InvalidBaseImagePlatform
 
-#
-# AMD64
-#
-FROM --platform=linux/amd64 solr:8.11-slim AS solr-8-amd64
+### Git downloader for search_api_solr
+FROM alpine AS search_api_solr
 
-ENV ARCH=amd64
-
-#
-# ARM64
-#
-FROM --platform=linux/arm64 arm64v8/solr:8.11-slim AS solr-8-arm64
-
-ENV ARCH=arm64
+ADD https://git.drupalcode.org/project/search_api_solr.git#4.3.8 /search_api_solr
 
 #
 # Final
 #
-FROM solr-8-${TARGETARCH} AS solr
+FROM solr:9.8.1 AS solr
 
 ENV SOLR_HEAP="1024m" \
-    SOLR_DEFAULT_CONFIG_SET="search_api_solr_4.3.0"
+    SOLR_MODULES="extraction,langid,ltr,analysis-extras" \
+    SOLR_ULIMIT_CHECKS="false"
 
-RUN rm -rf /opt/docker-solr/configsets/
+COPY --from=search_api_solr /search_api_solr/jump-start/solr9/config-set /solr-conf/conf
 
-COPY --from=wodby/solr:8 /opt/docker-solr/configsets/ /opt/docker-solr/configsets/
+RUN test -f /solr-conf/conf/schema.xml && \
+    cat /solr-conf/conf/schema.xml | grep drupal || \
+    exit 1
+
+CMD ["solr-precreate", "drupal", "/solr-conf"]
