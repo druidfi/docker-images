@@ -55,6 +55,8 @@ COPY files/entrypoints/00-umask.sh \
 COPY files/etc/msmtprc /etc/msmtprc
 COPY files/etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf
 
+RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
+
 SHELL ["/bin/bash", "-c"]
 USER ${DEFAULT_USER}
 
@@ -246,8 +248,11 @@ COPY drupal/set-permissions.sh /entrypoints/99-set-permissions.sh
 #
 FROM drupal-base AS drupal-web
 
+ADD --chmod=755 https://github.com/Smile-SA/gdpr-dump/releases/latest/download/gdpr-dump.phar /usr/local/bin/gdpr-dump
+
 RUN sudo -s <<EOF
 apk --no-cache add nginx
+gdpr-dump --version
 EOF
 
 COPY files/entrypoints/20-php-fpm.sh files/entrypoints/30-nginx.sh /entrypoints/
