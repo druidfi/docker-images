@@ -1,13 +1,17 @@
 variable "FRANKENPHP_VERSION" {
-  default = "1.5.0"
+  default = "1.6.0"
 }
 
 variable "REPO_BASE" {
   default = "druidfi/frankenphp"
 }
 
-variable "PHP83_PATCH" {}
-variable "PHP84_PATCH" {}
+variable "PHP83_PATCH" {
+  default = "8.3.21"
+}
+variable "PHP84_PATCH" {
+  default = "8.4.7"
+}
 
 group "default" {
   targets = ["php-variants"]
