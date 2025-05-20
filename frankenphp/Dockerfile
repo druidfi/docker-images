@@ -45,9 +45,9 @@ ENV MERCURE_TRANSPORT_URL=bolt:///data/mercure.db
 
 ENV PHP_INI_SCAN_DIR=":$PHP_INI_DIR/app.conf.d"
 
-# druidfi changes >>
+###> druidfi changes ###
 ENV PATH="${PATH}:/root/.composer/vendor/bin"
-# << druidfi changes
+###< druidfi changes ###
 
 COPY --link frankenphp/conf.d/ $PHP_INI_DIR/app.conf.d/
 COPY --link --chmod=755 frankenphp/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
