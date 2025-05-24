@@ -1,6 +1,6 @@
 #syntax=docker/dockerfile:1
 
-ARG FRANKENPHP_VERSION=1.6.0-php8.4.7
+ARG FRANKENPHP_VERSION=1.6.2-php8.4.7
 
 # Base FrankenPHP image
 FROM frankenphp_upstream AS frankenphp_base

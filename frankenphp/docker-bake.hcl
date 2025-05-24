@@ -1,5 +1,5 @@
 variable "FRANKENPHP_VERSION" {
-  default = "1.6.0"
+  default = "1.6.2"
 }
 
 variable "REPO_BASE" {
