@@ -1,5 +1,5 @@
 variable "FRANKENPHP_VERSION" {
-  default = "1.6.2"
+  default = "1.7.0"
 }
 
 variable "REPO_BASE" {
@@ -7,10 +7,10 @@ variable "REPO_BASE" {
 }
 
 variable "PHP83_PATCH" {
-  default = "8.3.21"
+  default = "8.3.22"
 }
 variable "PHP84_PATCH" {
-  default = "8.4.7"
+  default = "8.4.8"
 }
 
 group "default" {
