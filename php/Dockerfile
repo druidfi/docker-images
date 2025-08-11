@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG ALPINE_VERSION=3.22.0
+ARG ALPINE_VERSION=3.22.1
 ARG PHP_SHORT_VERSION=82
 
 #
@@ -30,6 +30,8 @@ ADD --chmod=0644 https://cacerts.digicert.com/BaltimoreCyberTrustRoot.crt.pem /o
 ADD --chmod=0644 https://cacerts.digicert.com/DigiCertGlobalRootG2.crt.pem /opt/ssl/
 # https://learn.microsoft.com/en-us/azure/mysql/flexible-server/how-to-connect-tls-ssl
 ADD --chmod=0644 https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem /opt/ssl/
+
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 RUN <<EOF
 apk update && apk upgrade
@@ -77,7 +79,7 @@ ENV PHP_INSTALL_VERSION=82
 RUN sudo -s <<EOF
 apk --no-cache add libcrypto3 libssl3 libzip \
   php82 php82-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
-  php82-pecl-{apcu,imagick,redis,uploadprogress,xdebug}
+  php82-pecl-{apcu,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php82 /usr/bin/php
 EOF
 
@@ -98,7 +100,7 @@ RUN sudo -s <<EOF
 apk update
 apk --no-cache add libcrypto3 libssl3 libzip \
   php83 php83-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
-  php83-pecl-{apcu,imagick,redis,uploadprogress,xdebug}
+  php83-pecl-{apcu,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php83 /usr/bin/php
 EOF
 
@@ -119,7 +121,7 @@ RUN sudo -s <<EOF
 apk update
 apk --no-cache add libcrypto3 libssl3 libzip \
   php84 php84-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
-  php84-pecl-{apcu,imagick,redis,uploadprogress,xdebug}
+  php84-pecl-{apcu,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php84 /usr/bin/php
 EOF
 
@@ -145,6 +147,8 @@ ENV APP_ENV=prod \
 COPY --link --from=composer/composer:2.8-bin /composer /usr/bin/composer
 
 RUN sudo -s <<EOF
+install-php-extensions imagick
+rm /usr/local/bin/install-php-extensions
 apk --no-cache add patch unzip
 install -o ${DEFAULT_USER} -g ${DEFAULT_USER} -d ${COMPOSER_HOME}
 EOF
