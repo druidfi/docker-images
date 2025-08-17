@@ -7,8 +7,6 @@ variable SIMPLESAMLPHP_VERSION {
 }
 
 group "default" {
-  #targets = ["curl", "s3-sync", "saml-idp", "solr", "varnish"]
-  #targets = ["s3-sync", "saml-idp", "solr", "varnish"]
   targets = ["s3-sync", "saml-idp", "solr"]
 }
 
@@ -53,6 +51,14 @@ target "solr" {
   inherits = ["common"]
   context = "./misc/solr"
   target = "solr"
+  tags = ["druidfi/solr:9-drupal","druidfi/solr:9.8.1-drupal"]
+}
+
+target "solr-8" {
+  inherits = ["common"]
+  context = "./misc/solr"
+  dockerfile = "Dockerfile.8"
+  target = "solr8"
   tags = ["druidfi/solr:8-drupal","druidfi/solr:8.11-drupal"]
 }
 
