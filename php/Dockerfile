@@ -47,15 +47,15 @@ install -o ${DEFAULT_USER} -g ${DEFAULT_USER} ${APP_PATH}
 echo "Set disable_coredump false" > /etc/sudo.conf
 EOF
 
-COPY --chown=${DEFAULT_USER}:${DEFAULT_USER} files/home/druid/ /home/druid
-COPY files/usr/local/bin/ /usr/local/bin/
+COPY --chown=${DEFAULT_USER}:${DEFAULT_USER} rootfs/home/druid/ /home/druid
+COPY rootfs/usr/local/bin/ /usr/local/bin/
 COPY --link --from=amazeeio/envplate:v1.0.3 /usr/local/bin/ep /usr/local/bin/ep
-COPY files/entrypoints/00-umask.sh \
-     files/entrypoints/15-xdebug.sh \
-     files/entrypoints/19-php_ini.sh \
-     files/entrypoints/40-ssmtp.sh /entrypoints/
-COPY files/etc/msmtprc /etc/msmtprc
-COPY files/etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf
+COPY rootfs/entrypoints/00-umask.sh \
+     rootfs/entrypoints/15-xdebug.sh \
+     rootfs/entrypoints/19-php_ini.sh \
+     rootfs/entrypoints/40-ssmtp.sh /entrypoints/
+COPY rootfs/etc/msmtprc /etc/msmtprc
+COPY rootfs/etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf
 
 RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 
@@ -85,7 +85,7 @@ EOF
 
 RUN php -v
 
-COPY files/etc/php/conf.d/* /etc/php82/conf.d/
+COPY rootfs/etc/php/conf.d/* /etc/php82/conf.d/
 
 #
 # PHP 8.3
@@ -106,7 +106,7 @@ EOF
 
 RUN php -v
 
-COPY files/etc/php/conf.d/* /etc/php83/conf.d/
+COPY rootfs/etc/php/conf.d/* /etc/php83/conf.d/
 
 #
 # PHP 8.4
@@ -127,7 +127,7 @@ EOF
 
 RUN php -v
 
-COPY files/etc/php/conf.d/* /etc/php84/conf.d/
+COPY rootfs/etc/php/conf.d/* /etc/php84/conf.d/
 
 #
 # PHP
@@ -164,7 +164,7 @@ apk --no-cache add php82-fpm
 ln -sfn /usr/sbin/php-fpm82 /usr/sbin/php-fpm
 EOF
 
-COPY files/etc/php/php-fpm.d/www.conf.ep /etc/php82/php-fpm.d/www.conf.ep
+COPY rootfs/etc/php/php-fpm.d/www.conf.ep /etc/php82/php-fpm.d/www.conf.ep
 
 FROM final-php AS build-php-fpm-83
 
@@ -173,7 +173,7 @@ apk --no-cache add php83-fpm
 ln -sfn /usr/sbin/php-fpm83 /usr/sbin/php-fpm
 EOF
 
-COPY files/etc/php/php-fpm.d/www.conf.ep /etc/php83/php-fpm.d/www.conf.ep
+COPY rootfs/etc/php/php-fpm.d/www.conf.ep /etc/php83/php-fpm.d/www.conf.ep
 
 FROM final-php AS build-php-fpm-84
 
@@ -182,7 +182,7 @@ apk --no-cache add php84-fpm
 ln -sfn /usr/sbin/php-fpm84 /usr/sbin/php-fpm
 EOF
 
-COPY files/etc/php/php-fpm.d/www.conf.ep /etc/php84/php-fpm.d/www.conf.ep
+COPY rootfs/etc/php/php-fpm.d/www.conf.ep /etc/php84/php-fpm.d/www.conf.ep
 
 #
 # Final PHP-FPM
@@ -243,8 +243,8 @@ apk --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/v3.20/main add
 install -o ${DEFAULT_USER} -g ${DEFAULT_USER} -d /home/${DEFAULT_USER}/.drush /home/${DEFAULT_USER}/drush-backups/drupal
 EOF
 
-COPY files/etc/my.cnf.d/mariadb-client.cnf /etc/my.cnf.d/mariadb-client.cnf
-COPY files/entrypoints/10-ssh-agent.sh /entrypoints/
+COPY rootfs/etc/my.cnf.d/mariadb-client.cnf /etc/my.cnf.d/mariadb-client.cnf
+COPY rootfs/entrypoints/10-ssh-agent.sh /entrypoints/
 COPY drupal/set-permissions.sh /entrypoints/99-set-permissions.sh
 
 #
@@ -259,10 +259,10 @@ apk --no-cache add nginx
 gdpr-dump --version
 EOF
 
-COPY files/entrypoints/20-php-fpm.sh files/entrypoints/30-nginx.sh /entrypoints/
-COPY files/etc/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY files/etc/nginx/fastcgi.conf /etc/nginx/fastcgi.conf
-COPY files/etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
+COPY rootfs/entrypoints/20-php-fpm.sh rootfs/entrypoints/30-nginx.sh /entrypoints/
+COPY rootfs/etc/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY rootfs/etc/nginx/fastcgi.conf /etc/nginx/fastcgi.conf
+COPY rootfs/etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 8080
 
