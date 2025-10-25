@@ -1,5 +1,5 @@
 variable "ALPINE_VERSION" {
-  default = "3.22.0"
+  default = "3.22.2"
 }
 
 variable SIMPLESAMLPHP_VERSION {
@@ -7,8 +7,8 @@ variable SIMPLESAMLPHP_VERSION {
 }
 
 group "default" {
-  #targets = ["curl", "s3-sync", "saml-idp", "solr", "varnish"]
-  #targets = ["s3-sync", "saml-idp", "solr", "varnish"]
+  #targets = ["curl", "s3-sync", "saml-idp", "solr"]
+  #targets = ["s3-sync", "saml-idp", "solr"]
   targets = ["s3-sync", "saml-idp", "solr"]
 }
 
@@ -54,10 +54,4 @@ target "solr" {
   context = "./misc/solr"
   target = "solr"
   tags = ["druidfi/solr:8-drupal","druidfi/solr:8.11-drupal"]
-}
-
-target "varnish" {
-  inherits = ["common"]
-  context = "./misc/varnish"
-  tags = ["druidfi/varnish:6-drupal"]
 }
