@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG ALPINE_VERSION=3.22.1
+ARG ALPINE_VERSION=3.22.2
 ARG PHP_SHORT_VERSION=82
 
 #
@@ -29,7 +29,8 @@ ADD --chmod=0644 https://cacerts.digicert.com/BaltimoreCyberTrustRoot.crt.pem /o
 # See https://learn.microsoft.com/en-us/azure/postgresql/single-server/concepts-certificate-rotation#what-change-was-scheduled-to-be-performed-starting-december-2022-122022
 ADD --chmod=0644 https://cacerts.digicert.com/DigiCertGlobalRootG2.crt.pem /opt/ssl/
 # https://learn.microsoft.com/en-us/azure/mysql/flexible-server/how-to-connect-tls-ssl
-ADD --chmod=0644 https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem /opt/ssl/
+#ADD --chmod=0644 https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem /opt/ssl/
+COPY --chmod=644 rootfs/opt/ssl/DigiCertGlobalRootCA.crt.pem /opt/ssl/
 
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 

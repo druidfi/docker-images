@@ -1,5 +1,5 @@
 variable "ALPINE_VERSION" {
-  default = "3.22.1"
+  default = "3.22.2"
 }
 
 variable "REPO_BASE" {
@@ -69,7 +69,10 @@ target "php-82" {
     PHP_VERSION = "8.2"
     PHP_SHORT_VERSION = "82"
   }
-  tags = ["${REPO_BASE}:8.2", "${REPO_BASE}:${PHP82_MINOR}"]
+  tags = [
+    "${REPO_BASE}:8.2",
+    "${REPO_BASE}:${PHP82_MINOR}"
+  ]
 }
 
 target "php-83" {
@@ -79,7 +82,11 @@ target "php-83" {
     PHP_VERSION = "8.3"
     PHP_SHORT_VERSION = "83"
   }
-  tags = ["${REPO_BASE}:8", "${REPO_BASE}:8.3", "${REPO_BASE}:${PHP83_MINOR}"]
+  tags = [
+    "${REPO_BASE}:8",
+    "${REPO_BASE}:8.3",
+    "${REPO_BASE}:${PHP83_MINOR}"
+  ]
 }
 
 target "php-84" {
@@ -89,7 +96,11 @@ target "php-84" {
     PHP_VERSION = "8.4"
     PHP_SHORT_VERSION = "84"
   }
-  tags = ["${REPO_BASE}:8.4", "${REPO_BASE}:${PHP84_MINOR}", "${REPO_BASE}:latest"]
+  tags = [
+    "${REPO_BASE}:8.4",
+    "${REPO_BASE}:${PHP84_MINOR}",
+    "${REPO_BASE}:latest"
+  ]
 }
 
 #
@@ -103,17 +114,28 @@ target "php-fpm" {
 
 target "php-fpm-82" {
   inherits = ["common", "php-82", "php-fpm"]
-  tags = ["${REPO_FPM}:8.2", "${REPO_FPM}:${PHP82_MINOR}"]
+  tags = [
+    "${REPO_FPM}:8.2",
+    "${REPO_FPM}:${PHP82_MINOR}"
+  ]
 }
 
 target "php-fpm-83" {
   inherits = ["common", "php-83", "php-fpm"]
-  tags = ["${REPO_FPM}:8", "${REPO_FPM}:8.3", "${REPO_FPM}:${PHP83_MINOR}"]
+  tags = [
+    "${REPO_FPM}:8",
+    "${REPO_FPM}:8.3",
+    "${REPO_FPM}:${PHP83_MINOR}"
+  ]
 }
 
 target "php-fpm-84" {
   inherits = ["common", "php-84", "php-fpm"]
-  tags = ["${REPO_FPM}:8.4", "${REPO_FPM}:${PHP84_MINOR}", "${REPO_FPM}:latest"]
+  tags = [
+    "${REPO_FPM}:8.4",
+    "${REPO_FPM}:${PHP84_MINOR}",
+    "${REPO_FPM}:latest"
+  ]
 }
 
 #
@@ -123,19 +145,30 @@ target "php-fpm-84" {
 target "drupal-fpm-82" {
   inherits = ["common", "php-82", "php-fpm"]
   target = "drupal-php-82"
-  tags = ["${REPO_DRUPAL_FPM}:php-8.2", "${REPO_DRUPAL_FPM}:php-${PHP82_MINOR}"]
+  tags = [
+    "${REPO_DRUPAL_FPM}:php-8.2",
+    "${REPO_DRUPAL_FPM}:php-${PHP82_MINOR}"
+  ]
 }
 
 target "drupal-fpm-83" {
   inherits = ["common", "php-83", "php-fpm"]
   target = "drupal-php-83"
-  tags = ["${REPO_DRUPAL_FPM}:php-8", "${REPO_DRUPAL_FPM}:php-8.3", "${REPO_DRUPAL_FPM}:php-${PHP83_MINOR}"]
+  tags = [
+    "${REPO_DRUPAL_FPM}:php-8",
+    "${REPO_DRUPAL_FPM}:php-8.3",
+    "${REPO_DRUPAL_FPM}:php-${PHP83_MINOR}"
+  ]
 }
 
 target "drupal-fpm-84" {
   inherits = ["common", "php-84", "php-fpm"]
   target = "drupal-php-84"
-  tags = ["${REPO_DRUPAL_FPM}:php-8.4", "${REPO_DRUPAL_FPM}:php-${PHP84_MINOR}", "${REPO_DRUPAL_FPM}:latest"]
+  tags = [
+    "${REPO_DRUPAL_FPM}:php-8.4",
+    "${REPO_DRUPAL_FPM}:php-${PHP84_MINOR}",
+    "${REPO_DRUPAL_FPM}:latest"
+  ]
 }
 
 #
@@ -145,17 +178,31 @@ target "drupal-fpm-84" {
 target "drupal-web-82" {
   inherits = ["common", "php-82", "php-fpm"]
   target = "drupal-web"
-  tags = ["${REPO_DRUPAL_WEB}:php-8.2", "${REPO_DRUPAL_WEB}:php-${PHP82_MINOR}", "${REPO_DRUPAL_WEB}:v${PHP82_MINOR}"]
+  tags = [
+    "${REPO_DRUPAL_WEB}:php-8.2",
+    "${REPO_DRUPAL_WEB}:php-${PHP82_MINOR}",
+    "${REPO_DRUPAL_WEB}:v${PHP82_MINOR}"
+  ]
 }
 
 target "drupal-web-83" {
   inherits = ["common", "php-83", "php-fpm"]
   target = "drupal-web"
-  tags = ["${REPO_DRUPAL_WEB}:php-8", "${REPO_DRUPAL_WEB}:php-8.3", "${REPO_DRUPAL_WEB}:php-${PHP83_MINOR}", "${REPO_DRUPAL_WEB}:v${PHP83_MINOR}"]
+  tags = [
+    "${REPO_DRUPAL_WEB}:php-8",
+    "${REPO_DRUPAL_WEB}:php-8.3",
+    "${REPO_DRUPAL_WEB}:php-${PHP83_MINOR}",
+    "${REPO_DRUPAL_WEB}:v${PHP83_MINOR}"
+  ]
 }
 
 target "drupal-web-84" {
   inherits = ["common", "php-84", "php-fpm"]
   target = "drupal-web"
-  tags = ["${REPO_DRUPAL_WEB}:php-8.4", "${REPO_DRUPAL_WEB}:php-${PHP84_MINOR}", "${REPO_DRUPAL_WEB}:v${PHP84_MINOR}", "${REPO_DRUPAL_WEB}:latest"]
+  tags = [
+    "${REPO_DRUPAL_WEB}:php-8.4",
+    "${REPO_DRUPAL_WEB}:php-${PHP84_MINOR}",
+    "${REPO_DRUPAL_WEB}:v${PHP84_MINOR}",
+    "${REPO_DRUPAL_WEB}:latest"
+  ]
 }
