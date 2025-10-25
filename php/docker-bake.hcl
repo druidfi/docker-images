@@ -3,19 +3,19 @@ variable "ALPINE_VERSION" {
 }
 
 variable "REPO_BASE" {
-  default = "druidfi/php"
+  default = "ghcr.io/druidfi/php"
 }
 
 variable "REPO_FPM" {
-  default = "druidfi/php-fpm"
+  default = "ghcr.io/druidfi/php-fpm"
 }
 
 variable "REPO_DRUPAL_FPM" {
-  default = "druidfi/drupal"
+  default = "ghcr.io/druidfi/drupal"
 }
 
 variable "REPO_DRUPAL_WEB" {
-  default = "druidfi/drupal-web"
+  default = "ghcr.io/druidfi/drupal-web"
 }
 
 variable "PHP83_MINOR" {}

@@ -14,11 +14,15 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
 
   build:
 
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     steps:
 
@@ -33,6 +37,35 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build PHP images
+      - name: Log in to GHCR
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Resolve PHP minor versions
+        id: versions
         run: |
-          make php-bake-test
+          echo "php83_minor=$(bin/helper phpminor 8.3)" >> "$GITHUB_OUTPUT"
+          echo "php84_minor=$(bin/helper phpminor 8.4)" >> "$GITHUB_OUTPUT"
+          echo "php85_minor=$(bin/helper phpminor 8.5)" >> "$GITHUB_OUTPUT"
+
+      - name: Build PHP images (no push)
+        if: github.event_name == 'pull_request'
+        env:
+          PHP83_MINOR: ${{ steps.versions.outputs.php83_minor }}
+          PHP84_MINOR: ${{ steps.versions.outputs.php84_minor }}
+          PHP85_MINOR: ${{ steps.versions.outputs.php85_minor }}
+        run: |
+          docker buildx bake -f php/docker-bake.hcl --pull --no-cache
+
+      - name: Build and push PHP images
+        if: github.event_name != 'pull_request'
+        env:
+          PHP83_MINOR: ${{ steps.versions.outputs.php83_minor }}
+          PHP84_MINOR: ${{ steps.versions.outputs.php84_minor }}
+          PHP85_MINOR: ${{ steps.versions.outputs.php85_minor }}
+        run: |
+          docker buildx bake -f php/docker-bake.hcl --pull --no-cache --push
