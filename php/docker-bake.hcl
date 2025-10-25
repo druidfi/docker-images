@@ -27,19 +27,19 @@ group "default" {
 }
 
 group "php-variants" {
-  targets = ["php-82", "php-83", "php-84"]
+  targets = ["php-83", "php-84"]
 }
 
 group "php-fpm-variants" {
-  targets = ["php-fpm-82", "php-fpm-83", "php-fpm-84"]
+  targets = ["php-fpm-83", "php-fpm-84"]
 }
 
 group "drupal-fpm-variants" {
-  targets = ["drupal-fpm-82", "drupal-fpm-83", "drupal-fpm-84"]
+  targets = ["drupal-fpm-83", "drupal-fpm-84"]
 }
 
 group "drupal-web-variants" {
-  targets = ["drupal-web-82", "drupal-web-83", "drupal-web-84"]
+  targets = ["drupal-web-83", "drupal-web-84"]
 }
 
 target "common" {
@@ -60,19 +60,6 @@ target "common" {
 target "php" {
   context = "./php"
   target = "final-php"
-}
-
-target "php-82" {
-  inherits = ["common", "php"]
-  args = {
-    ALPINE_VERSION = "${ALPINE_VERSION}"
-    PHP_VERSION = "8.2"
-    PHP_SHORT_VERSION = "82"
-  }
-  tags = [
-    "${REPO_BASE}:8.2",
-    "${REPO_BASE}:${PHP82_MINOR}"
-  ]
 }
 
 target "php-83" {
@@ -112,14 +99,6 @@ target "php-fpm" {
   target = "final-php-fpm"
 }
 
-target "php-fpm-82" {
-  inherits = ["common", "php-82", "php-fpm"]
-  tags = [
-    "${REPO_FPM}:8.2",
-    "${REPO_FPM}:${PHP82_MINOR}"
-  ]
-}
-
 target "php-fpm-83" {
   inherits = ["common", "php-83", "php-fpm"]
   tags = [
@@ -141,15 +120,6 @@ target "php-fpm-84" {
 #
 # Drupal (PHP-FPM)
 #
-
-target "drupal-fpm-82" {
-  inherits = ["common", "php-82", "php-fpm"]
-  target = "drupal-php-82"
-  tags = [
-    "${REPO_DRUPAL_FPM}:php-8.2",
-    "${REPO_DRUPAL_FPM}:php-${PHP82_MINOR}"
-  ]
-}
 
 target "drupal-fpm-83" {
   inherits = ["common", "php-83", "php-fpm"]
@@ -174,16 +144,6 @@ target "drupal-fpm-84" {
 #
 # Drupal (PHP-FPM + Nginx)
 #
-
-target "drupal-web-82" {
-  inherits = ["common", "php-82", "php-fpm"]
-  target = "drupal-web"
-  tags = [
-    "${REPO_DRUPAL_WEB}:php-8.2",
-    "${REPO_DRUPAL_WEB}:php-${PHP82_MINOR}",
-    "${REPO_DRUPAL_WEB}:v${PHP82_MINOR}"
-  ]
-}
 
 target "drupal-web-83" {
   inherits = ["common", "php-83", "php-fpm"]

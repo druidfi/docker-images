@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 ARG ALPINE_VERSION=3.22.2
-ARG PHP_SHORT_VERSION=82
+ARG PHP_SHORT_VERSION=83
 
 #
 # libiconv
@@ -67,26 +67,6 @@ WORKDIR ${APP_PATH}
 ENTRYPOINT ["/sbin/tini", "--", "entrypoint"]
 
 CMD ["tail", "-f", "/dev/null"]
-
-#
-# PHP 8.2
-#
-FROM base AS build-php-82
-
-ENV PHP_MAJOR_VERSION=8
-ENV PHP_SHORT_VERSION=82
-ENV PHP_INSTALL_VERSION=82
-
-RUN sudo -s <<EOF
-apk --no-cache add libcrypto3 libssl3 libzip \
-  php82 php82-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
-  php82-pecl-{apcu,redis,uploadprogress,xdebug}
-ln -sfn /usr/bin/php82 /usr/bin/php
-EOF
-
-RUN php -v
-
-COPY rootfs/etc/php/conf.d/* /etc/php82/conf.d/
 
 #
 # PHP 8.3
@@ -158,15 +138,6 @@ EOF
 # PHP-FPM
 #
 
-FROM final-php AS build-php-fpm-82
-
-RUN sudo -s <<EOF
-apk --no-cache add php82-fpm
-ln -sfn /usr/sbin/php-fpm82 /usr/sbin/php-fpm
-EOF
-
-COPY rootfs/etc/php/php-fpm.d/www.conf.ep /etc/php82/php-fpm.d/www.conf.ep
-
 FROM final-php AS build-php-fpm-83
 
 RUN sudo -s <<EOF
@@ -204,13 +175,6 @@ CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm", "-F
 #
 # Drupal base
 #
-
-FROM final-php-fpm AS drupal-php-82
-
-RUN sudo -s <<EOF
-apk --no-cache add openssh rsync libavif icu-libs libsodium \
-    php82-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
-EOF
 
 FROM final-php-fpm AS drupal-php-83
 

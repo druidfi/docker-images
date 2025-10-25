@@ -3,7 +3,6 @@
 COMMAND=$1
 LATEST_ALPINE_MINOR=3.22
 LATEST_ALPINE_VERSION=3.22.2
-FALLBACK_VERSION_82="8.2.29"
 FALLBACK_VERSION_83="8.3.27"
 FALLBACK_VERSION_84="8.4.14"
 
@@ -29,13 +28,10 @@ fi
 if [[ $COMMAND == phpminor ]]
 then
 
-  BRANCH=${2:-8.2}
+  BRANCH=${2:-8.4}
   #ALPINE=${LATEST_ALPINE_VERSION}
 
-  if [[ $BRANCH == 8.2 ]]
-  then
-    URL="https://gitlab.alpinelinux.org/alpine/aports/-/raw/master/testing/php82/APKBUILD"
-  elif [[ $BRANCH == 8.3 ]]
+  if [[ $BRANCH == 8.3 ]]
   then
     URL="https://gitlab.alpinelinux.org/alpine/aports/-/raw/master/community/php83/APKBUILD"
   elif [[ $BRANCH == 8.4 ]]
@@ -52,7 +48,6 @@ then
   if [[ "$CODE" =~ ^2 ]]; then
       echo "$RESPONSE" | cat | grep -m 1 -i "pkgver=" | cut -d "=" -f2 && exit 0
   else
-      if [[ "$BRANCH" == "8.2" ]]; then echo "$CODE $FALLBACK_VERSION_82"; fi
       if [[ "$BRANCH" == "8.3" ]]; then echo "$CODE $FALLBACK_VERSION_83"; fi
       if [[ "$BRANCH" == "8.4" ]]; then echo "$CODE $FALLBACK_VERSION_84"; fi
       exit 0

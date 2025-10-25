@@ -29,7 +29,6 @@ ENV variables:
 
 Tags:
 
-- `druidfi/php:8.2` and `druidfi/php:8.2.x`
 - `druidfi/php:8`, `druidfi/php:8.3`, `druidfi/php:8.3.x` and `druidfi/php:latest`
 - `druidfi/php:8.4` and `druidfi/php:8.4.x`
 
@@ -43,7 +42,6 @@ Added features:
 
 Tags:
 
-- `druidfi/php-fpm:8.2` and `druidfi/php-fpm:8.2.x`
 - `druidfi/php-fpm:8`, `druidfi/php-fpm:8.3`, `druidfi/php-fpm:8.3.x` and `druidfi/php-fpm:latest`
 - `druidfi/php-fpm:8.4` and `druidfi/php-fpm:8.4.x`
 
@@ -56,7 +54,6 @@ Added features:
 
 Tags:
 
-- `druidfi/drupal:php-8.2` and `druidfi/drupal:php-8.2.x`
 - `druidfi/drupal:php-8`, `druidfi/drupal:php-8.3`, `druidfi/drupal:php-8.3.x` and `druidfi/drupal:latest`
 - `druidfi/drupal:php-8.4` and `druidfi/drupal:php-8.4.x`
 
@@ -79,7 +76,6 @@ ENV variables:
 
 ### druidfi/drupal-web variant
 
-- `druidfi/drupal-web:php-8.2`, `druidfi/drupal-web:php-8.2.x` and `druidfi/drupal-web:v8.2.x`
 - `druidfi/drupal-web:php-8`, `druidfi/drupal-web:php-8.3`, `druidfi/drupal-web:php-8.3.x`, `druidfi/drupal-web:v8.3.x` and `druidfi/drupal-web:latest`
 - `druidfi/drupal-web:php-8.4`, `druidfi/drupal-web:php-8.4.x` and `druidfi/drupal-web:v8.4.x`
 
@@ -94,7 +90,7 @@ Needs:
 
 ### druidfi/drupal-test variant
 
-- `druidfi/drupal-test:8.2` based on `druidfi/drupal-web:8.2`
+- `druidfi/drupal-test:8.4` based on `druidfi/drupal-web:8.4`
 
 Added features:
 
