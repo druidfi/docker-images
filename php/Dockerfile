@@ -111,6 +111,31 @@ RUN php -v
 COPY rootfs/etc/php/conf.d/* /etc/php84/conf.d/
 
 #
+# PHP 8.5
+#
+FROM base AS build-php-85
+
+ENV PHP_MAJOR_VERSION=8
+ENV PHP_SHORT_VERSION=85
+ENV PHP_INSTALL_VERSION=85
+
+USER root
+RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+USER ${DEFAULT_USER}
+
+RUN sudo -s <<EOF
+apk update
+apk --no-cache add libcrypto3 libssl3 libzip \
+  php85 php85-{curl,fileinfo,iconv,mbstring,openssl,phar,session,zip} \
+  php85-pecl-{apcu,redis,uploadprogress,xdebug}
+ln -sfn /usr/bin/php85 /usr/bin/php
+EOF
+
+RUN php -v
+
+COPY rootfs/etc/php/conf.d/* /etc/php85/conf.d/
+
+#
 # PHP
 #
 FROM build-php-${PHP_SHORT_VERSION} AS final-php
@@ -156,6 +181,15 @@ EOF
 
 COPY rootfs/etc/php/php-fpm.d/www.conf.ep /etc/php84/php-fpm.d/www.conf.ep
 
+FROM final-php AS build-php-fpm-85
+
+RUN sudo -s <<EOF
+apk --no-cache add php85-fpm
+ln -sfn /usr/sbin/php-fpm85 /usr/sbin/php-fpm
+EOF
+
+COPY rootfs/etc/php/php-fpm.d/www.conf.ep /etc/php85/php-fpm.d/www.conf.ep
+
 #
 # Final PHP-FPM
 #
@@ -188,6 +222,13 @@ FROM final-php-fpm AS drupal-php-84
 RUN sudo -s <<EOF
 apk --no-cache add openssh rsync libavif icu-libs libsodium \
     php84-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
+EOF
+
+FROM final-php-fpm AS drupal-php-85
+
+RUN sudo -s <<EOF
+apk --no-cache add openssh rsync libavif icu-libs libsodium \
+    php85-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
 #

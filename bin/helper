@@ -37,6 +37,9 @@ then
   elif [[ $BRANCH == 8.4 ]]
   then
     URL="https://gitlab.alpinelinux.org/alpine/aports/-/raw/master/community/php84/APKBUILD"
+  elif [[ $BRANCH == 8.5 ]]
+  then
+    URL="https://gitlab.alpinelinux.org/alpine/aports/-/raw/master/community/php85/APKBUILD"
   else
     echo "Not supported PHP version: $BRANCH" && exit 1
   fi
