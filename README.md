@@ -29,8 +29,8 @@ ENV variables:
 
 Tags:
 
-- `druidfi/php:8`, `druidfi/php:8.3`, `druidfi/php:8.3.x` and `druidfi/php:latest`
-- `druidfi/php:8.4` and `druidfi/php:8.4.x`
+- `druidfi/php:8.3` and `druidfi/php:8.3.x` 
+- `druidfi/php:8`, `druidfi/php:8.4`, `druidfi/php:8.4.x` and `druidfi/php:latest`
 
 Added features:
 
@@ -42,8 +42,8 @@ Added features:
 
 Tags:
 
-- `druidfi/php-fpm:8`, `druidfi/php-fpm:8.3`, `druidfi/php-fpm:8.3.x` and `druidfi/php-fpm:latest`
-- `druidfi/php-fpm:8.4` and `druidfi/php-fpm:8.4.x`
+- `druidfi/php-fpm:8.3` and `druidfi/php-fpm:8.3.x`
+- `druidfi/php-fpm:8`, `druidfi/php-fpm:8.4`, `druidfi/php-fpm:8.4.x` and `druidfi/php-fpm:latest`
 
 Added features:
 
@@ -54,8 +54,8 @@ Added features:
 
 Tags:
 
-- `druidfi/drupal:php-8`, `druidfi/drupal:php-8.3`, `druidfi/drupal:php-8.3.x` and `druidfi/drupal:latest`
-- `druidfi/drupal:php-8.4` and `druidfi/drupal:php-8.4.x`
+- `druidfi/drupal:php-8.3`, `druidfi/drupal:php-8.3.x`
+- `druidfi/drupal:php-8`, `druidfi/drupal:php-8.4`, `druidfi/drupal:php-8.4.x` and `druidfi/drupal:latest`
 
 Added features:
 
@@ -76,8 +76,8 @@ ENV variables:
 
 ### druidfi/drupal-web variant
 
-- `druidfi/drupal-web:php-8`, `druidfi/drupal-web:php-8.3`, `druidfi/drupal-web:php-8.3.x`, `druidfi/drupal-web:v8.3.x` and `druidfi/drupal-web:latest`
-- `druidfi/drupal-web:php-8.4`, `druidfi/drupal-web:php-8.4.x` and `druidfi/drupal-web:v8.4.x`
+- `druidfi/drupal-web:php-8.3` and `druidfi/drupal-web:php-8.3.x`
+- `druidfi/drupal-web:php-8`, `druidfi/drupal-web:php-8.4`, `druidfi/drupal-web:php-8.4.x` and `druidfi/drupal-web:latest`
 
 Added features:
 
@@ -104,8 +104,8 @@ Needs:
 
 ### Base variant
 
-- `1.26` stable based on `nginx:1.26-alpine`
-- `1.27` mainline based on `nginx:1.27-alpine`
+- `1.28` stable based on `nginx:1.28-alpine`
+- `1.29` mainline based on `nginx:1.29-alpine`
 
 Added features:
 
@@ -113,8 +113,8 @@ Added features:
 
 ### Drupal variant
 
-- `1.26-drupal` based on `druidfi/nginx:1.26`
-- `1.27-drupal` based on `druidfi/nginx:1.27`
+- `1.28-drupal` based on `druidfi/nginx:1.28`
+- `1.29-drupal` based on `druidfi/nginx:1.29`
 
 Added features:
 
