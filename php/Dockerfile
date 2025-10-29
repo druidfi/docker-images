@@ -50,7 +50,7 @@ EOF
 
 COPY --chown=${DEFAULT_USER}:${DEFAULT_USER} rootfs/home/druid/ /home/druid
 COPY rootfs/usr/local/bin/ /usr/local/bin/
-COPY --link --from=amazeeio/envplate:v1.0.3 /usr/local/bin/ep /usr/local/bin/ep
+COPY --link --from=amazeeio/envplate:25.10.0 /usr/local/bin/ep /usr/local/bin/ep
 COPY rootfs/entrypoints/00-umask.sh \
      rootfs/entrypoints/15-xdebug.sh \
      rootfs/entrypoints/19-php_ini.sh \
