@@ -22,6 +22,10 @@ if [[ "$result" != "$expected" ]]; then
   error "Error! iconv result should be '$expected' instead of '$result'"
 fi
 
+title "Test Imagick extension"
+
+php -i | grep imagick
+
 title "Test Redis extension"
 
 if ! php -r "exit(class_exists('Redis') ? 0 : 1);"; then

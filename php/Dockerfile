@@ -32,8 +32,6 @@ ADD --chmod=0644 https://cacerts.digicert.com/DigiCertGlobalRootG2.crt.pem /opt/
 #ADD --chmod=0644 https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem /opt/ssl/
 COPY --chmod=644 rootfs/opt/ssl/DigiCertGlobalRootCA.crt.pem /opt/ssl/
 
-ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-
 RUN <<EOF
 apk update && apk upgrade
 apk --no-cache add bash curl git make msmtp nano ssmtp sudo tar tini
@@ -81,7 +79,7 @@ RUN sudo -s <<EOF
 apk update
 apk --no-cache add libcrypto3 libssl3 libzip \
   php83 php83-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
-  php83-pecl-{apcu,redis,uploadprogress,xdebug}
+  php83-pecl-{apcu,imagick,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php83 /usr/bin/php
 EOF
 
@@ -102,7 +100,7 @@ RUN sudo -s <<EOF
 apk update
 apk --no-cache add libcrypto3 libssl3 libzip \
   php84 php84-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
-  php84-pecl-{apcu,redis,uploadprogress,xdebug}
+  php84-pecl-{apcu,imagick,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php84 /usr/bin/php
 EOF
 
@@ -127,7 +125,7 @@ RUN sudo -s <<EOF
 apk update
 apk --no-cache add libcrypto3 libssl3 libzip \
   php85 php85-{curl,fileinfo,iconv,mbstring,openssl,phar,session,zip} \
-  php85-pecl-{apcu,redis,uploadprogress,xdebug}
+  php85-pecl-{apcu,imagick,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php85 /usr/bin/php
 EOF
 
@@ -142,7 +140,7 @@ FROM build-php-${PHP_SHORT_VERSION} AS final-php
 
 # Fix iconv library with Alpine by gnu-libiconv
 COPY --from=libiconv /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
-ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
+ENV LD_PRELOAD=/usr/lib/preloadable_libiconv.so
 
 ENV APP_ENV=prod \
     COMPOSER_HOME=/home/${DEFAULT_USER}/.composer \
@@ -153,8 +151,6 @@ ENV APP_ENV=prod \
 COPY --link --from=composer/composer:2.8-bin /composer /usr/bin/composer
 
 RUN sudo -s <<EOF
-install-php-extensions imagick
-rm /usr/local/bin/install-php-extensions
 apk --no-cache add patch unzip
 install -o ${DEFAULT_USER} -g ${DEFAULT_USER} -d ${COMPOSER_HOME}
 EOF
@@ -241,8 +237,7 @@ ENV DRUPAL_DB_NAME=drupal \
     DRUPAL_DB_USER=drupal \
     DRUPAL_DB_PASS=drupal \
     DRUPAL_DB_HOST=db \
-    DRUPAL_DB_PORT=3306 \
-    SSH_AUTH_SOCK=/tmp/ssh-agent
+    DRUPAL_DB_PORT=3306
 
 RUN sudo -s <<EOF
 apk --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/v3.20/main add mariadb-client=~10.11 mariadb-connector-c
