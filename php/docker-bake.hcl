@@ -205,8 +205,10 @@ target "drupal-web-83" {
   tags = [
     "docker.io/${REPO_DRUPAL_WEB}:php-8.3",
     "docker.io/${REPO_DRUPAL_WEB}:php-${PHP83_MINOR}",
+    "docker.io/${REPO_DRUPAL_WEB}:v${PHP83_MINOR}",
     "ghcr.io/${REPO_DRUPAL_WEB}:php-8.3",
     "ghcr.io/${REPO_DRUPAL_WEB}:php-${PHP83_MINOR}",
+    "ghcr.io/${REPO_DRUPAL_WEB}:v${PHP83_MINOR}",
   ]
 }
 
@@ -218,10 +220,12 @@ target "drupal-web-84" {
     "docker.io/${REPO_DRUPAL_WEB}:php-8.4",
     "docker.io/${REPO_DRUPAL_WEB}:php-${PHP84_MINOR}",
     "docker.io/${REPO_DRUPAL_WEB}:latest",
+    "docker.io/${REPO_DRUPAL_WEB}:v${PHP84_MINOR}",
     "ghcr.io/${REPO_DRUPAL_WEB}:php-8",
     "ghcr.io/${REPO_DRUPAL_WEB}:php-8.4",
     "ghcr.io/${REPO_DRUPAL_WEB}:php-${PHP84_MINOR}",
     "ghcr.io/${REPO_DRUPAL_WEB}:latest",
+    "ghcr.io/${REPO_DRUPAL_WEB}:v${PHP84_MINOR}",
   ]
 }
 
@@ -231,7 +235,9 @@ target "drupal-web-85" {
   tags = [
     "docker.io/${REPO_DRUPAL_WEB}:php-8.5",
     "docker.io/${REPO_DRUPAL_WEB}:php-${PHP85_MINOR}",
+    "docker.io/${REPO_DRUPAL_WEB}:v${PHP85_MINOR}",
     "ghcr.io/${REPO_DRUPAL_WEB}:php-8.5",
     "ghcr.io/${REPO_DRUPAL_WEB}:php-${PHP85_MINOR}",
+    "ghcr.io/${REPO_DRUPAL_WEB}:v${PHP85_MINOR}",
   ]
 }
