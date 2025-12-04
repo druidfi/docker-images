@@ -1,5 +1,5 @@
 variable "ALPINE_VERSION" {
-  default = "3.22.2"
+  default = "3.23.0"
 }
 
 variable SIMPLESAMLPHP_VERSION {
