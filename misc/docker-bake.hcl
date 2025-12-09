@@ -3,12 +3,13 @@ variable "ALPINE_VERSION" {
 }
 
 variable SIMPLESAMLPHP_VERSION {
-  default = "2.3.7"
+  default = "2.4.4"
 }
 
 group "default" {
   #targets = ["curl", "s3-sync", "saml-idp", "solr"]
   targets = ["s3-sync", "saml-idp", "solr"]
+  #targets = ["saml-idp"]
 }
 
 target "common" {
