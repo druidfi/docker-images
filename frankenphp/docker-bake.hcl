@@ -1,60 +1,33 @@
-variable "FRANKENPHP_VERSION" {
-  default = "1.7.0"
-}
-
 variable "REPO_BASE" {
   default = "druidfi/frankenphp"
 }
 
-variable "PHP83_PATCH" {
-  default = "8.3.22"
-}
-variable "PHP84_PATCH" {
-  default = "8.4.8"
-}
-
 group "default" {
-  targets = ["php-variants"]
-}
-
-group "php-variants" {
-  targets = ["php-83", "php-84"]
+  targets = [
+    "php-84",
+    "php-85",
+  ]
 }
 
 target "common" {
   context = "./"
   dockerfile = "./frankenphp/Dockerfile"
-  platforms = ["linux/amd64", "linux/arm64"]
-  args = {
-    FRANKENPHP_VERSION = "${FRANKENPHP_VERSION}"
-  }
+  platforms = [
+    "linux/amd64",
+    "linux/arm64"
+  ]
   labels = {
     "org.opencontainers.image.url" = "https://github.com/druidfi/docker-images"
     "org.opencontainers.image.source" = "https://github.com/druidfi/docker-images"
     "org.opencontainers.image.licenses" = "MIT"
     "org.opencontainers.image.vendor" = "Druid Oy"
-    "org.opencontainers.image.created" = "${timestamp()}"
+    "org.opencontainers.image.created" = timestamp()
   }
 }
 
 #
 # FRANKENPHP
 #
-
-target "php-83" {
-  inherits = ["common"]
-  args = {
-    PHP_VERSION = "8.3"
-    PHP_SHORT_VERSION = "83"
-  }
-  contexts = {
-    frankenphp_upstream = "docker-image://dunglas/frankenphp:${FRANKENPHP_VERSION}-php${PHP83_PATCH}"
-  }
-  tags = [
-    "${REPO_BASE}:${FRANKENPHP_VERSION}-php8.3",
-    "${REPO_BASE}:${FRANKENPHP_VERSION}-php${PHP83_PATCH}"
-  ]
-}
 
 target "php-84" {
   inherits = ["common"]
@@ -63,12 +36,27 @@ target "php-84" {
     PHP_SHORT_VERSION = "84"
   }
   contexts = {
-    frankenphp_upstream = "docker-image://dunglas/frankenphp:${FRANKENPHP_VERSION}-php${PHP84_PATCH}"
+    frankenphp_upstream = "docker-image://dunglas/frankenphp:1.10.1-php8.4.15"
   }
   tags = [
-    "${REPO_BASE}:${FRANKENPHP_VERSION}-php8",
-    "${REPO_BASE}:${FRANKENPHP_VERSION}-php8.4",
-    "${REPO_BASE}:${FRANKENPHP_VERSION}-php${PHP84_PATCH}",
-    "${REPO_BASE}:latest"
+    "${REPO_BASE}:1.10.1-php8.4",
+    "${REPO_BASE}:1.10.1-php8.4.15",
+  ]
+}
+
+target "php-85" {
+  inherits = ["common"]
+  args = {
+    PHP_VERSION = "8.5"
+    PHP_SHORT_VERSION = "85"
+  }
+  contexts = {
+    frankenphp_upstream = "docker-image://dunglas/frankenphp:1.10.1-php8.5.0"
+  }
+  tags = [
+    "${REPO_BASE}:1.10.1-php8",
+    "${REPO_BASE}:1.10.1-php8.5",
+    "${REPO_BASE}:1.10.1-php8.5.0",
+    "${REPO_BASE}:latest",
   ]
 }
