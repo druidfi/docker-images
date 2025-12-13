@@ -30,21 +30,21 @@ target "common" {
     "org.opencontainers.image.source" = "https://github.com/druidfi/docker-images"
     "org.opencontainers.image.licenses" = "MIT"
     "org.opencontainers.image.vendor" = "Druid Oy"
-    "org.opencontainers.image.created" = "${timestamp()}"
+    "org.opencontainers.image.created" = timestamp()
   }
 }
 
 target "common-stable" {
   inherits = ["common"]
   args = {
-    NGINX_VERSION = "${NGINX_STABLE_VERSION}"
+    NGINX_VERSION = NGINX_STABLE_VERSION
   }
 }
 
 target "common-mainline" {
   inherits = ["common"]
   args = {
-    NGINX_VERSION = "${NGINX_MAINLINE_VERSION}"
+    NGINX_VERSION = NGINX_MAINLINE_VERSION
   }
 }
 

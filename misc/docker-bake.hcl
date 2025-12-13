@@ -15,7 +15,7 @@ group "default" {
 target "common" {
   debug = true
   args = {
-    ALPINE_VERSION = "${ALPINE_VERSION}"
+    ALPINE_VERSION = ALPINE_VERSION
   }
   platforms = ["linux/amd64", "linux/arm64"]
   labels = {
@@ -23,7 +23,7 @@ target "common" {
     "org.opencontainers.image.source" = "https://github.com/druidfi/docker-images"
     "org.opencontainers.image.licenses" = "MIT"
     "org.opencontainers.image.vendor" = "Druid Oy"
-    "org.opencontainers.image.created" = "${timestamp()}"
+    "org.opencontainers.image.created" = timestamp()
   }
 }
 
@@ -38,7 +38,7 @@ target "saml-idp" {
   context = "./misc/saml-idp"
   target = "final"
   args = {
-    SIMPLESAMLPHP_VERSION = "${SIMPLESAMLPHP_VERSION}"
+    SIMPLESAMLPHP_VERSION = SIMPLESAMLPHP_VERSION
   }
   tags = ["druidfi/saml-idp:${SIMPLESAMLPHP_VERSION}"]
 }

@@ -49,7 +49,7 @@ target "common" {
     "org.opencontainers.image.source" = "https://github.com/druidfi/docker-images"
     "org.opencontainers.image.licenses" = "MIT"
     "org.opencontainers.image.vendor" = "Druid Oy"
-    "org.opencontainers.image.created" = "${timestamp()}"
+    "org.opencontainers.image.created" = timestamp()
   }
 }
 
@@ -65,7 +65,7 @@ target "php" {
 target "php-83" {
   inherits = ["common", "php"]
   args = {
-    ALPINE_VERSION = "${ALPINE_VERSION}"
+    ALPINE_VERSION = ALPINE_VERSION
     PHP_VERSION = "8.3"
     PHP_SHORT_VERSION = "83"
   }
@@ -80,7 +80,7 @@ target "php-83" {
 target "php-84" {
   inherits = ["common", "php"]
   args = {
-    ALPINE_VERSION = "${ALPINE_VERSION}"
+    ALPINE_VERSION = ALPINE_VERSION
     PHP_VERSION = "8.4"
     PHP_SHORT_VERSION = "84"
   }
@@ -99,7 +99,7 @@ target "php-84" {
 target "php-85" {
   inherits = ["common", "php"]
   args = {
-    ALPINE_VERSION = "${ALPINE_VERSION}"
+    ALPINE_VERSION = ALPINE_VERSION
     PHP_VERSION = "8.5"
     PHP_SHORT_VERSION = "85"
   }

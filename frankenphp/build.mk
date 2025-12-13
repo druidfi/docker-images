@@ -1,20 +1,23 @@
 BAKE_FLAGS := --pull --no-cache --push
 
-PHONY += frankenphp-bake-all
-frankenphp-bake-all: ## Bake all FrankenPHP images
+PHONY += --frankenphp-bake
+--frankenphp-bake:
 	@docker buildx bake -f frankenphp/docker-bake.hcl $(BAKE_FLAGS)
+
+PHONY += frankenphp-bake-all
+frankenphp-bake-all: buildx-create --frankenphp-bake ## Bake all FrankenPHP images
 
 PHONY += frankenphp-bake-print
 frankenphp-bake-print: BAKE_FLAGS := --print
-frankenphp-bake-print: frankenphp-bake-all ## Print bake plan for FrankenPHP images
+frankenphp-bake-print: --frankenphp-bake ## Print bake plan for FrankenPHP images
 
 PHONY += frankenphp-bake-local
 frankenphp-bake-local: BAKE_FLAGS := --pull --progress plain --no-cache --load --set *.platform=linux/$(CURRENT_ARCH)
-frankenphp-bake-local: frankenphp-bake-all run-frankenphp-tests ## Bake all FrankenPHP images locally
+frankenphp-bake-local: --frankenphp-bake run-frankenphp-tests ## Bake all FrankenPHP images locally
 
 PHONY += frankenphp-bake-test
 frankenphp-bake-test: BAKE_FLAGS := --pull --progress plain --no-cache
-frankenphp-bake-test: frankenphp-bake-all run-frankenphp-tests ## CI test for FrankenPHP images
+frankenphp-bake-test: --frankenphp-bake run-frankenphp-tests ## CI test for FrankenPHP images
 
 PHONY += run-frankenphp-tests
 run-frankenphp-tests:
