@@ -11,6 +11,7 @@ FROM frankenphp_upstream AS frankenphp_base
 # defaults, copied from original frankenphp_dev stage
 ENV APP_ENV=dev
 ENV XDEBUG_MODE=off
+ENV FRANKENPHP_WORKER_CONFIG=watch
 
 WORKDIR /app
 
