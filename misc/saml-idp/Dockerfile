@@ -11,7 +11,7 @@ RUN tar xzf /tmp/simplesamlphp.tar.gz -C /tmp
 RUN mv /tmp/simplesamlphp-* /home/simplesamlphp
 RUN rm -rf /home/simplesamlphp/modules/cron /home/simplesamlphp/modules/multiauth
 
-FROM druidfi/php-fpm:8.4.16 AS final
+FROM druidfi/php-fpm:8.4.17 AS final
 
 USER root
 
