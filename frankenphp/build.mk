@@ -21,10 +21,10 @@ frankenphp-bake-test: --frankenphp-bake run-frankenphp-tests ## CI test for Fran
 
 PHONY += run-frankenphp-tests
 run-frankenphp-tests:
-	$(call step,Run tests in druidfi/frankenphp:1.11.0-php8.4)
-	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/frankenphp:1.11.0-php8.4 /app/scripts/tests_symfony.sh
-	$(call step,Run tests in druidfi/frankenphp:1.11.0-php8.5)
-	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/frankenphp:1.11.0-php8.5 /app/scripts/tests_symfony.sh
+	$(call step,Run tests in druidfi/frankenphp:1.11.2-php8.4)
+	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/frankenphp:1.11.2-php8.4 /app/scripts/tests_symfony.sh
+	$(call step,Run tests in druidfi/frankenphp:1.11.2-php8.5)
+	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/frankenphp:1.11.2-php8.5 /app/scripts/tests_symfony.sh
 
 PHONY += frankenphp-update
 frankenphp-update:
