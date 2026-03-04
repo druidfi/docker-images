@@ -6,7 +6,7 @@ PHONY += --misc-bake
 	@ALPINE_VERSION=$(call get_alpine_version) docker buildx bake -f misc/docker-bake.hcl $(MISC_BAKE_FLAGS)
 
 PHONY += misc-bake-all
-misc-bake-all: buildx-create --misc-bake ## Bake all misc images
+misc-bake-all: buildx-create --misc-bake buildx-destroy ## Bake all misc images
 
 PHONY += misc-bake-print
 misc-bake-print: MISC_BAKE_FLAGS := --print

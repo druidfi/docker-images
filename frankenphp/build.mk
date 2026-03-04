@@ -5,7 +5,7 @@ PHONY += --frankenphp-bake
 	@docker buildx bake -f frankenphp/docker-bake.hcl $(BAKE_FLAGS)
 
 PHONY += frankenphp-bake-all
-frankenphp-bake-all: buildx-create --frankenphp-bake ## Bake all FrankenPHP images
+frankenphp-bake-all: buildx-create --frankenphp-bake buildx-destroy ## Bake all FrankenPHP images
 
 PHONY += frankenphp-bake-print
 frankenphp-bake-print: BAKE_FLAGS := --print

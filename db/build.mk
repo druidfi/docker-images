@@ -6,8 +6,7 @@ PHONY += --db-bake
 	@docker buildx bake -f db/docker-bake.hcl $(DB_BAKE_FLAGS)
 
 PHONY += db-bake-all
-db-bake-all: buildx-create --db-bake ## Bake all Database images
-	@docker buildx bake -f db/docker-bake.hcl $(DB_BAKE_FLAGS)
+db-bake-all: buildx-create --db-bake buildx-destroy ## Bake all Database images
 
 PHONY += db-bake-print
 db-bake-print: DB_BAKE_FLAGS := --print

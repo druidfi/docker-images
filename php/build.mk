@@ -6,7 +6,7 @@ PHONY += --php-bake
 		docker buildx bake -f php/docker-bake.hcl $(BAKE_FLAGS)
 
 PHONY += php-bake-all
-php-bake-all: buildx-create --php-bake ## Bake all PHP images
+php-bake-all: buildx-create --php-bake buildx-destroy ## Bake all PHP images
 
 PHONY += php-bake-print
 php-bake-print: BAKE_FLAGS := --print

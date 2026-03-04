@@ -23,6 +23,10 @@ buildx-create: ## Create Buildx Builder
 	@docker buildx ls | grep -q druid-buildx || docker buildx create --name=druid-buildx --platform linux/amd64,linux/arm64
 	@docker buildx use druid-buildx
 
+PHONY += buildx-destroy
+buildx-destroy: ## Destroy Buildx Builder
+	@docker buildx rm druid-buildx || true
+
 define step
 	@printf "\n\e[0;33m${1}\e[0m\n\n"
 endef

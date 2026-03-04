@@ -6,7 +6,7 @@ PHONY += --nginx-bake
 	@docker buildx bake -f nginx/docker-bake.hcl $(NGINX_BAKE_FLAGS)
 
 PHONY += nginx-bake-all
-nginx-bake-all: buildx-create --nginx-bake ## Bake all Nginx images
+nginx-bake-all: buildx-create --nginx-bake buildx-destroy ## Bake all Nginx images
 
 PHONY += nginx-bake-print
 nginx-bake-print: NGINX_BAKE_FLAGS := --print
