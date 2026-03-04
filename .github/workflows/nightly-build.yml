@@ -162,6 +162,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build and push FrankenPHP images (amd64)
         env:
           FRANKENPHP_VERSION: ${{ needs.frankenphp-versions.outputs.version }}
@@ -170,8 +177,8 @@ jobs:
         run: |
           docker buildx bake -f frankenphp/docker-bake.hcl --pull --push \
             --set "*.platform=linux/amd64" \
-            --set "php-84.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-amd64" \
-            --set "php-85.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-amd64" \
+            --set "php-84.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-amd64,ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-amd64" \
+            --set "php-85.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-amd64,ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-amd64" \
             --set "*.cache-from=type=gha,scope=frankenphp-amd64" \
             --set "*.cache-to=type=gha,scope=frankenphp-amd64,mode=max"
 
@@ -192,6 +199,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build and push FrankenPHP images (arm64)
         env:
           FRANKENPHP_VERSION: ${{ needs.frankenphp-versions.outputs.version }}
@@ -200,8 +214,8 @@ jobs:
         run: |
           docker buildx bake -f frankenphp/docker-bake.hcl --pull --push \
             --set "*.platform=linux/arm64" \
-            --set "php-84.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-arm64" \
-            --set "php-85.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-arm64" \
+            --set "php-84.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-arm64,ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-arm64" \
+            --set "php-85.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-arm64,ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-arm64" \
             --set "*.cache-from=type=gha,scope=frankenphp-arm64" \
             --set "*.cache-to=type=gha,scope=frankenphp-arm64,mode=max"
 
@@ -220,6 +234,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Merge FrankenPHP php-84 manifest
         env:
           FRANKENPHP_VERSION: ${{ needs.frankenphp-versions.outputs.version }}
@@ -228,6 +249,8 @@ jobs:
           docker buildx imagetools create \
             -t druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4 \
             -t druidfi/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP84} \
+            -t ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4 \
+            -t ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP84} \
             druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-amd64 \
             druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-arm64
 
@@ -241,6 +264,10 @@ jobs:
             -t druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5 \
             -t druidfi/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP85} \
             -t druidfi/frankenphp:latest \
+            -t ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8 \
+            -t ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5 \
+            -t ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP85} \
+            -t ghcr.io/druidfi/frankenphp:latest \
             druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-amd64 \
             druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-arm64
 
