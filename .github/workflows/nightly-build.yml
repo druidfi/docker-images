@@ -177,8 +177,10 @@ jobs:
         run: |
           docker buildx bake -f frankenphp/docker-bake.hcl --pull --push \
             --set "*.platform=linux/amd64" \
-            --set "php-84.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-amd64,ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-amd64" \
-            --set "php-85.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-amd64,ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-amd64" \
+            --set "php-84.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-amd64" \
+            --set "php-84.tags=ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-amd64" \
+            --set "php-85.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-amd64" \
+            --set "php-85.tags=ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-amd64" \
             --set "*.cache-from=type=gha,scope=frankenphp-amd64" \
             --set "*.cache-to=type=gha,scope=frankenphp-amd64,mode=max"
 
@@ -214,8 +216,10 @@ jobs:
         run: |
           docker buildx bake -f frankenphp/docker-bake.hcl --pull --push \
             --set "*.platform=linux/arm64" \
-            --set "php-84.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-arm64,ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-arm64" \
-            --set "php-85.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-arm64,ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-arm64" \
+            --set "php-84.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-arm64" \
+            --set "php-84.tags=ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-arm64" \
+            --set "php-85.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-arm64" \
+            --set "php-85.tags=ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-arm64" \
             --set "*.cache-from=type=gha,scope=frankenphp-arm64" \
             --set "*.cache-to=type=gha,scope=frankenphp-arm64,mode=max"
 
