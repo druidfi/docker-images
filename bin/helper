@@ -6,6 +6,9 @@ LATEST_ALPINE_VERSION=3.23.3
 FALLBACK_VERSION_83="8.3.29"
 FALLBACK_VERSION_84="8.4.16"
 FALLBACK_VERSION_85="8.5.1"
+FALLBACK_FRANKENPHP_VERSION="1.11.3"
+FALLBACK_FRANKENPHP_PHP84="8.4.18"
+FALLBACK_FRANKENPHP_PHP85="8.5.3"
 
 if [[ $COMMAND == alpineversion ]]
 then
@@ -56,6 +59,58 @@ then
       if [[ "$BRANCH" == "8.4" ]]; then echo "$CODE $FALLBACK_VERSION_84"; fi
       exit 0
   fi
+
+fi
+
+if [[ $COMMAND == frankenphpversion ]]
+then
+
+  SKOPEO=$(which skopeo 2>/dev/null)
+  if [[ -z "$SKOPEO" ]]; then echo "$FALLBACK_FRANKENPHP_VERSION" && exit 0; fi
+
+  VERSION=$($SKOPEO list-tags docker://dunglas/frankenphp 2>/dev/null \
+    | jq -r '.Tags[]' \
+    | grep -E '^[0-9]+\.[0-9]+\.[0-9]+-php8\.5\.[0-9]+$' \
+    | sort -V | tail -1 | cut -d'-' -f1)
+
+  [[ -n "$VERSION" ]] && echo "$VERSION" && exit 0
+  echo "$FALLBACK_FRANKENPHP_VERSION" && exit 0
+
+fi
+
+if [[ $COMMAND == frankenphpphp ]]
+then
+
+  BRANCH=${2:-8.4}
+  SKOPEO=$(which skopeo 2>/dev/null)
+
+  if [[ -z "$SKOPEO" ]]; then
+    [[ "$BRANCH" == "8.4" ]] && echo "$FALLBACK_FRANKENPHP_PHP84" && exit 0
+    [[ "$BRANCH" == "8.5" ]] && echo "$FALLBACK_FRANKENPHP_PHP85" && exit 0
+    exit 1
+  fi
+
+  TAGS=$($SKOPEO list-tags docker://dunglas/frankenphp 2>/dev/null | jq -r '.Tags[]')
+
+  FPVERSION=$(echo "$TAGS" \
+    | grep -E '^[0-9]+\.[0-9]+\.[0-9]+-php8\.5\.[0-9]+$' \
+    | sort -V | tail -1 | cut -d'-' -f1)
+
+  if [[ -z "$FPVERSION" ]]; then
+    [[ "$BRANCH" == "8.4" ]] && echo "$FALLBACK_FRANKENPHP_PHP84" && exit 0
+    [[ "$BRANCH" == "8.5" ]] && echo "$FALLBACK_FRANKENPHP_PHP85" && exit 0
+    exit 1
+  fi
+
+  BRANCH_PATTERN="${BRANCH//./\\.}"
+  PHP_VERSION=$(echo "$TAGS" \
+    | grep -E "^${FPVERSION}-php${BRANCH_PATTERN}\.[0-9]+$" \
+    | sort -V | tail -1 | sed "s/^${FPVERSION}-php//")
+
+  [[ -n "$PHP_VERSION" ]] && echo "$PHP_VERSION" && exit 0
+  [[ "$BRANCH" == "8.4" ]] && echo "$FALLBACK_FRANKENPHP_PHP84" && exit 0
+  [[ "$BRANCH" == "8.5" ]] && echo "$FALLBACK_FRANKENPHP_PHP85" && exit 0
+  exit 1
 
 fi
 

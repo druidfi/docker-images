@@ -2,6 +2,18 @@ variable "REPO_BASE" {
   default = "druidfi/frankenphp"
 }
 
+variable "FRANKENPHP_VERSION" {
+  default = "1.11.3"
+}
+
+variable "FRANKENPHP_PHP84" {
+  default = "8.4.18"
+}
+
+variable "FRANKENPHP_PHP85" {
+  default = "8.5.3"
+}
+
 group "default" {
   targets = [
     "php-84",
@@ -36,11 +48,11 @@ target "php-84" {
     PHP_SHORT_VERSION = "84"
   }
   contexts = {
-    frankenphp_upstream = "docker-image://dunglas/frankenphp:1.11.2-php8.4.17"
+    frankenphp_upstream = "docker-image://dunglas/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP84}"
   }
   tags = [
-    "${REPO_BASE}:1.11.2-php8.4",
-    "${REPO_BASE}:1.11.2-php8.4.17",
+    "${REPO_BASE}:${FRANKENPHP_VERSION}-php8.4",
+    "${REPO_BASE}:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP84}",
   ]
 }
 
@@ -51,12 +63,12 @@ target "php-85" {
     PHP_SHORT_VERSION = "85"
   }
   contexts = {
-    frankenphp_upstream = "docker-image://dunglas/frankenphp:1.11.2-php8.5.2"
+    frankenphp_upstream = "docker-image://dunglas/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP85}"
   }
   tags = [
-    "${REPO_BASE}:1.11.2-php8",
-    "${REPO_BASE}:1.11.2-php8.5",
-    "${REPO_BASE}:1.11.2-php8.5.2",
+    "${REPO_BASE}:${FRANKENPHP_VERSION}-php8",
+    "${REPO_BASE}:${FRANKENPHP_VERSION}-php8.5",
+    "${REPO_BASE}:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP85}",
     "${REPO_BASE}:latest",
   ]
 }

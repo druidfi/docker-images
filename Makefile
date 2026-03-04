@@ -39,4 +39,12 @@ define get_php_minor
 $(shell bin/helper phpminor $1)
 endef
 
+define get_frankenphp_version
+$(shell bin/helper frankenphpversion)
+endef
+
+define get_frankenphp_php
+$(shell bin/helper frankenphpphp $1)
+endef
+
 .PHONY: $(PHONY)

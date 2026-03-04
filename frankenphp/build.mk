@@ -2,7 +2,10 @@ BAKE_FLAGS := --pull --no-cache --push
 
 PHONY += --frankenphp-bake
 --frankenphp-bake:
-	@docker buildx bake -f frankenphp/docker-bake.hcl $(BAKE_FLAGS)
+	@FRANKENPHP_VERSION=$(call get_frankenphp_version) \
+		FRANKENPHP_PHP84=$(call get_frankenphp_php,8.4) \
+		FRANKENPHP_PHP85=$(call get_frankenphp_php,8.5) \
+		docker buildx bake -f frankenphp/docker-bake.hcl $(BAKE_FLAGS)
 
 PHONY += frankenphp-bake-all
 frankenphp-bake-all: buildx-create --frankenphp-bake buildx-destroy ## Bake all FrankenPHP images

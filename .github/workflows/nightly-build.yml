@@ -12,11 +12,6 @@ permissions:
   contents: read
   packages: write
 
-env:
-  FRANKENPHP_VERSION: "1.11.2"
-  FRANKENPHP_PHP84: "8.4.17"
-  FRANKENPHP_PHP85: "8.5.2"
-
 jobs:
 
   php:
@@ -132,9 +127,28 @@ jobs:
             --set "*.cache-from=type=gha,scope=db" \
             --set "*.cache-to=type=gha,scope=db,mode=max"
 
+  frankenphp-versions:
+    name: FrankenPHP versions
+    runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.resolve.outputs.version }}
+      php84: ${{ steps.resolve.outputs.php84 }}
+      php85: ${{ steps.resolve.outputs.php85 }}
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Resolve FrankenPHP versions
+        id: resolve
+        run: |
+          echo "version=$(bin/helper frankenphpversion)" >> "$GITHUB_OUTPUT"
+          echo "php84=$(bin/helper frankenphpphp 8.4)" >> "$GITHUB_OUTPUT"
+          echo "php85=$(bin/helper frankenphpphp 8.5)" >> "$GITHUB_OUTPUT"
+
   frankenphp-amd64:
     name: FrankenPHP images (amd64)
     runs-on: ubuntu-24.04
+    needs: [frankenphp-versions]
 
     steps:
       - uses: actions/checkout@v6
@@ -149,17 +163,22 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push FrankenPHP images (amd64)
+        env:
+          FRANKENPHP_VERSION: ${{ needs.frankenphp-versions.outputs.version }}
+          FRANKENPHP_PHP84: ${{ needs.frankenphp-versions.outputs.php84 }}
+          FRANKENPHP_PHP85: ${{ needs.frankenphp-versions.outputs.php85 }}
         run: |
           docker buildx bake -f frankenphp/docker-bake.hcl --pull --push \
             --set "*.platform=linux/amd64" \
-            --set "php-84.tags=docker.io/druidfi/frankenphp:${{ env.FRANKENPHP_VERSION }}-php8.4-amd64" \
-            --set "php-85.tags=docker.io/druidfi/frankenphp:${{ env.FRANKENPHP_VERSION }}-php8.5-amd64" \
+            --set "php-84.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-amd64" \
+            --set "php-85.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-amd64" \
             --set "*.cache-from=type=gha,scope=frankenphp-amd64" \
             --set "*.cache-to=type=gha,scope=frankenphp-amd64,mode=max"
 
   frankenphp-arm64:
     name: FrankenPHP images (arm64)
     runs-on: ubuntu-24.04-arm
+    needs: [frankenphp-versions]
 
     steps:
       - uses: actions/checkout@v6
@@ -174,18 +193,22 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push FrankenPHP images (arm64)
+        env:
+          FRANKENPHP_VERSION: ${{ needs.frankenphp-versions.outputs.version }}
+          FRANKENPHP_PHP84: ${{ needs.frankenphp-versions.outputs.php84 }}
+          FRANKENPHP_PHP85: ${{ needs.frankenphp-versions.outputs.php85 }}
         run: |
           docker buildx bake -f frankenphp/docker-bake.hcl --pull --push \
             --set "*.platform=linux/arm64" \
-            --set "php-84.tags=docker.io/druidfi/frankenphp:${{ env.FRANKENPHP_VERSION }}-php8.4-arm64" \
-            --set "php-85.tags=docker.io/druidfi/frankenphp:${{ env.FRANKENPHP_VERSION }}-php8.5-arm64" \
+            --set "php-84.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-arm64" \
+            --set "php-85.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-arm64" \
             --set "*.cache-from=type=gha,scope=frankenphp-arm64" \
             --set "*.cache-to=type=gha,scope=frankenphp-arm64,mode=max"
 
   frankenphp-merge:
     name: FrankenPHP images (merge)
     runs-on: ubuntu-24.04
-    needs: [frankenphp-amd64, frankenphp-arm64]
+    needs: [frankenphp-versions, frankenphp-amd64, frankenphp-arm64]
 
     steps:
       - name: Set up Docker Buildx
@@ -198,22 +221,28 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Merge FrankenPHP php-84 manifest
+        env:
+          FRANKENPHP_VERSION: ${{ needs.frankenphp-versions.outputs.version }}
+          FRANKENPHP_PHP84: ${{ needs.frankenphp-versions.outputs.php84 }}
         run: |
           docker buildx imagetools create \
-            -t druidfi/frankenphp:${{ env.FRANKENPHP_VERSION }}-php8.4 \
-            -t druidfi/frankenphp:${{ env.FRANKENPHP_VERSION }}-php${{ env.FRANKENPHP_PHP84 }} \
-            druidfi/frankenphp:${{ env.FRANKENPHP_VERSION }}-php8.4-amd64 \
-            druidfi/frankenphp:${{ env.FRANKENPHP_VERSION }}-php8.4-arm64
+            -t druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4 \
+            -t druidfi/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP84} \
+            druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-amd64 \
+            druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-arm64
 
       - name: Merge FrankenPHP php-85 manifest
+        env:
+          FRANKENPHP_VERSION: ${{ needs.frankenphp-versions.outputs.version }}
+          FRANKENPHP_PHP85: ${{ needs.frankenphp-versions.outputs.php85 }}
         run: |
           docker buildx imagetools create \
-            -t druidfi/frankenphp:${{ env.FRANKENPHP_VERSION }}-php8 \
-            -t druidfi/frankenphp:${{ env.FRANKENPHP_VERSION }}-php8.5 \
-            -t druidfi/frankenphp:${{ env.FRANKENPHP_VERSION }}-php${{ env.FRANKENPHP_PHP85 }} \
+            -t druidfi/frankenphp:${FRANKENPHP_VERSION}-php8 \
+            -t druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5 \
+            -t druidfi/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP85} \
             -t druidfi/frankenphp:latest \
-            druidfi/frankenphp:${{ env.FRANKENPHP_VERSION }}-php8.5-amd64 \
-            druidfi/frankenphp:${{ env.FRANKENPHP_VERSION }}-php8.5-arm64
+            druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-amd64 \
+            druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-arm64
 
   misc:
     name: Misc images
