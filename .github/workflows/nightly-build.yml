@@ -53,7 +53,10 @@ jobs:
           PHP83_MINOR: ${{ steps.versions.outputs.php83_minor }}
           PHP84_MINOR: ${{ steps.versions.outputs.php84_minor }}
           PHP85_MINOR: ${{ steps.versions.outputs.php85_minor }}
-        run: docker buildx bake -f php/docker-bake.hcl --pull --no-cache --push
+        run: |
+          docker buildx bake -f php/docker-bake.hcl --pull --push \
+            --set "*.cache-from=type=gha,scope=php" \
+            --set "*.cache-to=type=gha,scope=php,mode=max"
 
   nginx:
     name: Nginx images
@@ -84,7 +87,10 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Nginx images
-        run: docker buildx bake -f nginx/docker-bake.hcl --pull --no-cache --push
+        run: |
+          docker buildx bake -f nginx/docker-bake.hcl --pull --push \
+            --set "*.cache-from=type=gha,scope=nginx" \
+            --set "*.cache-to=type=gha,scope=nginx,mode=max"
 
   db:
     name: Database images
@@ -115,7 +121,10 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Database images
-        run: docker buildx bake -f db/docker-bake.hcl --pull --no-cache --push
+        run: |
+          docker buildx bake -f db/docker-bake.hcl --pull --push \
+            --set "*.cache-from=type=gha,scope=db" \
+            --set "*.cache-to=type=gha,scope=db,mode=max"
 
   frankenphp:
     name: FrankenPHP images
@@ -146,7 +155,10 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push FrankenPHP images
-        run: docker buildx bake -f frankenphp/docker-bake.hcl --pull --no-cache --push
+        run: |
+          docker buildx bake -f frankenphp/docker-bake.hcl --pull --push \
+            --set "*.cache-from=type=gha,scope=frankenphp" \
+            --set "*.cache-to=type=gha,scope=frankenphp,mode=max"
 
   misc:
     name: Misc images
@@ -183,7 +195,10 @@ jobs:
       - name: Build and push Misc images
         env:
           ALPINE_VERSION: ${{ steps.versions.outputs.alpine_version }}
-        run: docker buildx bake -f misc/docker-bake.hcl --pull --no-cache --push
+        run: |
+          docker buildx bake -f misc/docker-bake.hcl --pull --push \
+            --set "*.cache-from=type=gha,scope=misc" \
+            --set "*.cache-to=type=gha,scope=misc,mode=max"
 
   drupal-test:
     name: Drupal test images
@@ -215,4 +230,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Drupal test images
-        run: docker buildx bake -f drupal-test/docker-bake.hcl --pull --no-cache --push
+        run: |
+          docker buildx bake -f drupal-test/docker-bake.hcl --pull --push \
+            --set "*.cache-from=type=gha,scope=drupal-test" \
+            --set "*.cache-to=type=gha,scope=drupal-test,mode=max"
