@@ -49,13 +49,43 @@ jobs:
           echo "php84_minor=$(bin/helper phpminor 8.4)" >> "$GITHUB_OUTPUT"
           echo "php85_minor=$(bin/helper phpminor 8.5)" >> "$GITHUB_OUTPUT"
 
-      - name: Build and push PHP images
+      - name: Build and push PHP base images
         env:
           PHP83_MINOR: ${{ steps.versions.outputs.php83_minor }}
           PHP84_MINOR: ${{ steps.versions.outputs.php84_minor }}
           PHP85_MINOR: ${{ steps.versions.outputs.php85_minor }}
         run: |
-          docker buildx bake -f php/docker-bake.hcl --pull --push \
+          docker buildx bake -f php/docker-bake.hcl php-variants --pull --push \
+            --set "*.cache-from=type=gha,scope=php" \
+            --set "*.cache-to=type=gha,scope=php,mode=max"
+
+      - name: Build and push PHP-FPM images
+        env:
+          PHP83_MINOR: ${{ steps.versions.outputs.php83_minor }}
+          PHP84_MINOR: ${{ steps.versions.outputs.php84_minor }}
+          PHP85_MINOR: ${{ steps.versions.outputs.php85_minor }}
+        run: |
+          docker buildx bake -f php/docker-bake.hcl php-fpm-variants --pull --push \
+            --set "*.cache-from=type=gha,scope=php" \
+            --set "*.cache-to=type=gha,scope=php,mode=max"
+
+      - name: Build and push Drupal FPM images
+        env:
+          PHP83_MINOR: ${{ steps.versions.outputs.php83_minor }}
+          PHP84_MINOR: ${{ steps.versions.outputs.php84_minor }}
+          PHP85_MINOR: ${{ steps.versions.outputs.php85_minor }}
+        run: |
+          docker buildx bake -f php/docker-bake.hcl drupal-fpm-variants --pull --push \
+            --set "*.cache-from=type=gha,scope=php" \
+            --set "*.cache-to=type=gha,scope=php,mode=max"
+
+      - name: Build and push Drupal Web images
+        env:
+          PHP83_MINOR: ${{ steps.versions.outputs.php83_minor }}
+          PHP84_MINOR: ${{ steps.versions.outputs.php84_minor }}
+          PHP85_MINOR: ${{ steps.versions.outputs.php85_minor }}
+        run: |
+          docker buildx bake -f php/docker-bake.hcl drupal-web-variants --pull --push \
             --set "*.cache-from=type=gha,scope=php" \
             --set "*.cache-to=type=gha,scope=php,mode=max"
 
