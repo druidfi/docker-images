@@ -377,5 +377,6 @@ jobs:
       - name: Build and push Drupal test images
         run: |
           docker buildx bake -f drupal-test/docker-bake.hcl --pull --push \
+            --set "*.cache-from=type=gha,scope=php" \
             --set "*.cache-from=type=gha,scope=drupal-test" \
             --set "*.cache-to=type=gha,scope=drupal-test,mode=max"
