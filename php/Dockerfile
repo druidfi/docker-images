@@ -56,8 +56,6 @@ COPY rootfs/entrypoints/00-umask.sh \
 COPY rootfs/etc/msmtprc /etc/msmtprc
 COPY rootfs/etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf
 
-RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
-
 SHELL ["/bin/bash", "-c"]
 USER ${DEFAULT_USER}
 
@@ -223,7 +221,8 @@ EOF
 FROM final-php-fpm AS drupal-php-85
 
 RUN sudo -s <<EOF
-apk --no-cache add openssh rsync libavif icu-libs libsodium \
+apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main icu-libs
+apk --no-cache add openssh rsync libavif libsodium \
     php85-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
 EOF
 
