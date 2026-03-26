@@ -8,6 +8,7 @@ if [ "$XDEBUG_ENABLE" = "true" ]; then
     echo "Already enabled..."
   else
     doas mv "$XDEBUG_INI".disabled "$XDEBUG_INI"
+    doas touch /tmp/xdebug.log && doas chmod 666 /tmp/xdebug.log
   fi
 else
   echo "Start with Xdebug disabled. Add XDEBUG_ENABLE=true ENV variable to enable it."

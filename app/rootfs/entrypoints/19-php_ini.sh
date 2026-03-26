@@ -9,3 +9,8 @@ if [ -f "$TEMPLATE" ]; then
   doas ep -v "$TEMPLATE"
   doas mv "$TEMPLATE" "$TARGET"
 fi
+
+if [ "$APP_ENV" = "prod" ]; then
+  echo "Enable production PHP ini..."
+  doas cp -f /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
+fi
