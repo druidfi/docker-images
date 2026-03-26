@@ -1,11 +1,14 @@
 #!/bin/bash
 
 COMMAND=$1
-LATEST_ALPINE_MINOR=3.20
-LATEST_ALPINE_VERSION=3.20.3
-FALLBACK_VERSION_82="8.2.26"
-FALLBACK_VERSION_83="8.3.14"
-FALLBACK_VERSION_84="8.4.1"
+LATEST_ALPINE_MINOR=3.23
+LATEST_ALPINE_VERSION=3.23.3
+FALLBACK_VERSION_83="8.3.30"
+FALLBACK_VERSION_84="8.4.19"
+FALLBACK_VERSION_85="8.5.3"
+FALLBACK_FRANKENPHP_VERSION="1.11.3"
+FALLBACK_FRANKENPHP_PHP84="8.4.19"
+FALLBACK_FRANKENPHP_PHP85="8.5.3"
 
 if [[ $COMMAND == alpineversion ]]
 then
@@ -29,18 +32,18 @@ fi
 if [[ $COMMAND == phpminor ]]
 then
 
-  BRANCH=${2:-8.2}
+  BRANCH=${2:-8.4}
   #ALPINE=${LATEST_ALPINE_VERSION}
 
-  if [[ $BRANCH == 8.2 ]]
+  if [[ $BRANCH == 8.3 ]]
   then
-    URL="https://git.alpinelinux.org/aports/plain/community/php82/APKBUILD?h=3.20-stable"
-  elif [[ $BRANCH == 8.3 ]]
-  then
-    URL="https://git.alpinelinux.org/aports/plain/community/php83/APKBUILD?h=3.20-stable"
+    URL="https://gitlab.alpinelinux.org/alpine/aports/-/raw/${LATEST_ALPINE_MINOR}-stable/community/php83/APKBUILD"
   elif [[ $BRANCH == 8.4 ]]
   then
-    URL="https://git.alpinelinux.org/aports/plain/testing/php84/APKBUILD"
+    URL="https://gitlab.alpinelinux.org/alpine/aports/-/raw/${LATEST_ALPINE_MINOR}-stable/community/php84/APKBUILD"
+  elif [[ $BRANCH == 8.5 ]]
+  then
+    URL="https://gitlab.alpinelinux.org/alpine/aports/-/raw/${LATEST_ALPINE_MINOR}-stable/community/php85/APKBUILD"
   else
     echo "Not supported PHP version: $BRANCH" && exit 1
   fi
@@ -52,11 +55,62 @@ then
   if [[ "$CODE" =~ ^2 ]]; then
       echo "$RESPONSE" | cat | grep -m 1 -i "pkgver=" | cut -d "=" -f2 && exit 0
   else
-      if [[ "$BRANCH" == "8.2" ]]; then echo "$CODE $FALLBACK_VERSION_82"; fi
       if [[ "$BRANCH" == "8.3" ]]; then echo "$CODE $FALLBACK_VERSION_83"; fi
       if [[ "$BRANCH" == "8.4" ]]; then echo "$CODE $FALLBACK_VERSION_84"; fi
       exit 0
   fi
+
+fi
+
+if [[ $COMMAND == frankenphpversion ]]
+then
+
+  SKOPEO=$(which skopeo 2>/dev/null)
+  if [[ -z "$SKOPEO" ]]; then echo "$FALLBACK_FRANKENPHP_VERSION" && exit 0; fi
+
+  VERSION=$($SKOPEO list-tags docker://dunglas/frankenphp 2>/dev/null \
+    | jq -r '.Tags[]' \
+    | grep -E '^[0-9]+\.[0-9]+\.[0-9]+-php8\.5\.[0-9]+$' \
+    | sort -V | tail -1 | cut -d'-' -f1)
+
+  [[ -n "$VERSION" ]] && echo "$VERSION" && exit 0
+  echo "$FALLBACK_FRANKENPHP_VERSION" && exit 0
+
+fi
+
+if [[ $COMMAND == frankenphpphp ]]
+then
+
+  BRANCH=${2:-8.4}
+  SKOPEO=$(which skopeo 2>/dev/null)
+
+  if [[ -z "$SKOPEO" ]]; then
+    [[ "$BRANCH" == "8.4" ]] && echo "$FALLBACK_FRANKENPHP_PHP84" && exit 0
+    [[ "$BRANCH" == "8.5" ]] && echo "$FALLBACK_FRANKENPHP_PHP85" && exit 0
+    exit 1
+  fi
+
+  TAGS=$($SKOPEO list-tags docker://dunglas/frankenphp 2>/dev/null | jq -r '.Tags[]')
+
+  FPVERSION=$(echo "$TAGS" \
+    | grep -E '^[0-9]+\.[0-9]+\.[0-9]+-php8\.5\.[0-9]+$' \
+    | sort -V | tail -1 | cut -d'-' -f1)
+
+  if [[ -z "$FPVERSION" ]]; then
+    [[ "$BRANCH" == "8.4" ]] && echo "$FALLBACK_FRANKENPHP_PHP84" && exit 0
+    [[ "$BRANCH" == "8.5" ]] && echo "$FALLBACK_FRANKENPHP_PHP85" && exit 0
+    exit 1
+  fi
+
+  BRANCH_PATTERN="${BRANCH//./\\.}"
+  PHP_VERSION=$(echo "$TAGS" \
+    | grep -E "^${FPVERSION}-php${BRANCH_PATTERN}\.[0-9]+$" \
+    | sort -V | tail -1 | sed "s/^${FPVERSION}-php//")
+
+  [[ -n "$PHP_VERSION" ]] && echo "$PHP_VERSION" && exit 0
+  [[ "$BRANCH" == "8.4" ]] && echo "$FALLBACK_FRANKENPHP_PHP84" && exit 0
+  [[ "$BRANCH" == "8.5" ]] && echo "$FALLBACK_FRANKENPHP_PHP85" && exit 0
+  exit 1
 
 fi
 

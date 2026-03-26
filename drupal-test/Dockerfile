@@ -5,7 +5,7 @@ ARG PHP_VERSION
 
 FROM druidfi/php:${PHP_VERSION} AS builder
 
-ARG BRANCH=main
+ARG BRANCH=core
 
 WORKDIR /app
 

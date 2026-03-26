@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [[ -n "$FRANKENPHP_VERSION" ]]; then
+  title "Test FrankenPHP version"
+  (frankenphp -v && echo -e "") || error "Something wrong with FrankenPHP"
+fi
+
 title "Test 'php -v'"
 
 (php -v && echo -e "") || error "Something wrong with PHP"
@@ -15,6 +20,16 @@ result=$(php -d error_reporting=22527 -d display_errors=1 -r 'echo iconv("UTF-8"
 
 if [[ "$result" != "$expected" ]]; then
   error "Error! iconv result should be '$expected' instead of '$result'"
+fi
+
+title "Test Imagick extension"
+
+php -i | grep imagick
+
+title "Test Redis extension"
+
+if ! php -r "exit(class_exists('Redis') ? 0 : 1);"; then
+  error "Class Redis does not exist"
 fi
 
 title "Test Composer require"

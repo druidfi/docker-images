@@ -11,12 +11,15 @@ RUN tar xzf /tmp/simplesamlphp.tar.gz -C /tmp
 RUN mv /tmp/simplesamlphp-* /home/simplesamlphp
 RUN rm -rf /home/simplesamlphp/modules/cron /home/simplesamlphp/modules/multiauth
 
-FROM druidfi/php-fpm:8.3 AS final
+FROM druidfi/php-fpm:8.4.19 AS final
 
 USER root
 
 RUN apk --update --no-cache add nginx && \
-    apk --update --no-cache add php83-intl php83-tokenizer php83-xmlreader
+    apk --update --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main icu-libs && \
+    apk --update --no-cache add php84-intl php84-tokenizer php84-xmlreader && \
+    mkdir -p /var/cache/simplesamlphp/admin && \
+    chown -R www-data:www-data /var/cache/simplesamlphp
 
 # Copy SimpleSAMLphp
 COPY --from=simplesamlphp --chown=www-data /home/simplesamlphp /app/simplesamlphp

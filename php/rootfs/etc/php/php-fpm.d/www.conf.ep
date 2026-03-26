@@ -26,4 +26,4 @@ catch_workers_output = yes
 ; Remove the 'child 10 said into stderr' prefix in the log and only show the actual message
 decorate_workers_output = no
 
-php_value[memory_limit] = 512M
+php_value[memory_limit] = ${PHP_MEMORY_LIMIT:-512M}

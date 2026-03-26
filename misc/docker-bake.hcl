@@ -1,20 +1,21 @@
 variable "ALPINE_VERSION" {
-  default = "3.20.3"
+  default = "3.23.3"
 }
 
 variable SIMPLESAMLPHP_VERSION {
-  default = "2.2.1"
+  default = "2.4.4"
 }
 
 group "default" {
-  #targets = ["curl", "s3-sync", "saml-idp", "solr", "varnish"]
-  targets = ["s3-sync", "saml-idp", "solr", "varnish"]
+  #targets = ["curl", "s3-sync", "saml-idp", "solr"]
+  targets = ["s3-sync", "saml-idp", "solr"]
+  #targets = ["saml-idp"]
 }
 
 target "common" {
   debug = true
   args = {
-    ALPINE_VERSION = "${ALPINE_VERSION}"
+    ALPINE_VERSION = ALPINE_VERSION
   }
   platforms = ["linux/amd64", "linux/arm64"]
   labels = {
@@ -22,7 +23,7 @@ target "common" {
     "org.opencontainers.image.source" = "https://github.com/druidfi/docker-images"
     "org.opencontainers.image.licenses" = "MIT"
     "org.opencontainers.image.vendor" = "Druid Oy"
-    "org.opencontainers.image.created" = "${timestamp()}"
+    "org.opencontainers.image.created" = timestamp()
   }
 }
 
@@ -37,7 +38,7 @@ target "saml-idp" {
   context = "./misc/saml-idp"
   target = "final"
   args = {
-    SIMPLESAMLPHP_VERSION = "${SIMPLESAMLPHP_VERSION}"
+    SIMPLESAMLPHP_VERSION = SIMPLESAMLPHP_VERSION
   }
   tags = ["druidfi/saml-idp:${SIMPLESAMLPHP_VERSION}"]
 }
@@ -53,10 +54,4 @@ target "solr" {
   context = "./misc/solr"
   target = "solr"
   tags = ["druidfi/solr:8-drupal","druidfi/solr:8.11-drupal"]
-}
-
-target "varnish" {
-  inherits = ["common"]
-  context = "./misc/varnish"
-  tags = ["druidfi/varnish:6-drupal"]
 }

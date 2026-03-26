@@ -1,0 +1,382 @@
+name: Nightly rebuild of Docker images
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+  packages: write
+
+jobs:
+
+  php:
+    name: PHP images
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+        with:
+          platforms: amd64,arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Resolve PHP minor versions
+        id: versions
+        run: |
+          echo "php83_minor=$(bin/helper phpminor 8.3)" >> "$GITHUB_OUTPUT"
+          echo "php84_minor=$(bin/helper phpminor 8.4)" >> "$GITHUB_OUTPUT"
+          echo "php85_minor=$(bin/helper phpminor 8.5)" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push PHP base images
+        env:
+          PHP83_MINOR: ${{ steps.versions.outputs.php83_minor }}
+          PHP84_MINOR: ${{ steps.versions.outputs.php84_minor }}
+          PHP85_MINOR: ${{ steps.versions.outputs.php85_minor }}
+        run: |
+          docker buildx bake -f php/docker-bake.hcl php-variants --pull --push \
+            --set "*.cache-from=type=gha,scope=php" \
+            --set "*.cache-to=type=gha,scope=php,mode=max"
+
+      - name: Build and push PHP-FPM images
+        env:
+          PHP83_MINOR: ${{ steps.versions.outputs.php83_minor }}
+          PHP84_MINOR: ${{ steps.versions.outputs.php84_minor }}
+          PHP85_MINOR: ${{ steps.versions.outputs.php85_minor }}
+        run: |
+          docker buildx bake -f php/docker-bake.hcl php-fpm-variants --pull --push \
+            --set "*.cache-from=type=gha,scope=php" \
+            --set "*.cache-to=type=gha,scope=php,mode=max"
+
+      - name: Build and push Drupal FPM images
+        env:
+          PHP83_MINOR: ${{ steps.versions.outputs.php83_minor }}
+          PHP84_MINOR: ${{ steps.versions.outputs.php84_minor }}
+          PHP85_MINOR: ${{ steps.versions.outputs.php85_minor }}
+        run: |
+          docker buildx bake -f php/docker-bake.hcl drupal-fpm-variants --pull --push \
+            --set "*.cache-from=type=gha,scope=php" \
+            --set "*.cache-to=type=gha,scope=php,mode=max"
+
+      - name: Build and push Drupal Web images
+        env:
+          PHP83_MINOR: ${{ steps.versions.outputs.php83_minor }}
+          PHP84_MINOR: ${{ steps.versions.outputs.php84_minor }}
+          PHP85_MINOR: ${{ steps.versions.outputs.php85_minor }}
+        run: |
+          docker buildx bake -f php/docker-bake.hcl drupal-web-variants --pull --push \
+            --set "*.cache-from=type=gha,scope=php" \
+            --set "*.cache-to=type=gha,scope=php,mode=max"
+
+  nginx:
+    name: Nginx images
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+        with:
+          platforms: amd64,arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Nginx images
+        run: |
+          docker buildx bake -f nginx/docker-bake.hcl --pull --push \
+            --set "*.cache-from=type=gha,scope=nginx" \
+            --set "*.cache-to=type=gha,scope=nginx,mode=max"
+
+  db:
+    name: Database images
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+        with:
+          platforms: amd64,arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Database images
+        run: |
+          docker buildx bake -f db/docker-bake.hcl --pull --push \
+            --set "*.cache-from=type=gha,scope=db" \
+            --set "*.cache-to=type=gha,scope=db,mode=max"
+
+  frankenphp-versions:
+    name: FrankenPHP versions
+    runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.resolve.outputs.version }}
+      php84: ${{ steps.resolve.outputs.php84 }}
+      php85: ${{ steps.resolve.outputs.php85 }}
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Resolve FrankenPHP versions
+        id: resolve
+        run: |
+          echo "version=$(bin/helper frankenphpversion)" >> "$GITHUB_OUTPUT"
+          echo "php84=$(bin/helper frankenphpphp 8.4)" >> "$GITHUB_OUTPUT"
+          echo "php85=$(bin/helper frankenphpphp 8.5)" >> "$GITHUB_OUTPUT"
+
+  frankenphp-amd64:
+    name: FrankenPHP images (amd64)
+    runs-on: ubuntu-24.04
+    needs: [frankenphp-versions]
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push FrankenPHP images (amd64)
+        env:
+          FRANKENPHP_VERSION: ${{ needs.frankenphp-versions.outputs.version }}
+          FRANKENPHP_PHP84: ${{ needs.frankenphp-versions.outputs.php84 }}
+          FRANKENPHP_PHP85: ${{ needs.frankenphp-versions.outputs.php85 }}
+        run: |
+          docker buildx bake -f frankenphp/docker-bake.hcl --pull --push \
+            --set "*.platform=linux/amd64" \
+            --set "php-84.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-amd64" \
+            --set "php-84.tags=ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-amd64" \
+            --set "php-85.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-amd64" \
+            --set "php-85.tags=ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-amd64" \
+            --set "*.cache-from=type=gha,scope=frankenphp-amd64" \
+            --set "*.cache-to=type=gha,scope=frankenphp-amd64,mode=max"
+
+  frankenphp-arm64:
+    name: FrankenPHP images (arm64)
+    runs-on: ubuntu-24.04-arm
+    needs: [frankenphp-versions]
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push FrankenPHP images (arm64)
+        env:
+          FRANKENPHP_VERSION: ${{ needs.frankenphp-versions.outputs.version }}
+          FRANKENPHP_PHP84: ${{ needs.frankenphp-versions.outputs.php84 }}
+          FRANKENPHP_PHP85: ${{ needs.frankenphp-versions.outputs.php85 }}
+        run: |
+          docker buildx bake -f frankenphp/docker-bake.hcl --pull --push \
+            --set "*.platform=linux/arm64" \
+            --set "php-84.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-arm64" \
+            --set "php-84.tags=ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-arm64" \
+            --set "php-85.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-arm64" \
+            --set "php-85.tags=ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-arm64" \
+            --set "*.cache-from=type=gha,scope=frankenphp-arm64" \
+            --set "*.cache-to=type=gha,scope=frankenphp-arm64,mode=max"
+
+  frankenphp-merge:
+    name: FrankenPHP images (merge)
+    runs-on: ubuntu-24.04
+    needs: [frankenphp-versions, frankenphp-amd64, frankenphp-arm64]
+
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge FrankenPHP php-84 manifest
+        env:
+          FRANKENPHP_VERSION: ${{ needs.frankenphp-versions.outputs.version }}
+          FRANKENPHP_PHP84: ${{ needs.frankenphp-versions.outputs.php84 }}
+        run: |
+          docker buildx imagetools create \
+            -t druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4 \
+            -t druidfi/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP84} \
+            -t ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4 \
+            -t ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP84} \
+            druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-amd64 \
+            druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-arm64
+
+      - name: Merge FrankenPHP php-85 manifest
+        env:
+          FRANKENPHP_VERSION: ${{ needs.frankenphp-versions.outputs.version }}
+          FRANKENPHP_PHP85: ${{ needs.frankenphp-versions.outputs.php85 }}
+        run: |
+          docker buildx imagetools create \
+            -t druidfi/frankenphp:${FRANKENPHP_VERSION}-php8 \
+            -t druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5 \
+            -t druidfi/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP85} \
+            -t druidfi/frankenphp:latest \
+            -t ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8 \
+            -t ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5 \
+            -t ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP85} \
+            -t ghcr.io/druidfi/frankenphp:latest \
+            druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-amd64 \
+            druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-arm64
+
+  misc:
+    name: Misc images
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+        with:
+          platforms: amd64,arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Resolve Alpine version
+        id: versions
+        run: echo "alpine_version=$(bin/helper alpineversion)" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push Misc images
+        env:
+          ALPINE_VERSION: ${{ steps.versions.outputs.alpine_version }}
+        run: |
+          docker buildx bake -f misc/docker-bake.hcl --pull --push \
+            --set "*.cache-from=type=gha,scope=misc" \
+            --set "*.cache-to=type=gha,scope=misc,mode=max"
+
+  drupal-test:
+    name: Drupal test images
+    runs-on: ubuntu-24.04
+    needs: [php]
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+        with:
+          platforms: amd64,arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Drupal test images
+        run: |
+          docker buildx bake -f drupal-test/docker-bake.hcl --pull --push \
+            --set "*.cache-from=type=gha,scope=php" \
+            --set "*.cache-from=type=gha,scope=drupal-test" \
+            --set "*.cache-to=type=gha,scope=drupal-test,mode=max"

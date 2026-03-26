@@ -3,7 +3,7 @@ variable "REPO_DRUPAL_TEST" {
 }
 
 group "default" {
-  targets = ["drupal-test-82", "drupal-test-83", "drupal-test-84"]
+  targets = ["drupal-test-83", "drupal-test-84"]
 }
 
 target "common" {
@@ -14,14 +14,6 @@ target "common" {
 #
 # Drupal Test
 #
-
-target "drupal-test-82" {
-  inherits = ["common"]
-  args = {
-    PHP_VERSION = "8.2"
-  }
-  tags = ["${REPO_DRUPAL_TEST}:php-8.2"]
-}
 
 target "drupal-test-83" {
   inherits = ["common"]
