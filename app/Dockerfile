@@ -22,13 +22,17 @@ COPY --link --from=amazeeio/envplate:26.3.0 /usr/local/bin/ep /usr/local/bin/
 COPY --link --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
 RUN apk --no-cache add \
-    bash curl doas fastfetch git make mariadb-client mariadb-connector-c nginx openssh-client patch tar tini && \
+    bash curl doas fastfetch git make \
+    mariadb-client mariadb-connector-c \
+    msmtp nano nginx openssh-client patch rsync ssmtp tar tini unzip && \
     install-php-extensions \
     apcu bcmath exif gd igbinary imagick msgpack mysqli opcache pdo_mysql redis sockets uploadprogress xdebug zip && \
     addgroup -S ${DEFAULT_USER} -g ${DEFAULT_USER_UID} && \
     adduser -D -S -G ${DEFAULT_USER} -u ${DEFAULT_USER_UID} -s /bin/bash ${DEFAULT_USER} && \
     adduser ${DEFAULT_USER} www-data && \
     mkdir -p /home/${DEFAULT_USER}/.composer && \
+    curl -sSf https://composer.github.io/releases.pub -o /home/${DEFAULT_USER}/.composer/keys.tags.pub && \
+    curl -sSf https://composer.github.io/snapshots.pub -o /home/${DEFAULT_USER}/.composer/keys.dev.pub && \
     chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER} ${APP_PATH} && \
     chmod -R a+rwx /var/lib/nginx /var/log/nginx
 
