@@ -22,9 +22,9 @@ COPY --link --from=amazeeio/envplate:26.3.0 /usr/local/bin/ep /usr/local/bin/
 COPY --link --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
 RUN apk --no-cache add \
-    bash curl doas git make mariadb-client mariadb-connector-c nginx openssh-client patch tar tini && \
+    bash curl doas fastfetch git make mariadb-client mariadb-connector-c nginx openssh-client patch tar tini && \
     install-php-extensions \
-    apcu bcmath exif gd igbinary msgpack mysqli opcache pdo_mysql redis sockets uploadprogress xdebug zip && \
+    apcu bcmath exif gd igbinary imagick msgpack mysqli opcache pdo_mysql redis sockets uploadprogress xdebug zip && \
     addgroup -S ${DEFAULT_USER} -g ${DEFAULT_USER_UID} && \
     adduser -D -S -G ${DEFAULT_USER} -u ${DEFAULT_USER_UID} -s /bin/bash ${DEFAULT_USER} && \
     adduser ${DEFAULT_USER} www-data && \
@@ -37,9 +37,13 @@ COPY rootfs/entrypoints/ /entrypoints/
 COPY rootfs/etc/ /etc/
 COPY rootfs/usr/local/ /usr/local/
 
+# See https://docs.microsoft.com/en-us/azure/mysql/howto-configure-ssl
+ADD --chmod=0644 https://cacerts.digicert.com/BaltimoreCyberTrustRoot.crt.pem /opt/ssl/
 # See https://learn.microsoft.com/en-us/azure/postgresql/single-server/concepts-certificate-rotation#what-change-was-scheduled-to-be-performed-starting-december-2022-122022
 ADD --checksum=sha256:5d550643b6400d4341550a9b14aedd0b4fac33ae5deb7d8247b6b4f799c13306 --chmod=0644 \
     https://cacerts.digicert.com/DigiCertGlobalRootG2.crt.pem /opt/ssl/
+# https://learn.microsoft.com/en-us/azure/mysql/flexible-server/how-to-connect-tls-ssl
+COPY --chmod=644 rootfs/opt/ssl/DigiCertGlobalRootCA.crt.pem /opt/ssl/
 
 EXPOSE 8080/tcp
 

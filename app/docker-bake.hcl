@@ -7,7 +7,7 @@ variable "PHP84_MINOR" {}
 variable "PHP85_MINOR" {}
 
 group "default" {
-  targets = ["php-83", "php-84"]
+  targets = ["php-83", "php-84", "php-85"]
 }
 
 target "common" {
@@ -27,6 +27,9 @@ target "common" {
 
 target "php" {
   context = "./app"
+  args = {
+    PHP_MAJOR_VERSION = 8
+  }
 }
 
 target "php-83" {
@@ -41,10 +44,11 @@ target "php-83" {
   labels = {
     "org.opencontainers.image.title" = "Druid App image with PHP 8.3"
     "org.opencontainers.image.description" = "Base PHP 8.3 image"
-    #"org.opencontainers.image.version" = VERSION
-    #"org.opencontainers.image.revision" = SHA
   }
-  tags = ["${REPO_BASE}:php-8.3"]
+  tags = [
+    "ghcr.io/${REPO_BASE}:php-8.3",
+    "ghcr.io/${REPO_BASE}:php-${PHP83_MINOR}",
+  ]
 }
 
 target "php-84" {
@@ -59,8 +63,30 @@ target "php-84" {
   labels = {
     "org.opencontainers.image.title" = "Druid App image with PHP 8.4"
     "org.opencontainers.image.description" = "Base PHP 8.4 image"
-    #"org.opencontainers.image.version" = VERSION
-    #"org.opencontainers.image.revision" = SHA
   }
-  tags = ["${REPO_BASE}:php-8.4"]
+  tags = [
+    "ghcr.io/${REPO_BASE}:php-8",
+    "ghcr.io/${REPO_BASE}:php-8.4",
+    "ghcr.io/${REPO_BASE}:php-${PHP84_MINOR}",
+    "ghcr.io/${REPO_BASE}:latest",
+  ]
+}
+
+target "php-85" {
+  inherits = ["common", "php"]
+  args = {
+    PHP_VERSION = "8.5"
+    PHP_SHORT_VERSION = "85"
+  }
+  contexts = {
+    php-base = "docker-image://php:${PHP85_MINOR}-fpm-alpine"
+  }
+  labels = {
+    "org.opencontainers.image.title" = "Druid App image with PHP 8.5"
+    "org.opencontainers.image.description" = "Base PHP 8.5 image"
+  }
+  tags = [
+    "ghcr.io/${REPO_BASE}:php-8.5",
+    "ghcr.io/${REPO_BASE}:php-${PHP85_MINOR}",
+  ]
 }

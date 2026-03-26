@@ -2,7 +2,7 @@
 
 sleep 1
 
-neofetch --ascii_colors 1 --ascii /app/scripts/ascii
+fastfetch --config /home/druid/.config/fastfetch/config.jsonc
 
 . "$(dirname "$0")/utils.sh"
 . "$(dirname "$0")/perms.sh"

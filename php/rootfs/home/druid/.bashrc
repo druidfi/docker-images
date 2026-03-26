@@ -15,5 +15,5 @@ fi
 alias ll="ls -lah"
 alias make="make -s"
 
-# Run neofetch on login
-neofetch --ascii_colors 1 --ascii /home/druid/ascii
+# Run fastfetch on login
+fastfetch --config /home/druid/.config/fastfetch/config.jsonc

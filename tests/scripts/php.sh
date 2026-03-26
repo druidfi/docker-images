@@ -22,20 +22,21 @@ if [[ "$result" != "$expected" ]]; then
   error "Error! iconv result should be '$expected' instead of '$result'"
 fi
 
+title "Test GD extension"
+
+php -r "exit(extension_loaded('gd') ? 0 : 1);" || error "GD extension is not loaded"
+
 title "Test Imagick extension"
 
-php -i | grep imagick
+php -r "exit(extension_loaded('imagick') ? 0 : 1);" || error "Imagick extension is not loaded"
 
 title "Test Redis extension"
 
-if ! php -r "exit(class_exists('Redis') ? 0 : 1);"; then
-  error "Class Redis does not exist"
-fi
+php -r "exit(class_exists('Redis') ? 0 : 1);" || error "Class Redis does not exist"
 
 title "Test Composer require"
 php_version=$(php -d error_reporting=22527 -d display_errors=1 -r 'echo phpversion();')
 
 (composer req php:$php_version -n) || error "Composer require for PHP $php_version failed"
-(composer req ext-gd -n) || error "Composer require for GD extension failed"
 (composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true) || error "Composer config set failed"
 (composer req -W drupal/coder -n) || error "Composer require failed"

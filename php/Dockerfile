@@ -35,8 +35,8 @@ COPY --chmod=644 rootfs/opt/ssl/DigiCertGlobalRootCA.crt.pem /opt/ssl/
 RUN <<EOF
 apk update && apk upgrade
 apk --no-cache add bash curl git make msmtp nano ssmtp sudo tar tini
-apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/v3.20/community neofetch
-neofetch
+apk --no-cache add fastfetch
+fastfetch
 addgroup -S ${DEFAULT_USER} -g ${DEFAULT_USER_UID}
 adduser -D -S -G ${DEFAULT_USER} -u ${DEFAULT_USER_UID} -s /bin/bash ${DEFAULT_USER}
 echo "${DEFAULT_USER} ALL=(ALL) NOPASSWD:SETENV:ALL" > /etc/sudoers.d/${DEFAULT_USER}

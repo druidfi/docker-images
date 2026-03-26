@@ -1,0 +1,40 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+  "logo": {
+    "source": "/home/druid/ascii",
+    "type": "file",
+    "color": {
+      "1": "red"
+    }
+  },
+  "display": {
+    "separator": ": "
+  },
+  "modules": [
+    "os",
+    {
+      "type": "command",
+      "key": "PHP",
+      "text": "php -r 'echo phpversion();'"
+    },
+    {
+      "type": "command",
+      "key": "Composer",
+      "text": "composer --version | awk '{print $3}'"
+    },
+    "kernel",
+    "uptime",
+    "shell",
+    {
+      "type": "command",
+      "key": "User ID",
+      "text": "id -u"
+    },
+    {
+      "type": "command",
+      "key": "Groups",
+      "text": "id -Gn"
+    },
+    "localip"
+  ]
+}
