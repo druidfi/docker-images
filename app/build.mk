@@ -2,7 +2,7 @@ BAKE_FLAGS := --pull --no-cache --push
 
 PHONY += app-bake-all
 app-bake-all: ## Bake all PHP images
-	@PHP82_MINOR=$(call get_php_minor,8.2) PHP83_MINOR=$(call get_php_minor,8.3) PHP84_MINOR=$(call get_php_minor,8.4) \
+	@PHP83_MINOR=$(call get_php_minor,8.3) PHP84_MINOR=$(call get_php_minor,8.4) PHP85_MINOR=$(call get_php_minor,8.5) \
 		docker buildx bake -f app/docker-bake.hcl $(BAKE_FLAGS)
 
 PHONY += app-bake-print
@@ -19,9 +19,7 @@ app-bake-test: app-bake-all run-app-tests ## CI test for App images
 
 PHONY += run-app-tests
 run-app-tests:
-	$(call step,Run tests in druidfi/app:php-8.2)
-	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/app:php-8.2 /app/scripts/tests.sh
 	$(call step,Run tests in druidfi/app:php-8.3)
 	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/app:php-8.3 /app/scripts/tests.sh
-#	$(call step,Run tests in druidfi/app:php-8.4)
-#	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/app:php-8.4 /app/scripts/tests.sh
+	$(call step,Run tests in druidfi/app:php-8.4)
+	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts druidfi/app:php-8.4 /app/scripts/tests.sh
