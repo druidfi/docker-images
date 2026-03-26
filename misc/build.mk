@@ -28,3 +28,7 @@ PHONY += misc-bake-idp
 #misc-bake-idp: MISC_BAKE_FLAGS := saml-idp --pull --progress plain --no-cache --load --set *.platform=linux/$(CURRENT_ARCH)
 misc-bake-idp: MISC_BAKE_FLAGS := saml-idp --pull --progress plain --no-cache --push
 misc-bake-idp: --misc-bake ## Bake all Misc images locally
+
+PHONY += misc-bake-claude
+misc-bake-claude: MISC_BAKE_FLAGS := claude --pull --progress plain --no-cache --push
+misc-bake-claude: --misc-bake ## Bake Claude image
