@@ -26,7 +26,7 @@ RUN apk --no-cache add \
     mariadb-client mariadb-connector-c \
     msmtp nano nginx openssh-client patch rsync ssmtp tar tini unzip && \
     install-php-extensions \
-    apcu bcmath exif gd igbinary imagick msgpack mysqli opcache pdo_mysql redis sockets uploadprogress xdebug zip && \
+    apcu bcmath exif gd igbinary imagick opcache pdo_mysql redis sockets uploadprogress xdebug zip && \
     addgroup -S ${DEFAULT_USER} -g ${DEFAULT_USER_UID} && \
     adduser -D -S -G ${DEFAULT_USER} -u ${DEFAULT_USER_UID} -s /bin/bash ${DEFAULT_USER} && \
     adduser ${DEFAULT_USER} www-data && \
