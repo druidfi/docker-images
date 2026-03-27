@@ -126,12 +126,10 @@ Extensions accumulate across image layers (`php` → `php-fpm` → `drupal` → 
 
 #### Certificates
 
-Installed to `/opt/ssl/` in all images.
+Installed to `/opt/ssl/` in all images (from `rootfs/opt/ssl/` in the repo).
 
 | File | `druidfi/php` | `druidfi/php-fpm` | `druidfi/drupal` | `druidfi/drupal-web` | `druidfi/app` | Purpose |
 |------|:-------------:|:-----------------:|:----------------:|:--------------------:|:-------------:|---------|
-| `BaltimoreCyberTrustRoot.crt.pem` | ✓ | ✓ | ✓ | ✓ | ✓ | Azure MySQL (legacy) |
-| `DigiCertGlobalRootG2.crt.pem` | ✓ | ✓ | ✓ | ✓ | ✓ | Azure PostgreSQL |
 | `DigiCertGlobalRootCA.crt.pem` | ✓ | ✓ | ✓ | ✓ | ✓ | Azure MySQL Flexible Server |
 
 ### Helper & Sidecar Images

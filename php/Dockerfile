@@ -24,12 +24,7 @@ ENV KIND=druid-docker-image \
     DEFAULT_USER=druid \
     DEFAULT_USER_UID=1000
 
-# See https://docs.microsoft.com/en-us/azure/mysql/howto-configure-ssl
-ADD --chmod=0644 https://cacerts.digicert.com/BaltimoreCyberTrustRoot.crt.pem /opt/ssl/
-# See https://learn.microsoft.com/en-us/azure/postgresql/single-server/concepts-certificate-rotation#what-change-was-scheduled-to-be-performed-starting-december-2022-122022
-ADD --chmod=0644 https://cacerts.digicert.com/DigiCertGlobalRootG2.crt.pem /opt/ssl/
 # https://learn.microsoft.com/en-us/azure/mysql/flexible-server/how-to-connect-tls-ssl
-#ADD --chmod=0644 https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem /opt/ssl/
 COPY --chmod=644 rootfs/opt/ssl/DigiCertGlobalRootCA.crt.pem /opt/ssl/
 
 RUN <<EOF
