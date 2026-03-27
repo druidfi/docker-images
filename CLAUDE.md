@@ -89,7 +89,7 @@ Extensions accumulate across image layers (`php` → `php-fpm` → `drupal` → 
 | xml | core | — | — | ✓ | ✓ | ✓ |
 | xmlreader | core | — | — | ✓ | ✓ | ✓ |
 | xmlwriter | core | — | — | ✓ | ✓ | ✓ |
-| igbinary | PECL | — | — | — | — | ✓ |
+| igbinary | PECL | — | — | ✓ | ✓ | ✓ |
 
 > PHP 8.5 omits `opcache` (not yet in Alpine edge/testing). `intl` and `soap` are absent in `druidfi/app` — not in the official `php:fpm-alpine` base and not explicitly installed. `igbinary` is unique to `druidfi/app` and enables binary serialization for the Redis/Valkey phpredis extension.
 
