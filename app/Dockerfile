@@ -34,7 +34,10 @@ RUN apk --no-cache add \
     curl -sSf https://composer.github.io/releases.pub -o /home/${DEFAULT_USER}/.composer/keys.tags.pub && \
     curl -sSf https://composer.github.io/snapshots.pub -o /home/${DEFAULT_USER}/.composer/keys.dev.pub && \
     chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER} ${APP_PATH} && \
-    chmod -R a+rwx /var/lib/nginx /var/log/nginx
+    chmod -R a+rwx /var/lib/nginx /var/log/nginx && \
+    curl -sSL https://github.com/Smile-SA/gdpr-dump/releases/latest/download/gdpr-dump.phar -o /usr/local/bin/gdpr-dump && \
+    chmod +x /usr/local/bin/gdpr-dump && \
+    gdpr-dump --version
 
 COPY --chown=${DEFAULT_USER}:${DEFAULT_USER} rootfs/home/druid/ /home/druid
 COPY rootfs/entrypoints/ /entrypoints/

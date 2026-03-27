@@ -122,7 +122,7 @@ Extensions accumulate across image layers (`php` → `php-fpm` → `drupal` → 
 | `mariadb-client` | Alpine apk | — | — | ✓ | ✓ | ✓ |
 | `install-php-extensions` | `mlocati/php-extension-installer` | — | — | — | — | ✓ |
 | `nginx` | Alpine apk | — | — | — | ✓ | ✓ |
-| `gdpr-dump` | GitHub releases (Smile-SA) | — | — | — | ✓ | — |
+| `gdpr-dump` | GitHub releases (Smile-SA) | — | — | — | ✓ | ✓ |
 
 #### Certificates
 
