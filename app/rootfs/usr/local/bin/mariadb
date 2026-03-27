@@ -1,18 +1,13 @@
-#!/bin/bash
-# --defaults-file must be the first argument if present, so extract and reorder
-ARGS=()
-DEFAULTS_FILE_ARG=""
-
+#!/bin/sh
+# Drush passes --defaults-file which replaces all cnf files including
+# /etc/my.cnf.d/mariadb-client.cnf. Inject disable-ssl-verify-server-cert
+# into the temp file Drush created so it is still picked up.
 for arg in "$@"; do
-  if [[ "$arg" == --defaults-file=* ]]; then
-    DEFAULTS_FILE_ARG="$arg"
-  else
-    ARGS+=("$arg")
-  fi
+  case "$arg" in
+    --defaults-file=*)
+      printf '\ndisable-ssl-verify-server-cert\n' >> "${arg#--defaults-file=}"
+      break
+      ;;
+  esac
 done
-
-if [[ -n "$DEFAULTS_FILE_ARG" ]]; then
-  exec /usr/bin/mariadb "$DEFAULTS_FILE_ARG" --ssl-verify-server-cert=0 "${ARGS[@]}"
-else
-  exec /usr/bin/mariadb --ssl-verify-server-cert=0 "${ARGS[@]}"
-fi
+exec /usr/bin/mariadb "$@"
