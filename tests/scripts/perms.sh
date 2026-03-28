@@ -52,18 +52,26 @@ if [[ "$result" != "$expected" ]]; then
   error "Error! Folder permissions should be '$expected' instead of '$result'"
 fi
 
-title "Test that user can operate folders inside folder owned by www-data"
+title "Test that druid can unlink www-data-owned files in a www-data:www-data 775 folder"
 
-# Challenge: /app/public/sites/default/files is owned by www-data and with permissions drwxr-xr-x
-# Druid user cannot do operations which e.g. delete folders inside it.
-# Permissions should be changed from drwxr-xr-x to drwxrwxr-x
+# PHP-FPM runs as www-data with umask 002, so files/dirs in sites/default/files are
+# www-data:www-data with permissions 664/775. Druid (member of www-data group) must be
+# able to unlink these files so that drush deploy can clear aggregated CSS/JS caches.
 folder="$APP_PATH/folder-owned-by-www-data/"
 
 mkdir "$folder" || error "Cannot create a folder"
-$sudo_bin chown www-data:www-data "$folder" || error "Cannot change owner of folder: $result"
-$sudo_bin chmod g+rwx "$folder" || error "Cannot change permissions of folder: $result"
-result=$(stat -c '%U:%G %A %a' "$folder")
-title "Permissions: $folder : $result"
-mkdir "$folder/somefolder" || error "Cannot create a folder inside folder"
-ls -lahR "$folder"
-rm -rf "$folder" || error "Cannot remove folder with permissions: $result"
+$sudo_bin chown www-data:www-data "$folder" || error "Cannot chown folder to www-data"
+$sudo_bin chmod 775 "$folder" || error "Cannot chmod folder to 775"
+$sudo_bin touch "$folder/test.css.gz" || error "Cannot create test file"
+$sudo_bin chown www-data:www-data "$folder/test.css.gz" || error "Cannot chown file to www-data"
+$sudo_bin chmod 664 "$folder/test.css.gz" || error "Cannot chmod file to 664"
+
+result=$(stat -c '%U:%G %a' "$folder")
+title "Folder: $folder : $result"
+
+result=$(stat -c '%U:%G %a' "$folder/test.css.gz")
+title "File: $folder/test.css.gz : $result"
+
+rm "$folder/test.css.gz" || error "Cannot unlink www-data-owned file in www-data:www-data 775 folder"
+mkdir "$folder/somefolder" || error "Cannot create subfolder"
+rm -rf "$folder" || error "Cannot remove folder"

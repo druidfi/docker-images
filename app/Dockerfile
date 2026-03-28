@@ -45,6 +45,7 @@ COPY rootfs/etc/ /etc/
 COPY rootfs/usr/local/ /usr/local/
 
 # https://learn.microsoft.com/en-us/azure/mysql/flexible-server/how-to-connect-tls-ssl
+RUN mkdir -p /opt/ssl
 COPY --chmod=644 rootfs/opt/ssl/DigiCertGlobalRootCA.crt.pem /opt/ssl/
 
 EXPOSE 8080/tcp
