@@ -1,0 +1,26 @@
+#
+# See https://github.com/drush-ops/drush/blob/master/examples/example.drush.yml
+#
+
+# This section is for setting command-specific options.
+command:
+  sql:
+    options:
+      extra: "--skip-ssl"
+    dump:
+      options:
+        extra-dump: "--skip-ssl --no-tablespaces"
+
+sql:
+  # List of tables whose *data* is skipped by the 'sql-dump' and 'sql-sync'
+  # commands when the "--structure-tables-key=common" option is provided.
+  # You may add specific tables to the existing array or add a new element.
+  structure-tables:
+    common:
+      - 'cache'
+      - 'cache_*'
+      - 'history'
+      - 'search_*'
+      - 'sessions'
+      - 'watchdog'
+      - 'feeds_log'
