@@ -13,7 +13,12 @@ ENV KIND=druid-docker-image \
     COMPOSER_HOME=/home/druid/.composer \
     COMPOSER_AUDIT_ABANDONED=report \
     COMPOSER_FUND=0 \
-    PATH="${PATH}:/home/druid/.composer/vendor/bin:/app/vendor/bin"
+    PATH="${PATH}:/home/druid/.composer/vendor/bin:/app/vendor/bin" \
+    DRUPAL_DB_NAME=drupal \
+    DRUPAL_DB_USER=drupal \
+    DRUPAL_DB_PASS=drupal \
+    DRUPAL_DB_HOST=db \
+    DRUPAL_DB_PORT=3306
 
 WORKDIR ${APP_PATH}
 
