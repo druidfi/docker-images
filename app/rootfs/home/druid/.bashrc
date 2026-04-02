@@ -14,6 +14,7 @@ fi
 # Aliases
 alias ll="ls -lah"
 alias make="make -s"
+alias sudo="doas"
 
 # Run fastfetch on login
 fastfetch --config /home/druid/.config/fastfetch/config.jsonc

@@ -89,6 +89,45 @@ jobs:
             --set "*.cache-from=type=gha,scope=php" \
             --set "*.cache-to=type=gha,scope=php,mode=max"
 
+  app:
+    name: App images
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+        with:
+          platforms: amd64,arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Login to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Resolve PHP FPM minor versions
+        id: versions
+        run: |
+          echo "php83_minor=$(bin/helper php-fpm-minor 8.3)" >> "$GITHUB_OUTPUT"
+          echo "php84_minor=$(bin/helper php-fpm-minor 8.4)" >> "$GITHUB_OUTPUT"
+          echo "php85_minor=$(bin/helper php-fpm-minor 8.5)" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push App images
+        env:
+          PHP83_MINOR: ${{ steps.versions.outputs.php83_minor }}
+          PHP84_MINOR: ${{ steps.versions.outputs.php84_minor }}
+          PHP85_MINOR: ${{ steps.versions.outputs.php85_minor }}
+        run: |
+          docker buildx bake -f app/docker-bake.hcl --pull --push \
+            --set "*.cache-from=type=gha,scope=app" \
+            --set "*.cache-to=type=gha,scope=app,mode=max"
+
   nginx:
     name: Nginx images
     runs-on: ubuntu-24.04

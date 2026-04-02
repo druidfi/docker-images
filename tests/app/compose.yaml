@@ -1,0 +1,35 @@
+services:
+
+  app:
+    container_name: ${COMPOSE_PROJECT_NAME}-app
+    hostname: ${COMPOSE_PROJECT_NAME}
+    image: ${APP_IMAGE}
+    build:
+      context: ../../app
+      dockerfile: Dockerfile
+      additional_contexts:
+        php-base: docker-image://php:${PHP_VERSION}-fpm-alpine
+    volumes:
+      - ../../tests/scripts:/app/scripts:ro
+    environment:
+      APP_ENV: dev
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.entrypoints=https
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.rule=Host(`${APP_HOSTNAME}`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.tls=true
+      - traefik.http.services.${COMPOSE_PROJECT_NAME}-app.loadbalancer.server.port=8080
+      - traefik.docker.network=stonehenge-network
+    networks:
+      - default
+      - stonehenge-network
+    depends_on:
+      - db
+
+  db:
+    container_name: ${COMPOSE_PROJECT_NAME}-db
+    image: druidfi/mariadb:11.4-drupal-lts
+
+networks:
+  stonehenge-network:
+    external: true

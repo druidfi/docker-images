@@ -1,0 +1,3 @@
+[client]
+ssl-ca = /opt/ssl/DigiCertGlobalRootCA.crt.pem
+disable-ssl-verify-server-cert

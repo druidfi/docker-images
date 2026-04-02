@@ -53,6 +53,8 @@ make run-frankenphp-tests   # Run FrankenPHP image tests
 
 PHP 8.5 images exist but are not marked `latest` — PHP 8.5 is not yet considered ready for Drupal projects.
 
+See [CONFIGURATION.md](CONFIGURATION.md) for PHP extensions, binaries, certificates, and PHP ini settings across all images.
+
 ### Helper & Sidecar Images
 
 #### Nginx (`nginx/`)

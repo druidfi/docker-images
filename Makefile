@@ -11,6 +11,8 @@ else
 	CURRENT_ARCH := amd64
 endif
 
+PHP_VERSIONS := 8.3 8.4 8.5
+
 include $(PROJECT_DIR)/make/*.mk
 
 PHONY += help
@@ -37,6 +39,10 @@ endef
 
 define get_php_minor
 $(shell bin/helper phpminor $1)
+endef
+
+define get_php_fpm_minor
+$(shell bin/helper php-fpm-minor $1)
 endef
 
 define get_frankenphp_version

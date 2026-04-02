@@ -24,19 +24,14 @@ ENV KIND=druid-docker-image \
     DEFAULT_USER=druid \
     DEFAULT_USER_UID=1000
 
-# See https://docs.microsoft.com/en-us/azure/mysql/howto-configure-ssl
-ADD --chmod=0644 https://cacerts.digicert.com/BaltimoreCyberTrustRoot.crt.pem /opt/ssl/
-# See https://learn.microsoft.com/en-us/azure/postgresql/single-server/concepts-certificate-rotation#what-change-was-scheduled-to-be-performed-starting-december-2022-122022
-ADD --chmod=0644 https://cacerts.digicert.com/DigiCertGlobalRootG2.crt.pem /opt/ssl/
 # https://learn.microsoft.com/en-us/azure/mysql/flexible-server/how-to-connect-tls-ssl
-#ADD --chmod=0644 https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem /opt/ssl/
 COPY --chmod=644 rootfs/opt/ssl/DigiCertGlobalRootCA.crt.pem /opt/ssl/
 
 RUN <<EOF
 apk update && apk upgrade
 apk --no-cache add bash curl git make msmtp nano ssmtp sudo tar tini
-apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/v3.20/community neofetch
-neofetch
+apk --no-cache add fastfetch
+fastfetch
 addgroup -S ${DEFAULT_USER} -g ${DEFAULT_USER_UID}
 adduser -D -S -G ${DEFAULT_USER} -u ${DEFAULT_USER_UID} -s /bin/bash ${DEFAULT_USER}
 echo "${DEFAULT_USER} ALL=(ALL) NOPASSWD:SETENV:ALL" > /etc/sudoers.d/${DEFAULT_USER}
@@ -208,14 +203,16 @@ FROM final-php-fpm AS drupal-php-83
 
 RUN sudo -s <<EOF
 apk --no-cache add openssh rsync libavif icu-libs libsodium \
-    php83-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
+    php83-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter} \
+    php83-pecl-igbinary
 EOF
 
 FROM final-php-fpm AS drupal-php-84
 
 RUN sudo -s <<EOF
 apk --no-cache add openssh rsync libavif icu-libs libsodium \
-    php84-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
+    php84-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter} \
+    php84-pecl-igbinary
 EOF
 
 FROM final-php-fpm AS drupal-php-85
@@ -223,7 +220,8 @@ FROM final-php-fpm AS drupal-php-85
 RUN sudo -s <<EOF
 apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main icu-libs
 apk --no-cache add openssh rsync libavif libsodium \
-    php85-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
+    php85-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter} \
+    php85-pecl-igbinary
 EOF
 
 #
