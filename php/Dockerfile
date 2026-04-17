@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG ALPINE_VERSION=3.23.3
+ARG ALPINE_VERSION=3.23.4
 ARG PHP_SHORT_VERSION=83
 
 #
