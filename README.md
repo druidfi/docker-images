@@ -66,7 +66,7 @@ Added features:
 Needs:
 
 - Nginx (`druidfi/nginx:1.30-drupal`)
-- Database (`druidfi/mariadb:10.11-drupal-lts`)
+- Database (`druidfi/mariadb:11.8-drupal-lts`)
 
 ENV variables:
 
@@ -89,7 +89,7 @@ Added features:
 
 Needs:
 
-- Database (`druidfi/mariadb:10.11-drupal-lts`)
+- Database (`druidfi/mariadb:11.8-drupal-lts`)
 
 ### druidfi/drupal-test variant
 
@@ -101,7 +101,7 @@ Added features:
 
 Needs:
 
-- Database (`druidfi/mariadb:10.11-drupal-lts`)
+- Database (`druidfi/mariadb:11.8-drupal-lts`)
 
 ## druidfi/nginx
 
