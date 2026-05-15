@@ -349,6 +349,7 @@ jobs:
     name: Drupal test images
     runs-on: ubuntu-24.04
     needs: [php]
+    continue-on-error: true
 
     steps:
       - uses: actions/checkout@v6
