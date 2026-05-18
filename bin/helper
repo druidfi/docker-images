@@ -4,11 +4,11 @@ COMMAND=$1
 LATEST_ALPINE_MINOR=3.23
 LATEST_ALPINE_VERSION=3.23.4
 FALLBACK_VERSION_83="8.3.30"
-FALLBACK_VERSION_84="8.4.20"
-FALLBACK_VERSION_85="8.5.5"
-FALLBACK_FRANKENPHP_VERSION="1.12.2"
-FALLBACK_FRANKENPHP_PHP84="8.4.20"
-FALLBACK_FRANKENPHP_PHP85="8.5.5"
+FALLBACK_VERSION_84="8.4.21"
+FALLBACK_VERSION_85="8.5.6"
+FALLBACK_FRANKENPHP_VERSION="1.12.3"
+FALLBACK_FRANKENPHP_PHP84="8.4.21"
+FALLBACK_FRANKENPHP_PHP85="8.5.6"
 
 if [[ $COMMAND == alpineversion ]]
 then
@@ -16,7 +16,7 @@ then
   BRANCH=${2:-${LATEST_ALPINE_MINOR}}
   API_URL="https://hub.docker.com/v2/repositories/library/alpine/tags?page_size=100"
   JQ=$(which jq) || bin/jq-osx-amd64
-  TAGS=$(curl -L -s "$API_URL" | $JQ --raw-output '."results"[]["name"]')
+  TAGS=$(curl -L -s --connect-timeout 5 --max-time 10 "$API_URL" | $JQ --raw-output '."results"[]["name"]' 2>/dev/null)
 
   for TAG in $TAGS
   do
@@ -26,6 +26,10 @@ then
       echo "$TAG" && exit 0
     fi
   done
+
+  # Fallback when API is unreachable or branch not found
+  if [[ "$BRANCH" == "$LATEST_ALPINE_MINOR" ]]; then echo "$LATEST_ALPINE_VERSION" && exit 0; fi
+  exit 1
 
 fi
 
@@ -48,17 +52,18 @@ then
     echo "Not supported PHP version: $BRANCH" && exit 1
   fi
 
-  RESPONSE=$(curl -s -w "%{http_code}" "$URL")
+  RESPONSE=$(curl -s -w "%{http_code}" --connect-timeout 5 --max-time 10 "$URL")
   CODE=$(tail -n1 <<< "$RESPONSE")
   RESPONSE=$(sed '$ d' <<< "$RESPONSE")
-
+CODE="000"
   if [[ "$CODE" =~ ^2 ]]; then
-      echo "$RESPONSE" | cat | grep -m 1 -i "pkgver=" | cut -d "=" -f2 && exit 0
-  else
-      if [[ "$BRANCH" == "8.3" ]]; then echo "$CODE $FALLBACK_VERSION_83"; fi
-      if [[ "$BRANCH" == "8.4" ]]; then echo "$CODE $FALLBACK_VERSION_84"; fi
-      exit 0
+      echo "$RESPONSE" | grep -m 1 -i "pkgver=" | cut -d "=" -f2 && exit 0
   fi
+
+  if [[ "$BRANCH" == "8.3" ]]; then echo "$FALLBACK_VERSION_83" && exit 0; fi
+  if [[ "$BRANCH" == "8.4" ]]; then echo "$FALLBACK_VERSION_84" && exit 0; fi
+  if [[ "$BRANCH" == "8.5" ]]; then echo "$FALLBACK_VERSION_85" && exit 0; fi
+  exit 1
 
 fi
 

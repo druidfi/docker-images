@@ -7,15 +7,15 @@ variable "REPO_GHCR" {
 }
 
 variable "FRANKENPHP_VERSION" {
-  default = "1.12.2"
+  default = "1.12.3"
 }
 
 variable "FRANKENPHP_PHP84" {
-  default = "8.4.18"
+  default = "8.4.21"
 }
 
 variable "FRANKENPHP_PHP85" {
-  default = "8.5.3"
+  default = "8.5.6"
 }
 
 group "default" {
