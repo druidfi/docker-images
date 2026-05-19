@@ -285,6 +285,7 @@ jobs:
             -t druidfi/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP84} \
             -t ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4 \
             -t ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP84} \
+            -t ghcr.io/druidfi/frankenphp-8.4:v${FRANKENPHP_VERSION} \
             druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-amd64 \
             druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-arm64
 
@@ -302,6 +303,7 @@ jobs:
             -t ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5 \
             -t ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP85} \
             -t ghcr.io/druidfi/frankenphp:latest \
+            -t ghcr.io/druidfi/frankenphp-8.5:v${FRANKENPHP_VERSION} \
             druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-amd64 \
             druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-arm64
 

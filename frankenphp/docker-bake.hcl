@@ -6,6 +6,14 @@ variable "REPO_GHCR" {
   default = "ghcr.io/druidfi/frankenphp"
 }
 
+variable "REPO_GHCR_84" {
+  default = "ghcr.io/druidfi/frankenphp-8.4"
+}
+
+variable "REPO_GHCR_85" {
+  default = "ghcr.io/druidfi/frankenphp-8.5"
+}
+
 variable "FRANKENPHP_VERSION" {
   default = "1.12.3"
 }
@@ -59,6 +67,7 @@ target "php-84" {
     "${REPO_BASE}:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP84}",
     "${REPO_GHCR}:${FRANKENPHP_VERSION}-php8.4",
     "${REPO_GHCR}:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP84}",
+    "${REPO_GHCR_84}:v${FRANKENPHP_VERSION}",
   ]
 }
 
@@ -80,5 +89,6 @@ target "php-85" {
     "${REPO_GHCR}:${FRANKENPHP_VERSION}-php8.5",
     "${REPO_GHCR}:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP85}",
     "${REPO_GHCR}:latest",
+    "${REPO_GHCR_85}:v${FRANKENPHP_VERSION}",
   ]
 }
