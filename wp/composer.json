@@ -11,7 +11,7 @@
   ],
   "require": {
     "composer/installers": "^2.0",
-    "johnpbloch/wordpress": "^6.0",
+    "johnpbloch/wordpress": "^7.0",
     "wpackagist-plugin/contact-form-7": "^6.0",
     "wpackagist-plugin/google-sitemap-generator": "^4.1",
     "wpackagist-plugin/lumturio-wp-monitor": "^1.0",
