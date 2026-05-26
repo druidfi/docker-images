@@ -255,7 +255,7 @@ FROM drupal-base AS drupal-web
 ADD --chmod=755 https://github.com/Smile-SA/gdpr-dump/releases/latest/download/gdpr-dump.phar /usr/local/bin/gdpr-dump
 
 RUN sudo -s <<EOF
-apk --no-cache add nginx
+apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main nginx
 gdpr-dump --version
 EOF
 
