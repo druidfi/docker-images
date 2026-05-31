@@ -7,5 +7,17 @@
   "baseBranchPatterns": [
     "main"
   ],
-  "enabled": true
+  "enabled": true,
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["^misc/docker-bake\\.hcl$"],
+      "matchStrings": [
+        "variable SIMPLESAMLPHP_VERSION \\{\\s+default = \"(?<currentValue>[^\"]+)\""
+      ],
+      "depNameTemplate": "simplesamlphp/simplesamlphp",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver"
+    }
+  ]
 }
