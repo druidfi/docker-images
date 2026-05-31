@@ -11,7 +11,9 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["^misc/docker-bake\\.hcl$"],
+      "managerFilePatterns": [
+        "/^misc/docker-bake\\.hcl$/"
+      ],
       "matchStrings": [
         "variable SIMPLESAMLPHP_VERSION \\{\\s+default = \"(?<currentValue>[^\"]+)\""
       ],
