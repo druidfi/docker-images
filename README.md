@@ -7,6 +7,8 @@
 
 See https://hub.docker.com/u/druidfi for all the images.
 
+See [BUILDING.md](BUILDING.md) for instructions on how to build and push images.
+
 ## Shared for all PHP images
 
 Features:
