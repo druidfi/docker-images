@@ -19,11 +19,11 @@ variable "FRANKENPHP_VERSION" {
 }
 
 variable "FRANKENPHP_PHP84" {
-  default = "8.4.21"
+  default = "8.4.22"
 }
 
 variable "FRANKENPHP_PHP85" {
-  default = "8.5.6"
+  default = "8.5.7"
 }
 
 group "default" {
