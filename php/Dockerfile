@@ -144,7 +144,7 @@ ENV APP_ENV=prod \
     COMPOSER_HOME=/home/${DEFAULT_USER}/.composer \
     COMPOSER_AUDIT_ABANDONED=report \
     COMPOSER_FUND=0 \
-    PATH="${APP_PATH}/vendor/bin:${PATH}:/home/${DEFAULT_USER}/.composer/vendor/bin"
+    PATH="${PATH}:${APP_PATH}/vendor/bin:/home/${DEFAULT_USER}/.composer/vendor/bin"
 
 COPY --link --from=composer/composer:2.10-bin /composer /usr/bin/composer
 
