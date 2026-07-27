@@ -3,9 +3,9 @@
 
 ARG MYSQL_SHORT_VERSION=80
 
-FROM mysql:8.0 AS mysql-80
-FROM mysql:8.4 AS mysql-84
-FROM mysql:9.7 AS mysql-97
+FROM mysql:26.7 AS mysql-80
+FROM mysql:26.7 AS mysql-84
+FROM mysql:26.7 AS mysql-97
 
 FROM mysql-${MYSQL_SHORT_VERSION} AS mysql-base
 
