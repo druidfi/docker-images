@@ -75,7 +75,8 @@ ENV PHP_INSTALL_VERSION=83
 
 RUN sudo -s <<EOF
 apk update
-apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community libcrypto3 libssl3 libzip \
+apk --no-cache add libcrypto3 libssl3 libzip
+apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community \
   php83 php83-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
   php83-pecl-{apcu,imagick,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php83 /usr/bin/php
@@ -96,7 +97,8 @@ ENV PHP_INSTALL_VERSION=84
 
 RUN sudo -s <<EOF
 apk update
-apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community libcrypto3 libssl3 libzip \
+apk --no-cache add libcrypto3 libssl3 libzip
+apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community \
   php84 php84-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
   php84-pecl-{apcu,imagick,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php84 /usr/bin/php
@@ -115,13 +117,10 @@ ENV PHP_MAJOR_VERSION=8
 ENV PHP_SHORT_VERSION=85
 ENV PHP_INSTALL_VERSION=85
 
-USER root
-RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
-USER ${DEFAULT_USER}
-
 RUN sudo -s <<EOF
 apk update
-apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community libcrypto3 libssl3 libzip \
+apk --no-cache add libcrypto3 libssl3 libzip
+apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community \
   php85 php85-{curl,fileinfo,iconv,mbstring,openssl,phar,session,zip} \
   php85-pecl-{apcu,imagick,redis,uploadprogress,xdebug}
 ln -sfn /usr/bin/php85 /usr/bin/php

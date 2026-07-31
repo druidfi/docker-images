@@ -3,12 +3,12 @@
 COMMAND=$1
 LATEST_ALPINE_MINOR=3.24
 LATEST_ALPINE_VERSION=3.24.1
-FALLBACK_VERSION_83="8.3.30"
-FALLBACK_VERSION_84="8.4.22"
-FALLBACK_VERSION_85="8.5.7"
+FALLBACK_VERSION_83="8.3.33"
+FALLBACK_VERSION_84="8.4.24"
+FALLBACK_VERSION_85="8.5.9"
 FALLBACK_FRANKENPHP_VERSION="1.12.4"
-FALLBACK_FRANKENPHP_PHP84="8.4.22"
-FALLBACK_FRANKENPHP_PHP85="8.5.7"
+FALLBACK_FRANKENPHP_PHP84="8.4.23"
+FALLBACK_FRANKENPHP_PHP85="8.5.8"
 
 if [[ $COMMAND == alpineversion ]]
 then
@@ -41,13 +41,13 @@ then
 
   if [[ $BRANCH == 8.3 ]]
   then
-    URL="https://gitlab.alpinelinux.org/alpine/aports/-/raw/${LATEST_ALPINE_MINOR}-stable/community/php83/APKBUILD"
+    URL="https://gitlab.alpinelinux.org/alpine/aports/-/raw/master/community/php83/APKBUILD"
   elif [[ $BRANCH == 8.4 ]]
   then
-    URL="https://gitlab.alpinelinux.org/alpine/aports/-/raw/${LATEST_ALPINE_MINOR}-stable/community/php84/APKBUILD"
+    URL="https://gitlab.alpinelinux.org/alpine/aports/-/raw/master/community/php84/APKBUILD"
   elif [[ $BRANCH == 8.5 ]]
   then
-    URL="https://gitlab.alpinelinux.org/alpine/aports/-/raw/${LATEST_ALPINE_MINOR}-stable/community/php85/APKBUILD"
+    URL="https://gitlab.alpinelinux.org/alpine/aports/-/raw/master/community/php85/APKBUILD"
   else
     echo "Not supported PHP version: $BRANCH" && exit 1
   fi
