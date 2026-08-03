@@ -159,7 +159,7 @@ EOF
 FROM final-php AS build-php-fpm-83
 
 RUN sudo -s <<EOF
-apk --no-cache add php83-fpm
+apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community php83-fpm
 ln -sfn /usr/sbin/php-fpm83 /usr/sbin/php-fpm
 EOF
 
@@ -168,7 +168,7 @@ COPY rootfs/etc/php/php-fpm.d/www.conf.ep /etc/php83/php-fpm.d/www.conf.ep
 FROM final-php AS build-php-fpm-84
 
 RUN sudo -s <<EOF
-apk --no-cache add php84-fpm
+apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community php84-fpm
 ln -sfn /usr/sbin/php-fpm84 /usr/sbin/php-fpm
 EOF
 
@@ -177,7 +177,7 @@ COPY rootfs/etc/php/php-fpm.d/www.conf.ep /etc/php84/php-fpm.d/www.conf.ep
 FROM final-php AS build-php-fpm-85
 
 RUN sudo -s <<EOF
-apk --no-cache add php85-fpm
+apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community php85-fpm
 ln -sfn /usr/sbin/php-fpm85 /usr/sbin/php-fpm
 EOF
 
