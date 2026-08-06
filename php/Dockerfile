@@ -78,7 +78,8 @@ apk update
 apk --no-cache add libcrypto3 libssl3 libzip
 apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community \
   php83 php83-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
-  php83-pecl-{apcu,imagick,redis,uploadprogress,xdebug}
+  php83-pecl-{apcu,imagick,redis,uploadprogress,xdebug} \
+  imagemagick-{jpeg,tiff,webp,heic,jp2,jxl}
 ln -sfn /usr/bin/php83 /usr/bin/php
 EOF
 
@@ -100,7 +101,8 @@ apk update
 apk --no-cache add libcrypto3 libssl3 libzip
 apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community \
   php84 php84-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
-  php84-pecl-{apcu,imagick,redis,uploadprogress,xdebug}
+  php84-pecl-{apcu,imagick,redis,uploadprogress,xdebug} \
+  imagemagick-{jpeg,tiff,webp,heic,jp2,jxl}
 ln -sfn /usr/bin/php84 /usr/bin/php
 EOF
 
@@ -122,7 +124,8 @@ apk update
 apk --no-cache add libcrypto3 libssl3 libzip
 apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community \
   php85 php85-{curl,fileinfo,iconv,mbstring,openssl,phar,session,zip} \
-  php85-pecl-{apcu,imagick,redis,uploadprogress,xdebug}
+  php85-pecl-{apcu,imagick,redis,uploadprogress,xdebug} \
+  imagemagick-{jpeg,tiff,webp,heic,jp2,jxl}
 ln -sfn /usr/bin/php85 /usr/bin/php
 EOF
 
