@@ -3,7 +3,7 @@ variable "ALPINE_VERSION" {
 }
 
 variable SIMPLESAMLPHP_VERSION {
-  default = "2.5.3"
+  default = "2.5.3.1"
 }
 
 group "default" {
