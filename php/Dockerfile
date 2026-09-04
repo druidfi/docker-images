@@ -101,7 +101,7 @@ apk update
 apk --no-cache add libcrypto3 libssl3 libzip
 apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community \
   php84 php84-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
-  php84-pecl-{apcu,imagick,redis,uploadprogress,xdebug} \
+  php84-pecl-{apcu,brotli,imagick,redis,uploadprogress,xdebug} \
   imagemagick-{jpeg,tiff,webp,heic,jp2,jxl}
 ln -sfn /usr/bin/php84 /usr/bin/php
 EOF
@@ -124,7 +124,7 @@ apk update
 apk --no-cache add libcrypto3 libssl3 libzip
 apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community \
   php85 php85-{curl,fileinfo,iconv,mbstring,openssl,phar,session,zip} \
-  php85-pecl-{apcu,imagick,redis,uploadprogress,xdebug} \
+  php85-pecl-{apcu,brotli,imagick,redis,uploadprogress,xdebug} \
   imagemagick-{jpeg,tiff,webp,heic,jp2,jxl}
 ln -sfn /usr/bin/php85 /usr/bin/php
 EOF
@@ -257,7 +257,10 @@ FROM drupal-base AS drupal-web
 ADD --chmod=755 https://github.com/Smile-SA/gdpr-dump/releases/latest/download/gdpr-dump.phar /usr/local/bin/gdpr-dump
 
 RUN sudo -s <<EOF
-apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main nginx
+apk --no-cache add \
+  --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main \
+  --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community \
+  nginx nginx-mod-http-brotli
 gdpr-dump --version
 EOF
 
