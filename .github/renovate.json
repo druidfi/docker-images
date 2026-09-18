@@ -20,6 +20,19 @@
       "depNameTemplate": "simplesamlphp/simplesamlphp",
       "datasourceTemplate": "github-releases",
       "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^misc/docker-bake\\.hcl$/",
+        "/^php/docker-bake\\.hcl$/"
+      ],
+      "matchStrings": [
+        "variable \"ALPINE_VERSION\" \\{\\s+default = \"(?<currentValue>[^\"]+)\""
+      ],
+      "depNameTemplate": "alpine",
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver"
     }
   ]
 }
