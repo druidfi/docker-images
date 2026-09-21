@@ -16,7 +16,7 @@ jobs:
 
   php:
     name: PHP images
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -91,7 +91,7 @@ jobs:
 
   nginx:
     name: Nginx images
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -125,7 +125,7 @@ jobs:
 
   db:
     name: Database images
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -159,7 +159,7 @@ jobs:
 
   frankenphp-versions:
     name: FrankenPHP versions
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       version: ${{ steps.resolve.outputs.version }}
       php84: ${{ steps.resolve.outputs.php84 }}
@@ -177,7 +177,7 @@ jobs:
 
   frankenphp-amd64:
     name: FrankenPHP images (amd64)
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: [frankenphp-versions]
 
     steps:
@@ -216,7 +216,7 @@ jobs:
 
   frankenphp-arm64:
     name: FrankenPHP images (arm64)
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     needs: [frankenphp-versions]
 
     steps:
@@ -255,7 +255,7 @@ jobs:
 
   frankenphp-merge:
     name: FrankenPHP images (merge)
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: [frankenphp-versions, frankenphp-amd64, frankenphp-arm64]
 
     steps:
@@ -309,7 +309,7 @@ jobs:
 
   misc:
     name: Misc images
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -349,7 +349,7 @@ jobs:
 
   drupal-test:
     name: Drupal test images
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: [php]
     continue-on-error: true
 
