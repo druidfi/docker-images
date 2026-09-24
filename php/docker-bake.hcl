@@ -70,14 +70,10 @@ target "php-84" {
     PHP_SHORT_VERSION = "84"
   }
   tags = [
-    "docker.io/${REPO_BASE}:8",
     "docker.io/${REPO_BASE}:8.4",
     "docker.io/${REPO_BASE}:${PHP84_MINOR}",
-    "docker.io/${REPO_BASE}:latest",
-    "ghcr.io/${REPO_BASE}:8",
     "ghcr.io/${REPO_BASE}:8.4",
     "ghcr.io/${REPO_BASE}:${PHP84_MINOR}",
-    "ghcr.io/${REPO_BASE}:latest",
   ]
 }
 
@@ -89,10 +85,14 @@ target "php-85" {
     PHP_SHORT_VERSION = "85"
   }
   tags = [
+    "docker.io/${REPO_BASE}:8",
     "docker.io/${REPO_BASE}:8.5",
     "docker.io/${REPO_BASE}:${PHP85_MINOR}",
+    "docker.io/${REPO_BASE}:latest",
+    "ghcr.io/${REPO_BASE}:8",
     "ghcr.io/${REPO_BASE}:8.5",
     "ghcr.io/${REPO_BASE}:${PHP85_MINOR}",
+    "ghcr.io/${REPO_BASE}:latest",
   ]
 }
 
@@ -108,24 +108,24 @@ target "php-fpm" {
 target "php-fpm-84" {
   inherits = ["common", "php-84", "php-fpm"]
   tags = [
-    "docker.io/${REPO_FPM}:8",
     "docker.io/${REPO_FPM}:8.4",
     "docker.io/${REPO_FPM}:${PHP84_MINOR}",
-    "docker.io/${REPO_FPM}:latest",
-    "ghcr.io/${REPO_FPM}:8",
     "ghcr.io/${REPO_FPM}:8.4",
     "ghcr.io/${REPO_FPM}:${PHP84_MINOR}",
-    "ghcr.io/${REPO_FPM}:latest",
   ]
 }
 
 target "php-fpm-85" {
   inherits = ["common", "php-85", "php-fpm"]
   tags = [
+    "docker.io/${REPO_FPM}:8",
     "docker.io/${REPO_FPM}:8.5",
     "docker.io/${REPO_FPM}:${PHP85_MINOR}",
+    "docker.io/${REPO_FPM}:latest",
+    "ghcr.io/${REPO_FPM}:8",
     "ghcr.io/${REPO_FPM}:8.5",
     "ghcr.io/${REPO_FPM}:${PHP85_MINOR}",
+    "ghcr.io/${REPO_FPM}:latest",
   ]
 }
 
@@ -137,14 +137,10 @@ target "drupal-fpm-84" {
   inherits = ["common", "php-84", "php-fpm"]
   target = "drupal-php-84"
   tags = [
-    "docker.io/${REPO_DRUPAL_FPM}:php-8",
     "docker.io/${REPO_DRUPAL_FPM}:php-8.4",
     "docker.io/${REPO_DRUPAL_FPM}:php-${PHP84_MINOR}",
-    "docker.io/${REPO_DRUPAL_FPM}:latest",
-    "ghcr.io/${REPO_DRUPAL_FPM}:php-8",
     "ghcr.io/${REPO_DRUPAL_FPM}:php-8.4",
     "ghcr.io/${REPO_DRUPAL_FPM}:php-${PHP84_MINOR}",
-    "ghcr.io/${REPO_DRUPAL_FPM}:latest",
   ]
 }
 
@@ -152,10 +148,14 @@ target "drupal-fpm-85" {
   inherits = ["common", "php-85", "php-fpm"]
   target = "drupal-php-85"
   tags = [
+    "docker.io/${REPO_DRUPAL_FPM}:php-8",
     "docker.io/${REPO_DRUPAL_FPM}:php-8.5",
     "docker.io/${REPO_DRUPAL_FPM}:php-${PHP85_MINOR}",
+    "docker.io/${REPO_DRUPAL_FPM}:latest",
+    "ghcr.io/${REPO_DRUPAL_FPM}:php-8",
     "ghcr.io/${REPO_DRUPAL_FPM}:php-8.5",
     "ghcr.io/${REPO_DRUPAL_FPM}:php-${PHP85_MINOR}",
+    "ghcr.io/${REPO_DRUPAL_FPM}:latest",
   ]
 }
 
@@ -167,15 +167,11 @@ target "drupal-web-84" {
   inherits = ["common", "php-84", "php-fpm"]
   target = "drupal-web"
   tags = [
-    "docker.io/${REPO_DRUPAL_WEB}:php-8",
     "docker.io/${REPO_DRUPAL_WEB}:php-8.4",
     "docker.io/${REPO_DRUPAL_WEB}:php-${PHP84_MINOR}",
-    "docker.io/${REPO_DRUPAL_WEB}:latest",
     "docker.io/${REPO_DRUPAL_WEB}:v${PHP84_MINOR}",
-    "ghcr.io/${REPO_DRUPAL_WEB}:php-8",
     "ghcr.io/${REPO_DRUPAL_WEB}:php-8.4",
     "ghcr.io/${REPO_DRUPAL_WEB}:php-${PHP84_MINOR}",
-    "ghcr.io/${REPO_DRUPAL_WEB}:latest",
     "ghcr.io/${REPO_DRUPAL_WEB}:v${PHP84_MINOR}",
   ]
 }
@@ -184,11 +180,15 @@ target "drupal-web-85" {
   inherits = ["common", "php-85", "php-fpm"]
   target = "drupal-web"
   tags = [
+    "docker.io/${REPO_DRUPAL_WEB}:php-8",
     "docker.io/${REPO_DRUPAL_WEB}:php-8.5",
     "docker.io/${REPO_DRUPAL_WEB}:php-${PHP85_MINOR}",
+    "docker.io/${REPO_DRUPAL_WEB}:latest",
     "docker.io/${REPO_DRUPAL_WEB}:v${PHP85_MINOR}",
+    "ghcr.io/${REPO_DRUPAL_WEB}:php-8",
     "ghcr.io/${REPO_DRUPAL_WEB}:php-8.5",
     "ghcr.io/${REPO_DRUPAL_WEB}:php-${PHP85_MINOR}",
+    "ghcr.io/${REPO_DRUPAL_WEB}:latest",
     "ghcr.io/${REPO_DRUPAL_WEB}:v${PHP85_MINOR}",
   ]
 }

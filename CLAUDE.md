@@ -46,12 +46,12 @@ make run-frankenphp-tests   # Run FrankenPHP image tests
 
 | Image | Tags | Description |
 |-------|------|-------------|
-| `druidfi/php` | `8`, `8.4`, `8.4.x`, `latest`, `8.5`, `8.5.x` | PHP CLI base |
+| `druidfi/php` | `8.4`, `8.4.x`, `8`, `8.5`, `8.5.x`, `latest` | PHP CLI base |
 | `druidfi/php-fpm` | same pattern | PHP-FPM server |
-| `druidfi/drupal` | `php-8`, `php-8.4`, `php-8.4.x`, `latest`, `php-8.5`, `php-8.5.x` | Drupal PHP-FPM |
-| `druidfi/drupal-web` | `php-8`, `php-8.4`, `php-8.4.x`, `v8.4.x`, `latest`, `php-8.5`, `php-8.5.x`, `v8.5.x` | Drupal FPM + Nginx combined |
+| `druidfi/drupal` | `php-8.4`, `php-8.4.x`, `php-8`, `php-8.5`, `php-8.5.x`, `latest` | Drupal PHP-FPM |
+| `druidfi/drupal-web` | `php-8.4`, `php-8.4.x`, `v8.4.x`, `php-8`, `php-8.5`, `php-8.5.x`, `v8.5.x`, `latest` | Drupal FPM + Nginx combined |
 
-PHP 8.5 images exist but are not marked `latest` — PHP 8.5 is not yet considered ready for Drupal projects.
+PHP 8.5 holds the `latest` and `8` / `php-8` tags. PHP 8.4 is still built under its version tags.
 
 ### Helper & Sidecar Images
 
@@ -121,7 +121,7 @@ Called from `docker-bake.hcl` variable blocks and Makefile targets.
 
 ### Versioning
 
-- `latest` tag always points to newest stable PHP major version (currently 8.4)
+- `latest` tag always points to newest stable PHP major version (currently 8.5)
 - Alpine base version: `3.23.x` (updated via Renovate or manual security patches)
 - PHP patch versions resolved dynamically from Alpine packages
 

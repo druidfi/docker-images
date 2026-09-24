@@ -26,16 +26,16 @@ druidfi/php          (CLI base)
 
 Each variant is built for **both** `linux/amd64` and `linux/arm64`.
 
-Tags follow this pattern (using 8.4 as example):
+Tags follow this pattern (using 8.5 as example):
 
 | Image | Tags |
 |---|---|
-| `druidfi/php` | `8.4`, `8.4.x`, `8`, `latest` |
-| `druidfi/php-fpm` | `8.4`, `8.4.x`, `8`, `latest` |
-| `druidfi/drupal` | `php-8.4`, `php-8.4.x`, `php-8`, `latest` |
-| `druidfi/drupal-web` | `php-8.4`, `php-8.4.x`, `v8.4.x`, `php-8`, `latest` |
+| `druidfi/php` | `8.5`, `8.5.x`, `8`, `latest` |
+| `druidfi/php-fpm` | `8.5`, `8.5.x`, `8`, `latest` |
+| `druidfi/drupal` | `php-8.5`, `php-8.5.x`, `php-8`, `latest` |
+| `druidfi/drupal-web` | `php-8.5`, `php-8.5.x`, `v8.5.x`, `php-8`, `latest` |
 
-PHP 8.4 currently holds the `latest` and `8` tags. PHP 8.5 is built but not promoted to `latest`.
+PHP 8.5 currently holds the `latest` and `8` tags. PHP 8.4 is built without them.
 
 ---
 
