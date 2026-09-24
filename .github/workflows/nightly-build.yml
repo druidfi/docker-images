@@ -45,13 +45,11 @@ jobs:
       - name: Resolve PHP minor versions
         id: versions
         run: |
-          echo "php83_minor=$(bin/helper phpminor 8.3)" >> "$GITHUB_OUTPUT"
           echo "php84_minor=$(bin/helper phpminor 8.4)" >> "$GITHUB_OUTPUT"
           echo "php85_minor=$(bin/helper phpminor 8.5)" >> "$GITHUB_OUTPUT"
 
       - name: Build and push PHP base images
         env:
-          PHP83_MINOR: ${{ steps.versions.outputs.php83_minor }}
           PHP84_MINOR: ${{ steps.versions.outputs.php84_minor }}
           PHP85_MINOR: ${{ steps.versions.outputs.php85_minor }}
         run: |
@@ -61,7 +59,6 @@ jobs:
 
       - name: Build and push PHP-FPM images
         env:
-          PHP83_MINOR: ${{ steps.versions.outputs.php83_minor }}
           PHP84_MINOR: ${{ steps.versions.outputs.php84_minor }}
           PHP85_MINOR: ${{ steps.versions.outputs.php85_minor }}
         run: |
@@ -71,7 +68,6 @@ jobs:
 
       - name: Build and push Drupal FPM images
         env:
-          PHP83_MINOR: ${{ steps.versions.outputs.php83_minor }}
           PHP84_MINOR: ${{ steps.versions.outputs.php84_minor }}
           PHP85_MINOR: ${{ steps.versions.outputs.php85_minor }}
         run: |
@@ -81,7 +77,6 @@ jobs:
 
       - name: Build and push Drupal Web images
         env:
-          PHP83_MINOR: ${{ steps.versions.outputs.php83_minor }}
           PHP84_MINOR: ${{ steps.versions.outputs.php84_minor }}
           PHP85_MINOR: ${{ steps.versions.outputs.php85_minor }}
         run: |

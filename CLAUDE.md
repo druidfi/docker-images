@@ -46,10 +46,10 @@ make run-frankenphp-tests   # Run FrankenPHP image tests
 
 | Image | Tags | Description |
 |-------|------|-------------|
-| `druidfi/php` | `8.3`, `8.3.x`, `8.4`, `8.4.x`, `8`, `latest` | PHP CLI base |
+| `druidfi/php` | `8`, `8.4`, `8.4.x`, `latest`, `8.5`, `8.5.x` | PHP CLI base |
 | `druidfi/php-fpm` | same pattern | PHP-FPM server |
-| `druidfi/drupal` | `php-8.3`, `php-8.3.x`, `php-8.4`, `php-8`, `latest` | Drupal PHP-FPM |
-| `druidfi/drupal-web` | `php-8.3`, `php-8.3.x`, `v8.3.x`, `php-8.4`, `latest` | Drupal FPM + Nginx combined |
+| `druidfi/drupal` | `php-8`, `php-8.4`, `php-8.4.x`, `latest`, `php-8.5`, `php-8.5.x` | Drupal PHP-FPM |
+| `druidfi/drupal-web` | `php-8`, `php-8.4`, `php-8.4.x`, `v8.4.x`, `latest`, `php-8.5`, `php-8.5.x`, `v8.5.x` | Drupal FPM + Nginx combined |
 
 PHP 8.5 images exist but are not marked `latest` — PHP 8.5 is not yet considered ready for Drupal projects.
 
@@ -87,7 +87,7 @@ Default credentials: user/pass/db = `drupal`, root password = `drupal`.
 
 #### Test Images
 
-- `druidfi/drupal-test:php-8.3`, `druidfi/drupal-test:php-8.4` - Pre-installed Drupal 10 with contrib modules
+- `druidfi/drupal-test:php-8.4`, `druidfi/drupal-test:php-8.5` - Pre-installed Drupal 10 with contrib modules
 
 ## Directory Structure
 

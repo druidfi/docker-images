@@ -61,7 +61,7 @@ Prints the full bake plan including resolved PHP patch versions (e.g. `8.4.22`) 
 make php-bake-local
 ```
 
-Builds all PHP images for the current machine architecture only (no push). After the build, automatically runs the test suite against all three minor variants (8.3, 8.4, 8.5) using `tests/scripts/tests.sh`.
+Builds all PHP images for the current machine architecture only (no push). After the build, automatically runs the test suite against both minor variants (8.4, 8.5) using `tests/scripts/tests.sh`.
 
 If tests pass, you're ready to push.
 
