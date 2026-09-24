@@ -2,7 +2,7 @@ BAKE_FLAGS := --pull --no-cache --push
 
 PHONY += --php-bake
 --php-bake:
-	@PHP83_MINOR=$(call get_php_minor,8.3) PHP84_MINOR=$(call get_php_minor,8.4) PHP85_MINOR=$(call get_php_minor,8.5) \
+	@PHP84_MINOR=$(call get_php_minor,8.4) PHP85_MINOR=$(call get_php_minor,8.5) \
 		docker buildx bake -f php/docker-bake.hcl $(BAKE_FLAGS)
 
 PHONY += php-bake-all
@@ -22,9 +22,9 @@ php-bake-test: --php-bake run-php-tests ## CI test for PHP images
 
 PHONY += run-php-tests
 run-php-tests:
-	$(call step,Run tests in druidfi/drupal-web:php-8.3)
-	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts ghcr.io/druidfi/drupal-web:php-8.3 /app/scripts/tests.sh
 	$(call step,Run tests in druidfi/drupal-web:php-8.4)
 	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts ghcr.io/druidfi/drupal-web:php-8.4 /app/scripts/tests.sh
 	$(call step,Run tests in druidfi/drupal-web:php-8.5)
 	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts ghcr.io/druidfi/drupal-web:php-8.5 /app/scripts/tests.sh
+#	$(call step,Run tests in druidfi/drupal-web:php-8.6)
+#	@docker run --rm -t -v $(CURDIR)/tests/scripts:/app/scripts ghcr.io/druidfi/drupal-web:php-8.6 /app/scripts/tests.sh

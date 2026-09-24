@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 ARG ALPINE_VERSION=3.24.2
-ARG PHP_SHORT_VERSION=83
+ARG PHP_SHORT_VERSION=84
 
 #
 # libiconv
@@ -63,29 +63,6 @@ WORKDIR ${APP_PATH}
 ENTRYPOINT ["/sbin/tini", "--", "entrypoint"]
 
 CMD ["tail", "-f", "/dev/null"]
-
-#
-# PHP 8.3
-#
-FROM base AS build-php-83
-
-ENV PHP_MAJOR_VERSION=8
-ENV PHP_SHORT_VERSION=83
-ENV PHP_INSTALL_VERSION=83
-
-RUN sudo -s <<EOF
-apk update
-apk --no-cache add libcrypto3 libssl3 libzip
-apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community \
-  php83 php83-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
-  php83-pecl-{apcu,imagick,redis,uploadprogress,xdebug} \
-  imagemagick-{jpeg,tiff,webp,heic,jp2,jxl}
-ln -sfn /usr/bin/php83 /usr/bin/php
-EOF
-
-RUN php -v
-
-COPY rootfs/etc/php/conf.d/* /etc/php83/conf.d/
 
 #
 # PHP 8.4
@@ -159,15 +136,6 @@ EOF
 # PHP-FPM
 #
 
-FROM final-php AS build-php-fpm-83
-
-RUN sudo -s <<EOF
-apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community php83-fpm
-ln -sfn /usr/sbin/php-fpm83 /usr/sbin/php-fpm
-EOF
-
-COPY rootfs/etc/php/php-fpm.d/www.conf.ep /etc/php83/php-fpm.d/www.conf.ep
-
 FROM final-php AS build-php-fpm-84
 
 RUN sudo -s <<EOF
@@ -205,13 +173,6 @@ CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm", "-F
 #
 # Drupal base
 #
-
-FROM final-php-fpm AS drupal-php-83
-
-RUN sudo -s <<EOF
-apk --no-cache add openssh rsync libavif icu-libs libsodium \
-    php83-{bcmath,ctype,dom,exif,gd,intl,pdo,pdo_mysql,simplexml,soap,sockets,sodium,tokenizer,xml,xmlreader,xmlwriter}
-EOF
 
 FROM final-php-fpm AS drupal-php-84
 
