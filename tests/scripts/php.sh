@@ -24,7 +24,12 @@ fi
 
 title "Test Imagick extension"
 
-php -i | grep imagick
+imagick_info=$(php -i 2>&1)
+echo "$imagick_info" | grep imagick
+
+if echo "$imagick_info" | grep -q "dlopen"; then
+  error "Imagick failed to load a delegate library (dlopen error)"
+fi
 
 title "Test Redis extension"
 

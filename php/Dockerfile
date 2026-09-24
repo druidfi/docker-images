@@ -80,6 +80,8 @@ apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/commu
   php84 php84-{curl,fileinfo,iconv,mbstring,opcache,openssl,phar,session,zip} \
   php84-pecl-{apcu,brotli,imagick,redis,uploadprogress,xdebug} \
   imagemagick-{jpeg,tiff,webp,heic,jp2,jxl}
+# libheif-libde265 from edge is linked against edge libde265 (main repo)
+apk --no-cache add --upgrade --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main libde265
 ln -sfn /usr/bin/php84 /usr/bin/php
 EOF
 
@@ -103,6 +105,8 @@ apk --no-cache add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/commu
   php85 php85-{curl,fileinfo,iconv,mbstring,openssl,phar,session,zip} \
   php85-pecl-{apcu,brotli,imagick,redis,uploadprogress,xdebug} \
   imagemagick-{jpeg,tiff,webp,heic,jp2,jxl}
+# libheif-libde265 from edge is linked against edge libde265 (main repo)
+apk --no-cache add --upgrade --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main libde265
 ln -sfn /usr/bin/php85 /usr/bin/php
 EOF
 
