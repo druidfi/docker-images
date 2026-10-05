@@ -6,6 +6,14 @@ variable SIMPLESAMLPHP_VERSION {
   default = "2.5.3.1"
 }
 
+variable "SOLR_VERSION" {
+  default = "9.10.1"
+}
+
+variable "SEARCH_API_SOLR_VERSION" {
+  default = "4.3.14"
+}
+
 group "default" {
   #targets = ["curl", "s3-sync", "saml-idp", "solr"]
   targets = ["s3-sync", "saml-idp", "solr"]
@@ -56,19 +64,12 @@ target "s3-sync" {
 target "solr" {
   inherits = ["common"]
   context = "./misc/solr"
-  args = {
-    ALPINE_VERSION = ALPINE_VERSION
-  }
   target = "solr"
-  tags = ["druidfi/solr:9-drupal","druidfi/solr:9.8.1-drupal"]
-}
-
-target "solr-8" {
-  inherits = ["common"]
-  context = "./misc/solr"
-  dockerfile = "Dockerfile.8"
-  target = "solr8"
-  tags = ["druidfi/solr:8-drupal","druidfi/solr:8.11-drupal"]
+  args = {
+    SOLR_VERSION = SOLR_VERSION
+    SEARCH_API_SOLR_VERSION = SEARCH_API_SOLR_VERSION
+  }
+  tags = ["druidfi/solr:9-drupal", "druidfi/solr:${SOLR_VERSION}-drupal"]
 }
 
 target "claude" {

@@ -1,15 +1,19 @@
 # syntax=docker/dockerfile:1
-# check=skip=InvalidBaseImagePlatform
+
+ARG SOLR_VERSION=9.10.1
+ARG SEARCH_API_SOLR_VERSION=4.3.14
 
 ### Git downloader for search_api_solr
 FROM alpine AS search_api_solr
 
-ADD https://git.drupalcode.org/project/search_api_solr.git#4.3.8 /search_api_solr
+ARG SEARCH_API_SOLR_VERSION
+
+ADD https://git.drupalcode.org/project/search_api_solr.git#${SEARCH_API_SOLR_VERSION} /search_api_solr
 
 #
 # Final
 #
-FROM solr:9.8.1 AS solr
+FROM solr:${SOLR_VERSION} AS solr
 
 ENV SOLR_HEAP="1024m" \
     SOLR_MODULES="extraction,langid,ltr,analysis-extras" \

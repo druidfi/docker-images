@@ -82,7 +82,7 @@ Default credentials: user/pass/db = `drupal`, root password = `drupal`.
 
 - `druidfi/s3-sync` - S3 backup sync utility
 - `druidfi/saml-idp` - SimpleSAMLphp SAML Identity Provider
-- `druidfi/solr` - Apache Solr for Drupal (`8-drupal`, `8.11-drupal`)
+- `druidfi/solr` - Apache Solr 9 for Drupal (`9-drupal`, `9.x.y-drupal`)
 - `druidfi/curl` - Alpine curl utility
 
 #### Test Images
