@@ -19,11 +19,13 @@ help: ## List all make commands
 	@cat $(MAKEFILE_LIST) | grep -e "^[a-zA-Z_\-]*: *.*## *" | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' | sort
 
 PHONY += buildx-create
-buildx-create: .buildx-builder-created ## Create Buildx Builder
+buildx-create: ## Create Buildx Builder
+	@docker buildx ls | grep -q druid-buildx || docker buildx create --name=druid-buildx --platform linux/amd64,linux/arm64
+	@docker buildx use druid-buildx
 
-.buildx-builder-created:
-	docker buildx create --use --platform linux/amd64,linux/arm64
-	touch .buildx-builder-created
+PHONY += buildx-destroy
+buildx-destroy: ## Destroy Buildx Builder
+	@docker buildx rm druid-buildx || true
 
 define step
 	@printf "\n\e[0;33m${1}\e[0m\n\n"
@@ -35,6 +37,14 @@ endef
 
 define get_php_minor
 $(shell bin/helper phpminor $1)
+endef
+
+define get_frankenphp_version
+$(shell bin/helper frankenphpversion)
+endef
+
+define get_frankenphp_php
+$(shell bin/helper frankenphpphp $1)
 endef
 
 .PHONY: $(PHONY)

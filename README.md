@@ -1,11 +1,13 @@
 # General use Docker images for projects
 
-![PHP images](https://github.com/druidfi/docker-images/workflows/PHP%20images/badge.svg)
+[![PHP images](https://github.com/druidfi/docker-images/actions/workflows/nightly-build.yml/badge.svg)](https://github.com/druidfi/docker-images/actions/workflows/nightly-build.yml)
 ![Nginx images](https://github.com/druidfi/docker-images/workflows/Nginx%20images/badge.svg)
 ![Database images](https://github.com/druidfi/docker-images/workflows/Database%20images/badge.svg)
 ![Misc images](https://github.com/druidfi/docker-images/workflows/Misc%20images/badge.svg)
 
 See https://hub.docker.com/u/druidfi for all the images.
+
+See [BUILDING.md](BUILDING.md) for instructions on how to build and push images.
 
 ## Shared for all PHP images
 
@@ -29,9 +31,8 @@ ENV variables:
 
 Tags:
 
-- `druidfi/php:8.2` and `druidfi/php:8.2.x`
-- `druidfi/php:8`, `druidfi/php:8.3`, `druidfi/php:8.3.x` and `druidfi/php:latest`
 - `druidfi/php:8.4` and `druidfi/php:8.4.x`
+- `druidfi/php:8`, `druidfi/php:8.5`, `druidfi/php:8.5.x` and `druidfi/php:latest`
 
 Added features:
 
@@ -43,9 +44,8 @@ Added features:
 
 Tags:
 
-- `druidfi/php-fpm:8.2` and `druidfi/php-fpm:8.2.x`
-- `druidfi/php-fpm:8`, `druidfi/php-fpm:8.3`, `druidfi/php-fpm:8.3.x` and `druidfi/php-fpm:latest`
 - `druidfi/php-fpm:8.4` and `druidfi/php-fpm:8.4.x`
+- `druidfi/php-fpm:8`, `druidfi/php-fpm:8.5`, `druidfi/php-fpm:8.5.x` and `druidfi/php-fpm:latest`
 
 Added features:
 
@@ -56,9 +56,8 @@ Added features:
 
 Tags:
 
-- `druidfi/drupal:php-8.2` and `druidfi/drupal:php-8.2.x`
-- `druidfi/drupal:php-8`, `druidfi/drupal:php-8.3`, `druidfi/drupal:php-8.3.x` and `druidfi/drupal:latest`
 - `druidfi/drupal:php-8.4` and `druidfi/drupal:php-8.4.x`
+- `druidfi/drupal:php-8`, `druidfi/drupal:php-8.5`, `druidfi/drupal:php-8.5.x` and `druidfi/drupal:latest`
 
 Added features:
 
@@ -66,8 +65,8 @@ Added features:
 
 Needs:
 
-- Nginx (`druidfi/nginx:1.27-drupal`)
-- Database (`druidfi/mariadb:10.11-drupal-lts`)
+- Nginx (`druidfi/nginx:1.30-drupal`)
+- Database (`druidfi/mariadb:11.8-drupal-lts`)
 
 ENV variables:
 
@@ -79,9 +78,10 @@ ENV variables:
 
 ### druidfi/drupal-web variant
 
-- `druidfi/drupal-web:php-8.2`, `druidfi/drupal-web:php-8.2.x` and `druidfi/drupal-web:v8.2.x`
-- `druidfi/drupal-web:php-8`, `druidfi/drupal-web:php-8.3`, `druidfi/drupal-web:php-8.3.x`, `druidfi/drupal-web:v8.3.x` and `druidfi/drupal-web:latest`
+Tags:
+
 - `druidfi/drupal-web:php-8.4`, `druidfi/drupal-web:php-8.4.x` and `druidfi/drupal-web:v8.4.x`
+- `druidfi/drupal-web:php-8`, `druidfi/drupal-web:php-8.5`, `druidfi/drupal-web:php-8.5.x`, `druidfi/drupal-web:v8.5.x` and `druidfi/drupal-web:latest`
 
 Added features:
 
@@ -90,11 +90,12 @@ Added features:
 
 Needs:
 
-- Database (`druidfi/mariadb:10.11-drupal-lts`)
+- Database (`druidfi/mariadb:11.8-drupal-lts`)
 
 ### druidfi/drupal-test variant
 
-- `druidfi/drupal-test:8.2` based on `druidfi/drupal-web:8.2`
+- `druidfi/drupal-test:php-8.4` based on `druidfi/drupal-web:php-8.4`
+- `druidfi/drupal-test:php-8.5` based on `druidfi/drupal-web:php-8.5`
 
 Added features:
 
@@ -102,14 +103,14 @@ Added features:
 
 Needs:
 
-- Database (`druidfi/mariadb:10.11-drupal-lts`)
+- Database (`druidfi/mariadb:11.8-drupal-lts`)
 
 ## druidfi/nginx
 
 ### Base variant
 
-- `1.26` stable based on `nginx:1.26-alpine`
-- `1.27` mainline based on `nginx:1.27-alpine`
+- `1.30` stable based on `nginx:1.30-alpine`
+- `1.31` mainline based on `nginx:1.31-alpine`
 
 Added features:
 
@@ -117,8 +118,8 @@ Added features:
 
 ### Drupal variant
 
-- `1.26-drupal` based on `druidfi/nginx:1.26`
-- `1.27-drupal` based on `druidfi/nginx:1.27`
+- `1.30-drupal` based on `druidfi/nginx:1.30`
+- `1.31-drupal` based on `druidfi/nginx:1.31`
 
 Added features:
 

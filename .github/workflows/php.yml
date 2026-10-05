@@ -14,25 +14,54 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
 
   build:
 
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     steps:
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4.4.0
         with:
-          image: tonistiigi/binfmt:latest
           platforms: amd64,arm64
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
 
-      - name: Build PHP images
+      - name: Login to GHCR
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Resolve PHP minor versions
+        id: versions
         run: |
-          make php-bake-test
+          echo "php84_minor=$(bin/helper phpminor 8.4)" >> "$GITHUB_OUTPUT"
+          echo "php85_minor=$(bin/helper phpminor 8.5)" >> "$GITHUB_OUTPUT"
+
+      - name: Build PHP images (no push)
+        if: github.event_name == 'pull_request'
+        env:
+          PHP84_MINOR: ${{ steps.versions.outputs.php84_minor }}
+          PHP85_MINOR: ${{ steps.versions.outputs.php85_minor }}
+        run: |
+          docker buildx bake -f php/docker-bake.hcl --pull --no-cache
+
+      - name: Build and push PHP images
+        if: github.event_name != 'pull_request'
+        env:
+          PHP84_MINOR: ${{ steps.versions.outputs.php84_minor }}
+          PHP85_MINOR: ${{ steps.versions.outputs.php85_minor }}
+        run: |
+          docker buildx bake -f php/docker-bake.hcl --pull --no-cache --push

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ -n "$FRANKENPHP_VERSION" ]]; then
+if command -v frankenphp &>/dev/null; then
   title "Test FrankenPHP version"
   (frankenphp -v && echo -e "") || error "Something wrong with FrankenPHP"
 fi
@@ -20,6 +20,21 @@ result=$(php -d error_reporting=22527 -d display_errors=1 -r 'echo iconv("UTF-8"
 
 if [[ "$result" != "$expected" ]]; then
   error "Error! iconv result should be '$expected' instead of '$result'"
+fi
+
+title "Test Imagick extension"
+
+imagick_info=$(php -i 2>&1)
+echo "$imagick_info" | grep imagick
+
+if echo "$imagick_info" | grep -q "dlopen"; then
+  error "Imagick failed to load a delegate library (dlopen error)"
+fi
+
+title "Test Redis extension"
+
+if ! php -r "exit(class_exists('Redis') ? 0 : 1);"; then
+  error "Class Redis does not exist"
 fi
 
 title "Test Composer require"
