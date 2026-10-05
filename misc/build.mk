@@ -22,7 +22,7 @@ misc-bake-test: --misc-bake ## CI test for Misc images
 
 PHONY += misc-bake-localsolr
 misc-bake-localsolr: MISC_BAKE_FLAGS := solr --pull --progress plain --no-cache --push
-misc-bake-localsolr: --misc-bake run-solr-tests ## Bake and push Solr image, then test it
+misc-bake-localsolr: buildx-create --misc-bake buildx-destroy run-solr-tests ## Bake and push Solr image, then test it
 
 PHONY += misc-bake-idp
 #misc-bake-idp: MISC_BAKE_FLAGS := saml-idp --pull --progress plain --no-cache --load --set *.platform=linux/$(CURRENT_ARCH)
