@@ -29,12 +29,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Login to GHCR
         uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
@@ -99,12 +93,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Login to GHCR
         uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
@@ -132,12 +120,6 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to GHCR
         uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
@@ -181,12 +163,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Login to GHCR
         uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
@@ -202,9 +178,7 @@ jobs:
         run: |
           docker buildx bake -f frankenphp/docker-bake.hcl --pull --push \
             --set "*.platform=linux/amd64" \
-            --set "php-84.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-amd64" \
             --set "php-84.tags=ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-amd64" \
-            --set "php-85.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-amd64" \
             --set "php-85.tags=ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-amd64" \
             --set "*.cache-from=type=gha,scope=frankenphp-amd64" \
             --set "*.cache-to=type=gha,scope=frankenphp-amd64,mode=max"
@@ -219,12 +193,6 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to GHCR
         uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
@@ -241,9 +209,7 @@ jobs:
         run: |
           docker buildx bake -f frankenphp/docker-bake.hcl --pull --push \
             --set "*.platform=linux/arm64" \
-            --set "php-84.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-arm64" \
             --set "php-84.tags=ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-arm64" \
-            --set "php-85.tags=docker.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-arm64" \
             --set "php-85.tags=ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-arm64" \
             --set "*.cache-from=type=gha,scope=frankenphp-arm64" \
             --set "*.cache-to=type=gha,scope=frankenphp-arm64,mode=max"
@@ -256,12 +222,6 @@ jobs:
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to GHCR
         uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
@@ -276,13 +236,11 @@ jobs:
           FRANKENPHP_PHP84: ${{ needs.frankenphp-versions.outputs.php84 }}
         run: |
           docker buildx imagetools create \
-            -t druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4 \
-            -t druidfi/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP84} \
             -t ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4 \
             -t ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP84} \
             -t ghcr.io/druidfi/frankenphp-8.4:v${FRANKENPHP_VERSION} \
-            druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-amd64 \
-            druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-arm64
+            ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-amd64 \
+            ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.4-arm64
 
       - name: Merge FrankenPHP php-85 manifest
         env:
@@ -290,17 +248,13 @@ jobs:
           FRANKENPHP_PHP85: ${{ needs.frankenphp-versions.outputs.php85 }}
         run: |
           docker buildx imagetools create \
-            -t druidfi/frankenphp:${FRANKENPHP_VERSION}-php8 \
-            -t druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5 \
-            -t druidfi/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP85} \
-            -t druidfi/frankenphp:latest \
             -t ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8 \
             -t ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5 \
             -t ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP85} \
             -t ghcr.io/druidfi/frankenphp:latest \
             -t ghcr.io/druidfi/frankenphp-8.5:v${FRANKENPHP_VERSION} \
-            druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-amd64 \
-            druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-arm64
+            ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-amd64 \
+            ghcr.io/druidfi/frankenphp:${FRANKENPHP_VERSION}-php8.5-arm64
 
   misc:
     name: Misc images
@@ -316,12 +270,6 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to GHCR
         uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
@@ -358,12 +306,6 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to GHCR
         uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0

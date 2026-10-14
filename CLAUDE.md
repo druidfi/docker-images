@@ -4,9 +4,7 @@ See `/CLAUDE.md` for Druid.fi platform standards. This file documents this repos
 
 ## Purpose
 
-Centralized Docker image repository for Druid Oy. Images are published to:
-- Docker Hub: `docker.io/druidfi/*`
-- GHCR: `ghcr.io/druidfi/*`
+Centralized Docker image repository for Druid Oy. Images are published to GHCR only: `ghcr.io/druidfi/*` (Docker Hub publishing stopped 2026-10-14; existing `docker.io/druidfi/*` tags are no longer updated).
 
 Used across all 40+ Druid projects via `druidfi/tools` Makefile framework.
 
@@ -23,7 +21,7 @@ make build-all              # Build all image groups
 # Per-image-group targets
 make php-bake-local         # Build PHP images locally (current arch only)
 make php-bake-test          # CI test build (no push)
-make php-bake-all           # Build + push to both registries (CI/CD use)
+make php-bake-all           # Build + push to GHCR (CI/CD use)
 make php-bake-print         # Print build plan
 
 # Same pattern for other groups:
@@ -108,7 +106,7 @@ Default credentials: user/pass/db = `drupal`, root password = `drupal`.
 
 Uses **Docker Buildx Bake** (`docker-bake.hcl`) for all images:
 - Multi-architecture: `linux/amd64` + `linux/arm64`
-- All tags (Docker Hub + GHCR) defined in bake config
+- All tags (GHCR only) defined in bake config
 - Local builds use current architecture only
 
 ### Dynamic Version Resolution
@@ -164,11 +162,11 @@ GitHub Actions workflows in `.github/workflows/`:
 | `nginx.yml` | Push/PR to `nginx/**` | `nginx-bake-test` |
 | `db.yml` | Push/PR to `db/**` | `db-bake-test` |
 | `misc.yml` | Push/PR to `misc/**` | `misc-bake-test` |
-| `nightly.yml` | Daily 02:00 UTC + manual | Build + push all images to both registries |
+| `nightly.yml` | Daily 02:00 UTC + manual | Build + push all images to GHCR |
 
 All CI builds use `--pull --no-cache`. Push only happens on main branch merges and nightly runs.
 
-The nightly workflow requires two repository secrets: `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN`.
+The nightly workflow pushes with the built-in `GITHUB_TOKEN` (`packages: write`); no extra secrets needed.
 
 ## Adding a New Image Version
 

@@ -1,5 +1,5 @@
 variable "REPO_DRUPAL_TEST" {
-  default = "druidfi/drupal-test"
+  default = "ghcr.io/druidfi/drupal-test"
 }
 
 group "default" {

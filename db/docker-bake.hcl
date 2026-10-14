@@ -30,7 +30,7 @@ target "mariadb-1011" {
   args = {
     MARIADB_VERSION = "10.11"
   }
-  tags = ["druidfi/mariadb:10.11-drupal", "druidfi/mariadb:10.11-drupal-lts"]
+  tags = ["ghcr.io/druidfi/mariadb:10.11-drupal", "ghcr.io/druidfi/mariadb:10.11-drupal-lts"]
 }
 
 target "mariadb-114" {
@@ -38,7 +38,7 @@ target "mariadb-114" {
   args = {
     MARIADB_VERSION = "11.4"
   }
-  tags = ["druidfi/mariadb:11.4-drupal", "druidfi/mariadb:11.4-drupal-lts"]
+  tags = ["ghcr.io/druidfi/mariadb:11.4-drupal", "ghcr.io/druidfi/mariadb:11.4-drupal-lts"]
 }
 
 target "mariadb-118" {
@@ -46,7 +46,7 @@ target "mariadb-118" {
   args = {
     MARIADB_VERSION = "11.8"
   }
-  tags = ["druidfi/mariadb:11.8-drupal", "druidfi/mariadb:11.8-drupal-lts", "druidfi/mariadb:latest"]
+  tags = ["ghcr.io/druidfi/mariadb:11.8-drupal", "ghcr.io/druidfi/mariadb:11.8-drupal-lts", "ghcr.io/druidfi/mariadb:latest"]
 }
 
 target "mysql-common" {
@@ -60,7 +60,7 @@ target "mysql-80" {
     MYSQL_VERSION = "8.0"
     MYSQL_SHORT_VERSION = "80"
   }
-  tags = ["druidfi/mysql:8.0-drupal", "druidfi/mysql:8.0-drupal-lts"]
+  tags = ["ghcr.io/druidfi/mysql:8.0-drupal", "ghcr.io/druidfi/mysql:8.0-drupal-lts"]
 }
 
 target "mysql-84" {
@@ -70,7 +70,7 @@ target "mysql-84" {
     MYSQL_VERSION = "8.4"
     MYSQL_SHORT_VERSION = "84"
   }
-  tags = ["druidfi/mysql:8.4-drupal", "druidfi/mysql:8.4-drupal-lts"]
+  tags = ["ghcr.io/druidfi/mysql:8.4-drupal", "ghcr.io/druidfi/mysql:8.4-drupal-lts"]
 }
 
 target "mysql-97" {
@@ -80,5 +80,5 @@ target "mysql-97" {
     MYSQL_VERSION = "9.7"
     MYSQL_SHORT_VERSION = "97"
   }
-  tags = ["druidfi/mysql:9.7-drupal", "druidfi/mysql:9.7-drupal-lts", "druidfi/mysql:latest"]
+  tags = ["ghcr.io/druidfi/mysql:9.7-drupal", "ghcr.io/druidfi/mysql:9.7-drupal-lts", "ghcr.io/druidfi/mysql:latest"]
 }
