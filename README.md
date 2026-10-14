@@ -5,7 +5,9 @@
 ![Database images](https://github.com/druidfi/docker-images/workflows/Database%20images/badge.svg)
 ![Misc images](https://github.com/druidfi/docker-images/workflows/Misc%20images/badge.svg)
 
-See https://hub.docker.com/u/druidfi for all the images.
+All images are published to GitHub Container Registry: https://github.com/orgs/druidfi/packages
+
+Use the `ghcr.io/` prefix, e.g. `ghcr.io/druidfi/drupal-web:php-8.5`. Images on Docker Hub (`druidfi/*`) are no longer updated.
 
 See [BUILDING.md](BUILDING.md) for instructions on how to build and push images.
 

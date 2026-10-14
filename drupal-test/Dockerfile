@@ -3,7 +3,7 @@
 
 ARG PHP_VERSION
 
-FROM druidfi/php:${PHP_VERSION} AS builder
+FROM ghcr.io/druidfi/php:${PHP_VERSION} AS builder
 
 ARG BRANCH=core
 
@@ -22,7 +22,7 @@ RUN composer req --ignore-platform-reqs --no-progress --no-interaction \
         drupal/pathauto \
         drupal/simplei
 
-FROM druidfi/drupal-web:php-${PHP_VERSION} AS baseline
+FROM ghcr.io/druidfi/drupal-web:php-${PHP_VERSION} AS baseline
 
 COPY --from=builder ${APP_PATH}/composer.* ${APP_PATH}/
 COPY --from=builder ${APP_PATH}/conf/ ${APP_PATH}/conf/

@@ -30,7 +30,7 @@ target "curl" {
   args = {
     ALPINE_VERSION = ALPINE_VERSION
   }
-  tags = ["druidfi/curl:alpine", "druidfi/curl:alpine-${ALPINE_VERSION}", "druidfi/curl:alpine${ALPINE_VERSION}"]
+  tags = ["ghcr.io/druidfi/curl:alpine", "ghcr.io/druidfi/curl:alpine-${ALPINE_VERSION}", "ghcr.io/druidfi/curl:alpine${ALPINE_VERSION}"]
 }
 
 target "saml-idp" {
@@ -41,7 +41,7 @@ target "saml-idp" {
     ALPINE_VERSION = ALPINE_VERSION
     SIMPLESAMLPHP_VERSION = SIMPLESAMLPHP_VERSION
   }
-  tags = ["druidfi/saml-idp:${SIMPLESAMLPHP_VERSION}"]
+  tags = ["ghcr.io/druidfi/saml-idp:${SIMPLESAMLPHP_VERSION}"]
 }
 
 target "s3-sync" {
@@ -50,7 +50,7 @@ target "s3-sync" {
   args = {
     ALPINE_VERSION = ALPINE_VERSION
   }
-  tags = ["druidfi/s3-sync:alpine", "druidfi/s3-sync:alpine-${ALPINE_VERSION}", "druidfi/s3-sync:latest"]
+  tags = ["ghcr.io/druidfi/s3-sync:alpine", "ghcr.io/druidfi/s3-sync:alpine-${ALPINE_VERSION}", "ghcr.io/druidfi/s3-sync:latest"]
 }
 
 target "solr" {
@@ -60,11 +60,11 @@ target "solr" {
     ALPINE_VERSION = ALPINE_VERSION
   }
   target = "solr"
-  tags = ["druidfi/solr:8-drupal","druidfi/solr:8.11-drupal"]
+  tags = ["ghcr.io/druidfi/solr:8-drupal","ghcr.io/druidfi/solr:8.11-drupal"]
 }
 
 target "claude" {
   inherits = ["common"]
   context = "./misc/claude"
-  tags = ["druidfi/claude:latest"]
+  tags = ["ghcr.io/druidfi/claude:latest"]
 }

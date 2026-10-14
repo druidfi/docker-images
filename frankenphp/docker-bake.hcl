@@ -1,7 +1,3 @@
-variable "REPO_BASE" {
-  default = "druidfi/frankenphp"
-}
-
 variable "REPO_GHCR" {
   default = "ghcr.io/druidfi/frankenphp"
 }
@@ -63,8 +59,6 @@ target "php-84" {
     frankenphp_upstream = "docker-image://dunglas/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP84}"
   }
   tags = [
-    "${REPO_BASE}:${FRANKENPHP_VERSION}-php8.4",
-    "${REPO_BASE}:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP84}",
     "${REPO_GHCR}:${FRANKENPHP_VERSION}-php8.4",
     "${REPO_GHCR}:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP84}",
     "${REPO_GHCR_84}:v${FRANKENPHP_VERSION}",
@@ -81,10 +75,6 @@ target "php-85" {
     frankenphp_upstream = "docker-image://dunglas/frankenphp:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP85}"
   }
   tags = [
-    "${REPO_BASE}:${FRANKENPHP_VERSION}-php8",
-    "${REPO_BASE}:${FRANKENPHP_VERSION}-php8.5",
-    "${REPO_BASE}:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP85}",
-    "${REPO_BASE}:latest",
     "${REPO_GHCR}:${FRANKENPHP_VERSION}-php8",
     "${REPO_GHCR}:${FRANKENPHP_VERSION}-php8.5",
     "${REPO_GHCR}:${FRANKENPHP_VERSION}-php${FRANKENPHP_PHP85}",

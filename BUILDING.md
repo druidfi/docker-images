@@ -9,9 +9,9 @@ Images are rebuilt automatically every night at **02:00 UTC** via the [nightly-b
 The nightly workflow:
 1. Resolves the current PHP patch versions from Alpine packages (`bin/helper phpminor 8.x`)
 2. Builds all image groups: PHP, Nginx, DB, FrankenPHP, Misc
-3. Pushes all tags to both **Docker Hub** (`docker.io/druidfi/`) and **GHCR** (`ghcr.io/druidfi/`)
+3. Pushes all tags to **GHCR** (`ghcr.io/druidfi/`). Images are no longer pushed to Docker Hub.
 
-PHP patch version resolution is fully automatic — `docker.io/druidfi/php:8.4` always tracks the latest `8.4.x` available in Alpine without any manual version bumping.
+PHP patch version resolution is fully automatic — `ghcr.io/druidfi/php:8.4` always tracks the latest `8.4.x` available in Alpine without any manual version bumping.
 
 ### PHP Images (Primary)
 
@@ -71,9 +71,9 @@ If tests pass, you're ready to push.
 make php-bake-all
 ```
 
-Builds multi-arch images (`linux/amd64` + `linux/arm64`) and pushes all tags to both Docker Hub and GHCR. Manages the buildx builder automatically (creates it before, destroys it after).
+Builds multi-arch images (`linux/amd64` + `linux/arm64`) and pushes all tags to GHCR. Manages the buildx builder automatically (creates it before, destroys it after).
 
-Requires Docker Hub credentials to be configured locally.
+Requires being logged in to GHCR locally (`docker login ghcr.io`).
 
 ---
 

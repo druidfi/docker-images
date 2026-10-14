@@ -52,8 +52,8 @@ target "base-stable" {
   inherits = ["common-stable"]
   target = "base"
   tags = [
-    "druidfi/nginx:${NGINX_STABLE_VERSION}",
-    "druidfi/nginx:stable"
+    "ghcr.io/druidfi/nginx:${NGINX_STABLE_VERSION}",
+    "ghcr.io/druidfi/nginx:stable"
   ]
 }
 
@@ -61,8 +61,8 @@ target "drupal-stable" {
   inherits = ["common-stable"]
   target = "drupal"
   tags = [
-    "druidfi/nginx:${NGINX_STABLE_VERSION}-drupal",
-    "druidfi/nginx:stable-drupal"
+    "ghcr.io/druidfi/nginx:${NGINX_STABLE_VERSION}-drupal",
+    "ghcr.io/druidfi/nginx:stable-drupal"
   ]
 }
 
@@ -70,8 +70,8 @@ target "base-mainline" {
   inherits = ["common-mainline"]
   target = "base"
   tags = [
-    "druidfi/nginx:${NGINX_MAINLINE_VERSION}",
-    "druidfi/nginx:mainline"
+    "ghcr.io/druidfi/nginx:${NGINX_MAINLINE_VERSION}",
+    "ghcr.io/druidfi/nginx:mainline"
   ]
 }
 
@@ -79,8 +79,8 @@ target "drupal-mainline" {
   inherits = ["common-mainline"]
   target = "drupal"
   tags = [
-    "druidfi/nginx:${NGINX_MAINLINE_VERSION}-drupal",
-    "druidfi/nginx:mainline-drupal"
+    "ghcr.io/druidfi/nginx:${NGINX_MAINLINE_VERSION}-drupal",
+    "ghcr.io/druidfi/nginx:mainline-drupal"
   ]
 }
 
@@ -88,7 +88,6 @@ target "placeholder" {
   inherits = ["common-mainline"]
   target = "placeholder"
   tags = [
-    "druidfi/nginx:placeholder",
     "ghcr.io/druidfi/nginx:placeholder"
   ]
 }
